@@ -1,6 +1,8 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 
 import {
     Form,
@@ -15,8 +17,11 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
 const SignInForm = () => {
+    const router = useRouter();
     const form = useForm();
     const onSubmit = () => {};
+
+    const signInWithGoogle = () => signIn('google', { callbackUrl: '/home' });
 
     return (
         <Form {...form}>
@@ -59,7 +64,11 @@ const SignInForm = () => {
                 />
                 <Button className='w-full'>Login</Button>
                 <hr />
-                <Button variant='outline' className='w-full'>
+                <Button
+                    variant='outline'
+                    className='w-full'
+                    onClick={signInWithGoogle}
+                >
                     Continue with Google
                 </Button>
             </form>
