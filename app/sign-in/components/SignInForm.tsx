@@ -1,7 +1,11 @@
 'use client';
 
+import * as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { signIn } from 'next-auth/react';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 import Link from 'next/link';
 import {
@@ -15,17 +19,60 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
+
+const SignInFormSchema = z.object({
+    email: z.string().email().nonempty(),
+    password: z.string().nonempty(),
+});
+
+const defaultValues: z.infer<typeof SignInFormSchema> = {
+    email: '',
+    password: '',
+};
 
 const SignInForm = () => {
-    const form = useForm();
-    const onSubmit = () => {};
+    const { toast } = useToast();
+    const router = useRouter();
+    const [isLoading, setIsloading] = useState(false);
+
+    const form = useForm<z.infer<typeof SignInFormSchema>>({
+        defaultValues,
+        resolver: zodResolver(SignInFormSchema),
+    });
+
+    const onSubmit = async (values: z.infer<typeof SignInFormSchema>) => {
+        try {
+            setIsloading(true);
+            const response = await signIn('credentials', {
+                ...values,
+                redirect: false,
+            });
+            if (response?.error)
+                return toast({
+                    title: 'Error',
+                    description: 'Invalid Credentials',
+                    variant: 'destructive',
+                });
+            form.reset(defaultValues);
+            router.push('/home');
+        } catch (error) {
+            toast({
+                title: 'Error',
+                description: 'Internal server error',
+                variant: 'destructive',
+            });
+        } finally {
+            setIsloading(false);
+        }
+    };
 
     const signInWithGoogle = () => signIn('google', { callbackUrl: '/home' });
 
     return (
         <Form {...form}>
             <form
-                className='w-full max-w-md space-y-4 rounded-md p-6 shadow-lg'
+                className='w-full max-w-md space-y-4 rounded-md border p-6 shadow-lg'
                 onSubmit={form.handleSubmit(onSubmit)}
             >
                 <h1 className='text-2xl font-black'>Login to your account</h1>
@@ -61,7 +108,9 @@ const SignInForm = () => {
                         </FormItem>
                     )}
                 />
-                <Button className='w-full'>Login</Button>
+                <Button disabled={isLoading} className='w-full' type='submit'>
+                    {isLoading ? 'Logging in...' : 'Login'}
+                </Button>
                 <hr />
                 <Button
                     variant='outline'
