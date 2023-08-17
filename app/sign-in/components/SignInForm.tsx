@@ -115,6 +115,7 @@ const SignInForm = () => {
                 <Button
                     variant='outline'
                     className='w-full'
+                    type='button'
                     onClick={signInWithGoogle}
                 >
                     Continue with Google
