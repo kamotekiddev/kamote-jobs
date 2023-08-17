@@ -1,9 +1,9 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 
+import Link from 'next/link';
 import {
     Form,
     FormControl,
@@ -17,7 +17,6 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
 const SignInForm = () => {
-    const router = useRouter();
     const form = useForm();
     const onSubmit = () => {};
 
@@ -71,6 +70,16 @@ const SignInForm = () => {
                 >
                     Continue with Google
                 </Button>
+                <hr />
+                <div className='flex items-center justify-center gap-2'>
+                    <p className='text-sm'>Don&apos;t have an account?</p>
+                    <Link
+                        href='/sign-up'
+                        className='text-sm hover:text-slate-500 hover:underline'
+                    >
+                        Register here
+                    </Link>
+                </div>
             </form>
         </Form>
     );
