@@ -1,7 +1,11 @@
-import React from 'react';
+import SignUpForm from './SignUpForm';
 
 const SignUp = () => {
-    return <div>SignUp</div>;
+    return (
+        <main className='grid min-h-screen place-items-center'>
+            <SignUpForm />
+        </main>
+    );
 };
 
 export default SignUp;
