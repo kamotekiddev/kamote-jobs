@@ -54,7 +54,7 @@ model JobRole {
 
 model JobPost {
   id        String    @id @default(uuid())
-  caption   String?
+  caption   String
   image     String?
   roles     JobRole[]
   createdAt DateTime  @default(now())

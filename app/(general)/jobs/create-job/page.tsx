@@ -1,7 +1,12 @@
 import React from 'react';
+import CreateJobForm from './components/CreateJobForm';
 
 const CreateJob = () => {
-    return <main className='p-4'>Create Jobs</main>;
+    return (
+        <section className='p-4'>
+            <CreateJobForm />
+        </section>
+    );
 };
 
 export default CreateJob;
