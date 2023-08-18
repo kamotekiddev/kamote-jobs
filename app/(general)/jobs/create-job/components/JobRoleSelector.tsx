@@ -7,10 +7,12 @@ import { JobRole } from '@prisma/client';
 const JobRoleSelector = () => {
     const { data: jobRoles } = useQuery<
         { data: JobRole[] },
-        AxiosError<{ message: string }>
+        AxiosError<{ message: string }>,
+        JobRole[]
     >({
         queryKey: ['job-roles'],
         queryFn: () => axios.get('/api/job-roles'),
+        select: (response) => response.data,
     });
 
     console.log(jobRoles);
