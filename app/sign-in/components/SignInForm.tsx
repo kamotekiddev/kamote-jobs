@@ -55,7 +55,7 @@ const SignInForm = () => {
                     variant: 'destructive',
                 });
             form.reset(defaultValues);
-            router.push('/home');
+            router.push('/jobs');
         } catch (error) {
             toast({
                 title: 'Error',
@@ -67,7 +67,7 @@ const SignInForm = () => {
         }
     };
 
-    const signInWithGoogle = () => signIn('google', { callbackUrl: '/home' });
+    const signInWithGoogle = () => signIn('google', { callbackUrl: '/jobs' });
 
     return (
         <Form {...form}>

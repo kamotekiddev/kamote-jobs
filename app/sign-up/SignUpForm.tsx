@@ -82,7 +82,7 @@ const SignUpForm = () => {
                 variant: 'destructive',
             });
 
-        router.replace('/home');
+        router.replace('/jobs');
     };
 
     return (
