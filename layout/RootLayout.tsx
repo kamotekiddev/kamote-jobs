@@ -7,9 +7,9 @@ type Props = {
 
 const RootLayout = ({ children }: Props) => {
     return (
-        <div className='min-h-screen'>
+        <div className='grid min-h-screen grid-rows-[auto_1fr]'>
             <Header />
-            <main className='mx-auto max-w-7xl'>{children}</main>
+            <main className='mx-auto w-full max-w-7xl'>{children}</main>
         </div>
     );
 };

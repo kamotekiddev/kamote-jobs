@@ -1,10 +1,12 @@
-import Link from 'next/link';
+import CreateJobWidget from './components/CreateJobWidget';
+import JobList from './components/JobList';
 
 const Jobs = () => {
     return (
-        <main className='p-4'>
-            <Link href='/jobs/create-job'>Create Job</Link>
-        </main>
+        <section className='grid grid-cols-[1fr_auto] p-4'>
+            <JobList />
+            <CreateJobWidget />
+        </section>
     );
 };
 
