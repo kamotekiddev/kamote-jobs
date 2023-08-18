@@ -16,9 +16,9 @@ const RoundedLink = ({ children, ...props }: Props) => {
         <Link
             {...props}
             className={cn(
-                'rounded-full px-4 py-1 text-sm transition-colors duration-300 ease-linear',
+                'rounded-full px-4 py-1 text-sm transition-colors duration-100 ease-linear hover:bg-slate-200',
                 {
-                    'bg-slate-900 text-white': isActive,
+                    'bg-slate-900 text-white hover:bg-slate-600': isActive,
                 }
             )}
         >
