@@ -49,7 +49,6 @@ model JobRole {
   updatedAt DateTime  @updatedAt
   User      User[]
   JobPost   JobPost[]
-  jobPostId String?
 }
 
 model JobPost {
