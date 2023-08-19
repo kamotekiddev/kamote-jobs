@@ -3,5 +3,5 @@ import { withAuth } from 'next-auth/middleware';
 export default withAuth({ pages: { signIn: '/sign-in', signOut: '/sign-in' } });
 
 export const config = {
-    matcher: ['/home/:path*', '/jobs/:path*', '/explore/:path*'],
+    matcher: ['/jobs/:path*', '/explore/:path*'],
 };
