@@ -11,6 +11,8 @@ const createJobPost = async ({ caption, image, roles }: Params) => {
         const roleIds: string[] = [];
         const currentUser = await getCurrentUser();
         if (!currentUser?.id) throw new Error('Unauthorized');
+        if (!caption || roles.length <= 0) throw new Error('Invalid data');
+
         roles.forEach(async (currentRole) => {
             let role = await client.jobRole.findFirst({
                 where: { role: currentRole },
@@ -25,7 +27,7 @@ const createJobPost = async ({ caption, image, roles }: Params) => {
         });
 
         const newJobPost = await client.jobPost.create({
-            data: { caption: caption, image, roleIds },
+            data: { caption, image, roleIds },
         });
         return { newJobPost };
     } catch (error) {
