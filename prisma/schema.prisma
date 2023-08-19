@@ -52,12 +52,14 @@ model JobRole {
 }
 
 model JobPost {
-  id        String    @id @default(uuid())
+  id        String   @id @default(uuid())
   caption   String
   image     String?
-  roles     JobRole[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  roleIds   String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  roles JobRole[]
 
   applications JobApplication[]
   User         User?            @relation(fields: [userId], references: [id])
