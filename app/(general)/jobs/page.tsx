@@ -3,9 +3,8 @@ import JobList from './components/JobList';
 
 const Jobs = () => {
     return (
-        <section className='grid grid-cols-[1fr_auto] p-4'>
+        <section>
             <JobList />
-            <CreateJobWidget />
         </section>
     );
 };

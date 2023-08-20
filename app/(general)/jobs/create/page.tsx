@@ -4,7 +4,7 @@ import OpenRecruitmentWidgets from './components/OpenRecruitmentWidgets';
 
 const CreateJob = () => {
     return (
-        <section className='grid grid-cols-[1fr_auto] p-4'>
+        <section className='mx-auto grid max-w-7xl grid-cols-[1fr_auto] p-4'>
             <CreateJobForm />
             <OpenRecruitmentWidgets />
         </section>

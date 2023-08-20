@@ -3,12 +3,13 @@ import Link from 'next/link';
 
 const CreateJobWidget = () => {
     return (
-        <section className='h-max w-72 rounded-lg border p-4 shadow-sm'>
-            <p className='mb-4 text-sm'>
-                Are you looking for employees? create a Job Recruitment here
-            </p>
-            <Link href='/jobs/recruitments'>
-                <Button className='w-full'>Recruit Employee</Button>
+        <section className='grid h-max w-72 gap-4 rounded-lg border bg-white p-4 shadow-sm'>
+            <h1 className='text-xl font-bold leading-none'>
+                Looking Professionals
+            </h1>
+            <p className='text-sm'>Start recruiting professionals here.</p>
+            <Link href='/jobs/create'>
+                <Button className='w-full'>Start Recruiting</Button>
             </Link>
         </section>
     );
