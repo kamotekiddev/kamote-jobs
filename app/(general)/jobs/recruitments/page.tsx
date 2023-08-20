@@ -8,7 +8,7 @@ const Recruitments = async () => {
     if (!jobposts?.length) return <span>No data found.</span>;
 
     return (
-        <section>
+        <section className='grid grid-cols-[1fr_300px]'>
             <RecruitmentLists jobPosts={jobposts} />
         </section>
     );

@@ -7,9 +7,13 @@ type Props = {
 
 const RecruitmentLists = ({ jobPosts = [] }: Props) => {
     return (
-        <section className='rounded-lg border bg-white p-4 shadow-sm'>
-            {jobPosts.map((jobPost) => (
-                <RecruitmentListItem key={jobPost.id} jobPost={jobPost} />
+        <section className='h-max rounded-lg border bg-white p-4 shadow-sm'>
+            {jobPosts.map((jobPost, i) => (
+                <RecruitmentListItem
+                    withSeparator={jobPosts.length - 1 !== i}
+                    key={jobPost.id}
+                    jobPost={jobPost}
+                />
             ))}
         </section>
     );

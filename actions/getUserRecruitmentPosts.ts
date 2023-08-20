@@ -18,6 +18,7 @@ const getUserRecruitmentPosts = async () => {
                 workplaceType: true,
             },
         });
+
         return { jobposts };
     } catch (error) {
         return { error: getErrorMessage(error) };
