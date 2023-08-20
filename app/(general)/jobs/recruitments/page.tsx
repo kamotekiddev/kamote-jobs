@@ -8,7 +8,7 @@ const Recruitments = async () => {
     if (!jobposts?.length) return <span>No data found.</span>;
 
     return (
-        <section>
+        <section className='mx-auto max-w-7xl overflow-auto'>
             <RecruitmentLists jobPosts={jobposts} />
         </section>
     );
