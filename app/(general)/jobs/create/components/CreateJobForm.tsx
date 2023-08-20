@@ -4,9 +4,16 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 
-import { Form, FormField } from '@/components/ui/form';
+import {
+    Form,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
+import { Input } from '@/components/ui/input';
 import JobTitleSelector from './JobTitleSelector';
 import createJobPost from '@/actions/createJobPost';
 import JobPostSchema from '@/schema/JobPostSchema';
@@ -55,6 +62,19 @@ const CreateJobForm = () => {
                 <h1 className='text-2xl font-black'>Create Job Recruitment</h1>
                 <FormField
                     control={form.control}
+                    name='heading'
+                    render={({ field, fieldState }) => (
+                        <FormItem>
+                            <FormLabel>Heading</FormLabel>
+                            <Input {...field} />
+                            <FormMessage>
+                                {fieldState.error?.message}
+                            </FormMessage>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
                     name='jobTitle'
                     render={({ field, fieldState }) => (
                         <JobTitleSelector
@@ -63,6 +83,58 @@ const CreateJobForm = () => {
                             onChange={field.onChange}
                             error={fieldState.error?.message}
                         />
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name='companyName'
+                    render={({ field, fieldState }) => (
+                        <FormItem>
+                            <FormLabel>Company Name</FormLabel>
+                            <Input {...field} />
+                            <FormMessage>
+                                {fieldState.error?.message}
+                            </FormMessage>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name='employmentTypeId'
+                    render={({ field, fieldState }) => (
+                        <FormItem>
+                            <FormLabel>Employment Type</FormLabel>
+                            <Input {...field} />
+                            <FormMessage>
+                                {fieldState.error?.message}
+                            </FormMessage>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name='workplaceTypeId'
+                    render={({ field, fieldState }) => (
+                        <FormItem>
+                            <FormLabel>Workplace Type</FormLabel>
+                            <Input {...field} />
+                            <FormMessage>
+                                {fieldState.error?.message}
+                            </FormMessage>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name='location'
+                    render={({ field, fieldState }) => (
+                        <FormItem>
+                            <FormLabel>Location</FormLabel>
+                            <Input {...field} />
+                            <FormMessage>
+                                {fieldState.error?.message}
+                            </FormMessage>
+                        </FormItem>
                     )}
                 />
                 <Button type='submit' disabled={isSubmitting}>
