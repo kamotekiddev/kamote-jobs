@@ -42,6 +42,14 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
+model JobTitle {
+  id        String    @id @default(uuid())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  jobPosts  JobPost[]
+}
+
 model EmploymentType {
   id        String    @id @default(uuid())
   name      String
@@ -69,12 +77,14 @@ model JobPost {
   updatedAt         DateTime @updatedAt
   employmentTypeIds String[]
   userId            String
-  workplaceTypeId   String?
+  workplaceTypeId   String
+  jobTitleId        String
 
   employmentTypes EmploymentType[]
   applications    JobApplication[]
   user            User             @relation(fields: [userId], references: [id])
-  WorkplaceType   WorkplaceType?   @relation(fields: [workplaceTypeId], references: [id])
+  workplaceType   WorkplaceType    @relation(fields: [workplaceTypeId], references: [id])
+  jobTitle        JobTitle         @relation(fields: [jobTitleId], references: [id])
 }
 
 model JobApplication {
