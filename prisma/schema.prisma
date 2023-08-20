@@ -20,7 +20,7 @@ model User {
   Account         Account[]
   jobApplications JobApplication[]
   jobPosts        JobPost[]
-  roles           JobRole[]
+  roles           EmploymentType[]
 }
 
 model Account {
@@ -42,28 +42,40 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
-model JobRole {
+model EmploymentType {
   id        String    @id @default(uuid())
-  role      String
+  name      String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   users     User[]
   jobPosts  JobPost[]
 }
 
-model JobPost {
-  id        String   @id @default(uuid())
-  title     String
-  caption   String
-  image     String?
-  roleIds   String[]
-  userId    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model WorkplaceType {
+  id        String    @id @default(uuid())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  jobPosts  JobPost[]
+}
 
-  roles        JobRole[]
-  applications JobApplication[]
-  user         User             @relation(fields: [userId], references: [id])
+model JobPost {
+  id                String   @id @default(uuid())
+  title             String
+  heading           String
+  image             String?
+  location          String
+  companyName       String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  employmentTypeIds String[]
+  userId            String
+  workplaceTypeId   String?
+
+  employmentTypes EmploymentType[]
+  applications    JobApplication[]
+  user            User             @relation(fields: [userId], references: [id])
+  WorkplaceType   WorkplaceType?   @relation(fields: [workplaceTypeId], references: [id])
 }
 
 model JobApplication {
