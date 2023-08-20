@@ -4,32 +4,20 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from '@/components/ui/form';
+import { Form, FormField } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
-import JobRoleSelector from './JobRoleSelector';
+import JobTitleSelector from './JobTitleSelector';
 import createJobPost from '@/actions/createJobPost';
-
-const JobPostSchema = z.object({
-    image: z.string(),
-    title: z.string().nonempty(),
-    caption: z.string().nonempty(),
-    roles: z.array(z.string()).min(1),
-});
+import JobPostSchema from '@/schema/JobPostSchema';
 
 const defaultValues: z.infer<typeof JobPostSchema> = {
-    image: '',
-    title: 'Sample Title',
-    caption: '',
-    roles: [],
+    jobTitle: '',
+    heading: '',
+    employmentTypeId: '',
+    workplaceTypeId: '',
+    companyName: '',
+    location: '',
 };
 
 const CreateJobForm = () => {
@@ -62,33 +50,19 @@ const CreateJobForm = () => {
         <Form {...form}>
             <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className='space-y-8 rounded-lg border bg-white p-8 shadow-sm'
+                className='space-y-4 rounded-lg border bg-white p-8 shadow-sm'
             >
                 <h1 className='text-2xl font-black'>Create Job Recruitment</h1>
                 <FormField
                     control={form.control}
-                    name='roles'
+                    name='jobTitle'
                     render={({ field, fieldState }) => (
-                        <JobRoleSelector
-                            selectedRoles={field.value}
-                            onSelectRoles={field.onChange}
+                        <JobTitleSelector
+                            label='Job Title'
+                            value={field.value}
+                            onChange={field.onChange}
                             error={fieldState.error?.message}
                         />
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name='caption'
-                    render={({ field, fieldState }) => (
-                        <FormItem>
-                            <FormLabel>Caption</FormLabel>
-                            <FormControl>
-                                <Textarea {...field} />
-                            </FormControl>
-                            <FormMessage color='red'>
-                                {fieldState.error?.message}
-                            </FormMessage>
-                        </FormItem>
                     )}
                 />
                 <Button type='submit' disabled={isSubmitting}>

@@ -1,48 +1,45 @@
 'use server';
-import { JobPost } from '@prisma/client';
+
+import JobPostSchema, { JobPostSchemaType } from '@/schema/JobPostSchema';
 import getErrorMessage from '@/lib/getErrorMessage';
 import getCurrentUser from './getCurrentUser';
 import client from '@/lib/prismadb';
 
-type Params = Pick<JobPost, 'caption' | 'image' | 'title'> & {
-    roles: string[];
-};
-
-const createJobPost = async ({ caption, image, roles, title }: Params) => {
+const createJobPost = async (data: JobPostSchemaType) => {
     try {
         const currentUser = await getCurrentUser();
         if (!currentUser?.id) throw new Error('Unauthorized');
-        if (!caption || roles.length <= 0 || !title)
-            throw new Error('Invalid data');
 
-        const promises = roles.map(async (currentRole) => {
-            let role = await client.jobRole.findFirst({
-                where: { role: currentRole },
-            });
+        const validationError = JobPostSchema.parse(data);
+        if (Object.keys(validationError).length > 0) return { validationError };
 
-            if (!role) {
-                role = await client?.jobRole.create({
-                    data: { role: currentRole },
-                });
-            }
-            return role.id;
+        let jobTitle = await client.jobTitle.findFirst({
+            where: { name: data.jobTitle },
         });
 
-        const roleIds = await Promise.all(promises);
+        if (!jobTitle)
+            jobTitle = await client.jobTitle.create({
+                data: { name: data.jobTitle },
+            });
 
         const newJobPost = await client.jobPost.create({
             data: {
-                caption,
-                image,
-                roleIds,
-                title,
+                companyName: data.companyName,
+                location: data.location,
+                heading: data.heading,
+                employmentTypeId: data.employmentTypeId,
+                workplaceTypeId: data.workplaceTypeId,
+                jobTitleId: jobTitle?.id!,
                 userId: currentUser.id,
-                roles: {
-                    connect: [...roleIds.map((rolId) => ({ id: rolId }))],
-                },
             },
 
-            include: { roles: true },
+            include: {
+                employmentType: true,
+                workplaceType: true,
+                jobTitle: true,
+                user: true,
+                applications: true,
+            },
         });
         return { newJobPost };
     } catch (error) {

@@ -14,12 +14,12 @@ export async function GET(req: NextRequest) {
                 { status: 401 }
             );
 
-        const jobRoles = await client.jobRole.findMany({
+        const jobTitles = await client.jobTitle.findMany({
             where: {
-                role: { contains: searchQuery || '', mode: 'insensitive' },
+                name: { contains: searchQuery || '', mode: 'insensitive' },
             },
         });
-        return NextResponse.json(jobRoles);
+        return NextResponse.json(jobTitles);
     } catch (error) {
         return NextResponse.json(
             { message: getErrorMessage(error) },
@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: Request) {
     try {
-        const { role } = await req.json();
+        const { name } = await req.json();
         const currentUser = await getCurrentUser();
 
         if (!currentUser?.id)
@@ -39,14 +39,14 @@ export async function POST(req: Request) {
                 { status: 401 }
             );
 
-        if (!role)
+        if (!name)
             return NextResponse.json(
                 { message: 'Invalid Data' },
                 { status: 400 }
             );
 
-        const existingRole = await client.jobRole.findFirst({
-            where: { role: { equals: role.trim(), mode: 'insensitive' } },
+        const existingRole = await client.jobTitle.findFirst({
+            where: { name: { equals: name.trim(), mode: 'insensitive' } },
         });
 
         if (existingRole)
@@ -55,10 +55,10 @@ export async function POST(req: Request) {
                 { status: 400 }
             );
 
-        const newRole = await client.jobRole.create({ data: { role } });
+        const newJobTitle = await client.jobTitle.create({ data: { name } });
         return NextResponse.json({
-            message: 'New role is added',
-            role: newRole,
+            message: 'New job title is added',
+            role: newJobTitle,
         });
     } catch (error) {
         return NextResponse.json(
