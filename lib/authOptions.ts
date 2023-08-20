@@ -5,6 +5,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 
 import client from '@/lib/prismadb';
+
 const authOptions: AuthOptions = {
     adapter: PrismaAdapter(client),
     providers: [
@@ -18,22 +19,27 @@ const authOptions: AuthOptions = {
                 email: { label: 'email', type: 'text' },
                 password: { label: 'password', type: 'password' },
             },
-            async authorize(credentials) {
-                if (!credentials?.email || !credentials?.password) return null;
+            authorize: async (credentials) => {
+                try {
+                    if (!credentials?.email || !credentials?.password)
+                        return null;
 
-                const user = await client.user.findUnique({
-                    where: { email: credentials?.email },
-                });
+                    const user = await client.user.findUnique({
+                        where: { email: credentials?.email },
+                    });
 
-                if (!user || !user?.hashedPassword) return null;
+                    if (!user || !user?.hashedPassword) return null;
 
-                const correctPassword = await bcrypt.compare(
-                    credentials.password,
-                    user.hashedPassword
-                );
+                    const correctPassword = await bcrypt.compare(
+                        credentials.password,
+                        user.hashedPassword
+                    );
 
-                if (!correctPassword) return null;
-                return user;
+                    if (!correctPassword) return null;
+                    return user;
+                } catch (error) {
+                    return null;
+                }
             },
         }),
     ],

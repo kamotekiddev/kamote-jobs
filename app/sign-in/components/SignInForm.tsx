@@ -20,6 +20,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
+import getErrorMessage from '@/lib/getErrorMessage';
 
 const SignInFormSchema = z.object({
     email: z.string().email().nonempty(),
@@ -51,7 +52,7 @@ const SignInForm = () => {
             if (response?.error)
                 return toast({
                     title: 'Error',
-                    description: 'Invalid Credentials',
+                    description: response.error,
                     variant: 'destructive',
                 });
             form.reset(defaultValues);
@@ -59,7 +60,7 @@ const SignInForm = () => {
         } catch (error) {
             toast({
                 title: 'Error',
-                description: 'Internal server error',
+                description: getErrorMessage(error),
                 variant: 'destructive',
             });
         } finally {
