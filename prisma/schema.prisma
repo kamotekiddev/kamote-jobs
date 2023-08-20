@@ -63,7 +63,6 @@ model JobPost {
   id                String   @id @default(uuid())
   title             String
   heading           String
-  image             String?
   location          String
   companyName       String
   createdAt         DateTime @default(now())
