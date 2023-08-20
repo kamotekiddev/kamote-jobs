@@ -1,9 +1,10 @@
 'use client';
 import * as z from 'zod';
+import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
 
+import { EmploymentType, WorkplaceType } from '@prisma/client';
 import {
     Form,
     FormField,
@@ -17,13 +18,6 @@ import { Input } from '@/components/ui/input';
 import JobTitleSelector from './JobTitleSelector';
 import createJobPost from '@/actions/createJobPost';
 import JobPostSchema from '@/schema/JobPostSchema';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
 import FormSelect from '@/components/FormSelect';
 
 const defaultValues: z.infer<typeof JobPostSchema> = {
@@ -35,7 +29,15 @@ const defaultValues: z.infer<typeof JobPostSchema> = {
     location: '',
 };
 
-const CreateJobForm = () => {
+type Props = {
+    workplaceTypes?: WorkplaceType[];
+    employmentTypes?: EmploymentType[];
+};
+
+const CreateJobForm = ({
+    workplaceTypes = [],
+    employmentTypes = [],
+}: Props) => {
     const { toast } = useToast();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -115,7 +117,10 @@ const CreateJobForm = () => {
                             error={fieldState.error?.message}
                             value={field.value}
                             onChange={field.onChange}
-                            data={[]}
+                            data={employmentTypes.map(({ name, id }) => ({
+                                label: name,
+                                value: id,
+                            }))}
                         />
                     )}
                 />
@@ -128,7 +133,10 @@ const CreateJobForm = () => {
                             error={fieldState.error?.message}
                             value={field.value}
                             onChange={field.onChange}
-                            data={[]}
+                            data={workplaceTypes.map(({ name, id }) => ({
+                                label: name,
+                                value: id,
+                            }))}
                         />
                     )}
                 />
