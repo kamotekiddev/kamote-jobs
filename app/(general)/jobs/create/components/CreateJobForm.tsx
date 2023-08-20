@@ -17,6 +17,14 @@ import { Input } from '@/components/ui/input';
 import JobTitleSelector from './JobTitleSelector';
 import createJobPost from '@/actions/createJobPost';
 import JobPostSchema from '@/schema/JobPostSchema';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import FormSelect from '@/components/FormSelect';
 
 const defaultValues: z.infer<typeof JobPostSchema> = {
     jobTitle: '',
@@ -102,26 +110,26 @@ const CreateJobForm = () => {
                     control={form.control}
                     name='employmentTypeId'
                     render={({ field, fieldState }) => (
-                        <FormItem>
-                            <FormLabel>Employment Type</FormLabel>
-                            <Input {...field} />
-                            <FormMessage>
-                                {fieldState.error?.message}
-                            </FormMessage>
-                        </FormItem>
+                        <FormSelect
+                            label='Employment Type'
+                            error={fieldState.error?.message}
+                            value={field.value}
+                            onChange={field.onChange}
+                            data={[]}
+                        />
                     )}
                 />
                 <FormField
                     control={form.control}
                     name='workplaceTypeId'
                     render={({ field, fieldState }) => (
-                        <FormItem>
-                            <FormLabel>Workplace Type</FormLabel>
-                            <Input {...field} />
-                            <FormMessage>
-                                {fieldState.error?.message}
-                            </FormMessage>
-                        </FormItem>
+                        <FormSelect
+                            label='Workplace Type'
+                            error={fieldState.error?.message}
+                            value={field.value}
+                            onChange={field.onChange}
+                            data={[]}
+                        />
                     )}
                 />
                 <FormField
