@@ -47,22 +47,23 @@ model JobRole {
   role      String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  User      User[]
-  JobPost   JobPost[]
+  users     User[]
+  jobPosts  JobPost[]
 }
 
 model JobPost {
   id        String   @id @default(uuid())
+  title     String
   caption   String
   image     String?
   roleIds   String[]
+  userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   roles        JobRole[]
   applications JobApplication[]
-  User         User             @relation(fields: [userId], references: [id])
-  userId       String
+  user         User             @relation(fields: [userId], references: [id])
 }
 
 model JobApplication {
@@ -73,6 +74,6 @@ model JobApplication {
   updatedAt  DateTime @updatedAt
   jobPostId  String
   userId     String
-  JobPost    JobPost? @relation(fields: [jobPostId], references: [id])
-  User       User?    @relation(fields: [userId], references: [id])
+  jobPost    JobPost? @relation(fields: [jobPostId], references: [id])
+  user       User?    @relation(fields: [userId], references: [id])
 }

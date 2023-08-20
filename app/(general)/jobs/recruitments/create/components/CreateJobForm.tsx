@@ -20,12 +20,14 @@ import createJobPost from '@/actions/createJobPost';
 
 const JobPostSchema = z.object({
     image: z.string(),
+    title: z.string().nonempty(),
     caption: z.string().nonempty(),
     roles: z.array(z.string()).min(1),
 });
 
 const defaultValues: z.infer<typeof JobPostSchema> = {
     image: '',
+    title: 'Sample Title',
     caption: '',
     roles: [],
 };

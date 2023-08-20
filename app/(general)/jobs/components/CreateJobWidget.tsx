@@ -7,7 +7,7 @@ const CreateJobWidget = () => {
             <p className='mb-4 text-sm'>
                 Are you looking for employees? create a Job Recruitment here
             </p>
-            <Link href='/jobs/create-job'>
+            <Link href='/jobs/recruitments'>
                 <Button className='w-full'>Recruit Employee</Button>
             </Link>
         </section>
