@@ -10,13 +10,11 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import getUserInitials from '@/lib/getUserInitials';
 
 const UserAvatar = () => {
     const { data: session } = useSession();
-    const userInitials = session?.user?.name
-        ?.split(' ')
-        ?.map((word) => word[0].toUpperCase())
-        .join('');
+    const userInitials = getUserInitials(session?.user?.name!);
 
     return (
         <DropdownMenu>
