@@ -1,4 +1,3 @@
-import CreateJobWidget from './components/CreateJobWidget';
 import JobList from './components/JobList';
 
 const Jobs = () => {
