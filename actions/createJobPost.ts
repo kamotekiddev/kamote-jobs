@@ -10,8 +10,8 @@ const createJobPost = async (data: JobPostSchemaType) => {
         const currentUser = await getCurrentUser();
         if (!currentUser?.id) throw new Error('Unauthorized');
 
-        const validationError = JobPostSchema.parse(data);
-        if (Object.keys(validationError).length > 0) return { validationError };
+        const validationError = JobPostSchema.safeParse(data);
+        if (!validationError.success) throw new Error('Invalid Data');
 
         let jobTitle = await client.jobTitle.findFirst({
             where: { name: data.jobTitle },

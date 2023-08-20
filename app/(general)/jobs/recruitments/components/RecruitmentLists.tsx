@@ -7,7 +7,7 @@ type Props = {
 
 const RecruitmentLists = ({ jobPosts = [] }: Props) => {
     return (
-        <section>
+        <section className='rounded-lg border bg-white p-4 shadow-sm'>
             {jobPosts.map((jobPost) => (
                 <RecruitmentListItem key={jobPost.id} jobPost={jobPost} />
             ))}

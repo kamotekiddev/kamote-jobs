@@ -1,3 +1,14 @@
-import { JobRole, User, JobPost } from '@prisma/client';
+import {
+    WorkplaceType,
+    JobTitle,
+    EmploymentType,
+    User,
+    JobPost,
+} from '@prisma/client';
 
-export type FullJobPosts = JobPost & { roles: JobRole[]; user: User };
+export type FullJobPosts = JobPost & {
+    user: User;
+    employmentType: EmploymentType;
+    jobTitle: JobTitle;
+    workplaceType: WorkplaceType;
+};
