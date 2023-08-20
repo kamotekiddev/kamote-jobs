@@ -60,7 +60,10 @@ const CreateJobForm = () => {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+            <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className='space-y-8 rounded-lg border bg-white p-8 shadow-sm'
+            >
                 <h1 className='text-2xl font-black'>Create Job Recruitment</h1>
                 <FormField
                     control={form.control}
