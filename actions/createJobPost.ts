@@ -4,6 +4,7 @@ import JobPostSchema, { JobPostSchemaType } from '@/schema/JobPostSchema';
 import getErrorMessage from '@/lib/getErrorMessage';
 import getCurrentUser from './getCurrentUser';
 import client from '@/lib/prismadb';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 const createJobPost = async (data: JobPostSchemaType) => {
     try {
@@ -41,6 +42,8 @@ const createJobPost = async (data: JobPostSchemaType) => {
                 applications: true,
             },
         });
+
+        revalidatePath('/recruitments');
         return { newJobPost };
     } catch (error) {
         return { error: getErrorMessage(error) };
