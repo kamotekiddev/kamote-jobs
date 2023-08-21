@@ -7,14 +7,15 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import getUserInitials from '@/lib/getUserInitials';
 
 type Props = {
-    jobPost: FullJobPosts;
+    jobPost?: FullJobPosts;
     withSeparator?: boolean;
 };
 const RecruitmentListItem = ({ jobPost, withSeparator }: Props) => {
-    const formattedDate = formatDistanceToNow(new Date(jobPost.createdAt), {
-        addSuffix: true,
-    });
-    const userInitial = getUserInitials(jobPost.user.name!);
+    console.log(jobPost?.createdAt);
+    // const formattedDate = formatDistanceToNow(new Date(jobPost?.createdAt), {
+    //     addSuffix: true,
+    // });
+    const userInitial = getUserInitials(jobPost?.user.name!);
 
     return (
         <article
@@ -23,30 +24,30 @@ const RecruitmentListItem = ({ jobPost, withSeparator }: Props) => {
             })}
         >
             <Avatar className='h-20 w-20 rounded-sm'>
-                <AvatarImage src={jobPost.user?.image!} />
+                <AvatarImage src={jobPost?.user?.image!} />
                 <AvatarFallback>{userInitial}</AvatarFallback>
             </Avatar>
             <div className='flex-1'>
                 <div className='flex items-center gap-2'>
                     <div className='flex-1'>
                         <h1 className='text-lg font-bold text-slate-500 group-hover:underline'>
-                            {jobPost.jobTitle.name}
+                            {jobPost?.jobTitle.name}
                         </h1>
 
-                        <p className='text-sm'>{jobPost.companyName}</p>
+                        <p className='text-sm'>{jobPost?.companyName}</p>
                     </div>
                     <div>
                         <Bookmark />
                     </div>
                 </div>
                 <div className='mt-2 flex gap-2 text-sm'>
-                    <p>{jobPost.location}</p>
-                    <p>({jobPost.workplaceType.name})</p>
+                    <p>{jobPost?.location}</p>
+                    <p>({jobPost?.workplaceType.name})</p>
                 </div>
                 <div className='flex items-center gap-2 text-sm'>
-                    <p>{jobPost.employmentType.name}</p> -
-                    <p>({jobPost.applications.length}) Applicants</p> -
-                    <p className='font-bold'>{formattedDate}</p>
+                    <p>{jobPost?.employmentType.name}</p> -
+                    <p>({jobPost?.applications.length}) Applicants</p> -
+                    {/* <p className='font-bold'>{formattedDate}</p> */}
                 </div>
             </div>
         </article>

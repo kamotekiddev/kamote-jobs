@@ -8,7 +8,7 @@ import {
 } from '@prisma/client';
 
 export type FullJobPosts = JobPost & {
-    user: User;
+    user: Omit<User, 'hashedPassword'>;
     employmentType: EmploymentType;
     jobTitle: JobTitle;
     workplaceType: WorkplaceType;

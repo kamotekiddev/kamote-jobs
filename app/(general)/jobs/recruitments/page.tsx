@@ -1,8 +1,9 @@
 import getUserRecruitmentPosts from '@/actions/getUserRecruitmentPosts';
-import RecruitmentLists from './components/RecruitmentLists';
+import RecruitmentLists from '../components/RecruitmentLists';
 
 const Recruitments = async () => {
     const { jobposts } = await getUserRecruitmentPosts();
+    console.log(jobposts);
 
     return (
         <section className='grid grid-cols-[1fr_300px] overflow-auto scrollbar-hide'>

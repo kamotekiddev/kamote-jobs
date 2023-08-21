@@ -1,9 +1,12 @@
-import JobList from './components/JobList';
+import getJobRecruitments from '@/actions/getJobRecruitments';
+import RecruitmentLists from './components/RecruitmentLists';
 
-const Jobs = () => {
+const Jobs = async () => {
+    const { jobRecruitments } = await getJobRecruitments();
+
     return (
         <section>
-            <JobList />
+            <RecruitmentLists jobPosts={jobRecruitments} />
         </section>
     );
 };
