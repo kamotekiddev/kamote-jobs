@@ -45,6 +45,7 @@ const RecruitmentListItem = ({ jobPost, withSeparator }: Props) => {
                 </div>
                 <div className='flex items-center gap-2 text-sm'>
                     <p>{jobPost.employmentType.name}</p> -
+                    <p>({jobPost.applications.length}) Applicants</p> -
                     <p className='font-bold'>{formattedDate}</p>
                 </div>
             </div>

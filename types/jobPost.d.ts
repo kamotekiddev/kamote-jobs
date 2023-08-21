@@ -4,6 +4,7 @@ import {
     EmploymentType,
     User,
     JobPost,
+    JobApplication,
 } from '@prisma/client';
 
 export type FullJobPosts = JobPost & {
@@ -11,4 +12,5 @@ export type FullJobPosts = JobPost & {
     employmentType: EmploymentType;
     jobTitle: JobTitle;
     workplaceType: WorkplaceType;
+    applications: JobApplication[];
 };
