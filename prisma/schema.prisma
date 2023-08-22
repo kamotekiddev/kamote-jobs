@@ -20,6 +20,7 @@ model User {
   Account         Account[]
   jobApplications JobApplication[]
   jobPosts        JobPost[]
+  savedJobPosts   JobPost[]        @relation("saved-job-posts")
   roles           EmploymentType[]
 }
 
@@ -68,22 +69,23 @@ model WorkplaceType {
 }
 
 model JobPost {
-  id              String   @id @default(uuid())
-  heading         String
-  location        String
-  companyName     String
-  userId          String
-  workplaceTypeId String
-  jobTitleId      String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-
+  id               String   @id @default(uuid())
+  location         String
+  companyName      String
+  userId           String
+  workplaceTypeId  String
+  jobTitleId       String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
   employmentTypeId String
-  applications     JobApplication[]
-  user             User             @relation(fields: [userId], references: [id])
-  workplaceType    WorkplaceType    @relation(fields: [workplaceTypeId], references: [id])
-  jobTitle         JobTitle         @relation(fields: [jobTitleId], references: [id])
-  employmentType   EmploymentType   @relation(fields: [employmentTypeId], references: [id])
+  savedByUserIds   String[]
+
+  applications   JobApplication[]
+  user           User             @relation(fields: [userId], references: [id])
+  workplaceType  WorkplaceType    @relation(fields: [workplaceTypeId], references: [id])
+  jobTitle       JobTitle         @relation(fields: [jobTitleId], references: [id])
+  employmentType EmploymentType   @relation(fields: [employmentTypeId], references: [id])
+  savedByUsers   User[]           @relation("saved-job-posts")
 }
 
 model JobApplication {
