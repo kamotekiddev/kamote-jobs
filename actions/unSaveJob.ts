@@ -5,7 +5,7 @@ import getCurrentUser from './getCurrentUser';
 import client from '@/lib/prismadb';
 import { revalidatePath } from 'next/cache';
 
-const saveOrUnsaveJob = async (postId?: string) => {
+const unSaveJob = async (postId?: string) => {
     try {
         const user = await getCurrentUser();
         if (!user?.id) throw new Error('Unauthorized');
@@ -15,19 +15,7 @@ const saveOrUnsaveJob = async (postId?: string) => {
             where: { id: postId, savedByUserIds: { hasSome: [user.id] } },
         });
 
-        let bookedMarkedPost;
-
-        if (!existingBookedMarkedPosts)
-            bookedMarkedPost = await client.jobPost.update({
-                where: { id: postId },
-                data: {
-                    savedByUserIds: [user.id],
-                    savedByUsers: { connect: [{ id: user.id }] },
-                },
-                include: { savedByUsers: true },
-            });
-
-        bookedMarkedPost = await client.jobPost.update({
+        const bookedMarkedPost = await client.jobPost.update({
             where: { id: postId },
             data: {
                 savedByUserIds:
@@ -46,4 +34,4 @@ const saveOrUnsaveJob = async (postId?: string) => {
     }
 };
 
-export default saveOrUnsaveJob;
+export default unSaveJob;

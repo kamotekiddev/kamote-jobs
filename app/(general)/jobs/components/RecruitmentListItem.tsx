@@ -2,6 +2,7 @@
 
 import { BookmarkIcon, BookmarkPlus } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
+import { experimental_useOptimistic as useOptimistic } from 'react';
 
 import { useSession } from 'next-auth/react';
 import { cn } from '@/lib/utils';
@@ -9,7 +10,8 @@ import { FullJobPosts } from '@/types/jobPost';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import getUserInitials from '@/lib/getUserInitials';
-import saveOrUnsaveJob from '@/actions/saveOrUnSaveJob';
+import saveJob from '@/actions/saveJob';
+import unSaveJob from '@/actions/unSaveJob';
 
 type Props = {
     jobPost?: FullJobPosts;
@@ -17,8 +19,17 @@ type Props = {
 };
 const RecruitmentListItem = ({ jobPost, withSeparator }: Props) => {
     const { data: session } = useSession();
+    const userid = session?.user.id;
 
-    const isSaved = jobPost?.savedByUserIds.includes(session?.user.id);
+    const [optimisticUserids, addOptimisticUserId] = useOptimistic(
+        jobPost?.savedByUserIds,
+        (state, newUserId: string) =>
+            jobPost?.savedByUserIds.includes(userid)
+                ? [...(state || [])?.filter((id) => id !== session?.user.id)]
+                : [...(state || []), newUserId]
+    );
+
+    const isSaved = optimisticUserids?.includes(session?.user.id);
 
     const formattedDate = jobPost?.createdAt
         ? formatDistanceToNow(new Date(jobPost?.createdAt), {
@@ -28,7 +39,12 @@ const RecruitmentListItem = ({ jobPost, withSeparator }: Props) => {
 
     const userInitial = getUserInitials(jobPost?.user.name!);
 
-    const handleSaveUnsaveJob = () => saveOrUnsaveJob(jobPost?.id);
+    const handleSaveUnsaveJob = async () => {
+        addOptimisticUserId(userid);
+        if (jobPost?.savedByUserIds.includes(userid))
+            return await unSaveJob(jobPost?.id);
+        return await saveJob(jobPost?.id);
+    };
 
     return (
         <article
