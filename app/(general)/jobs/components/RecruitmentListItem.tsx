@@ -11,10 +11,12 @@ type Props = {
     withSeparator?: boolean;
 };
 const RecruitmentListItem = ({ jobPost, withSeparator }: Props) => {
-    console.log(jobPost?.createdAt);
-    // const formattedDate = formatDistanceToNow(new Date(jobPost?.createdAt), {
-    //     addSuffix: true,
-    // });
+    const formattedDate = jobPost?.createdAt
+        ? formatDistanceToNow(new Date(jobPost?.createdAt), {
+              addSuffix: true,
+          })
+        : '';
+
     const userInitial = getUserInitials(jobPost?.user.name!);
 
     return (
@@ -46,8 +48,7 @@ const RecruitmentListItem = ({ jobPost, withSeparator }: Props) => {
                 </div>
                 <div className='flex items-center gap-2 text-sm'>
                     <p>{jobPost?.employmentType.name}</p> -
-                    <p>({jobPost?.applications.length}) Applicants</p> -
-                    {/* <p className='font-bold'>{formattedDate}</p> */}
+                    <p className='font-bold'>{formattedDate}</p>
                 </div>
             </div>
         </article>
