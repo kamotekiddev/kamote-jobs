@@ -22,7 +22,6 @@ import FormSelect from '@/components/FormSelect';
 
 const defaultValues: z.infer<typeof JobPostSchema> = {
     jobTitle: '',
-    heading: '',
     employmentTypeId: '',
     workplaceTypeId: '',
     companyName: '',
@@ -70,19 +69,6 @@ const CreateJobForm = ({
                 className='space-y-4 rounded-lg border bg-white p-8 shadow-sm'
             >
                 <h1 className='text-2xl font-black'>Create Job Recruitment</h1>
-                <FormField
-                    control={form.control}
-                    name='heading'
-                    render={({ field, fieldState }) => (
-                        <FormItem>
-                            <FormLabel>Heading</FormLabel>
-                            <Input {...field} />
-                            <FormMessage>
-                                {fieldState.error?.message}
-                            </FormMessage>
-                        </FormItem>
-                    )}
-                />
                 <FormField
                     control={form.control}
                     name='jobTitle'

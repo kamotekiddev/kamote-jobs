@@ -2,7 +2,6 @@ import * as z from 'zod';
 
 const JobPostSchema = z.object({
     jobTitle: z.string().nonempty(),
-    heading: z.string().nonempty(),
     employmentTypeId: z.string().nonempty(),
     workplaceTypeId: z.string().nonempty(),
     companyName: z.string().nonempty(),
