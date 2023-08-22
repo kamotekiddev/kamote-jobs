@@ -1,3 +1,5 @@
+'use client';
+
 import { Bookmark } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
@@ -5,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { FullJobPosts } from '@/types/jobPost';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import getUserInitials from '@/lib/getUserInitials';
+import saveOrUnsaveJob from '@/actions/saveOrUnSaveJob';
 
 type Props = {
     jobPost?: FullJobPosts;
@@ -18,6 +21,15 @@ const RecruitmentListItem = ({ jobPost, withSeparator }: Props) => {
         : '';
 
     const userInitial = getUserInitials(jobPost?.user.name!);
+
+    const handleSaveUnsaveJob = async () => {
+        try {
+            const response = await saveOrUnsaveJob(jobPost?.id);
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <article
@@ -39,7 +51,7 @@ const RecruitmentListItem = ({ jobPost, withSeparator }: Props) => {
                         <p className='text-sm'>{jobPost?.companyName}</p>
                     </div>
                     <div>
-                        <Bookmark />
+                        <Bookmark onClick={handleSaveUnsaveJob} />
                     </div>
                 </div>
                 <div className='mt-2 flex gap-2 text-sm'>
