@@ -9,6 +9,7 @@ const getSavedJobPosts = async () => {
 
         const savedPosts = await client.jobPost.findMany({
             where: { savedByUserIds: { hasSome: [user.id] } },
+            orderBy: { createdAt: 'desc' },
             include: {
                 applications: true,
                 user: true,

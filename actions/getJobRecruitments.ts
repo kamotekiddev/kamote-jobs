@@ -8,6 +8,7 @@ const getJobRecruitments = async () => {
         if (!user?.id) throw new Error('Unauthorized');
 
         const jobRecruitments = await client.jobPost.findMany({
+            orderBy: { createdAt: 'desc' },
             include: {
                 applications: true,
                 employmentType: true,

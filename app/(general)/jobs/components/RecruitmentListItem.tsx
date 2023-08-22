@@ -1,11 +1,13 @@
 'use client';
 
-import { Bookmark } from 'lucide-react';
+import { BookmarkIcon, BookmarkPlus } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
+import { useSession } from 'next-auth/react';
 import { cn } from '@/lib/utils';
 import { FullJobPosts } from '@/types/jobPost';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import getUserInitials from '@/lib/getUserInitials';
 import saveOrUnsaveJob from '@/actions/saveOrUnSaveJob';
 
@@ -14,6 +16,10 @@ type Props = {
     withSeparator?: boolean;
 };
 const RecruitmentListItem = ({ jobPost, withSeparator }: Props) => {
+    const { data: session } = useSession();
+
+    const isSaved = jobPost?.savedByUserIds.includes(session?.user.id);
+
     const formattedDate = jobPost?.createdAt
         ? formatDistanceToNow(new Date(jobPost?.createdAt), {
               addSuffix: true,
@@ -22,14 +28,7 @@ const RecruitmentListItem = ({ jobPost, withSeparator }: Props) => {
 
     const userInitial = getUserInitials(jobPost?.user.name!);
 
-    const handleSaveUnsaveJob = async () => {
-        try {
-            const response = await saveOrUnsaveJob(jobPost?.id);
-            console.log(response);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    const handleSaveUnsaveJob = () => saveOrUnsaveJob(jobPost?.id);
 
     return (
         <article
@@ -50,9 +49,13 @@ const RecruitmentListItem = ({ jobPost, withSeparator }: Props) => {
 
                         <p className='text-sm'>{jobPost?.companyName}</p>
                     </div>
-                    <div>
-                        <Bookmark onClick={handleSaveUnsaveJob} />
-                    </div>
+                    <Button
+                        variant='link'
+                        onClick={handleSaveUnsaveJob}
+                        size='icon'
+                    >
+                        {isSaved ? <BookmarkPlus /> : <BookmarkIcon />}
+                    </Button>
                 </div>
                 <div className='mt-2 flex gap-2 text-sm'>
                     <p>{jobPost?.location}</p>

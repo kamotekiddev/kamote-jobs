@@ -43,6 +43,18 @@ const authOptions: AuthOptions = {
             },
         }),
     ],
+    callbacks: {
+        jwt: async ({ user, token }) => {
+            if (user) {
+                token.uid = user.id;
+            }
+            return token;
+        },
+        session: async ({ session, token }) => {
+            if (session.user) session.user.id = token.uid;
+            return session;
+        },
+    },
     debug: true,
     session: { strategy: 'jwt' },
     secret: process.env.NEXTAUTH_SECRET,
