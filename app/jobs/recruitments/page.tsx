@@ -1,9 +1,6 @@
-import getUserRecruitmentPosts from '@/actions/getUserRecruitmentPosts';
-import RecruitmentLists from '@/components/RecruitmentLists';
+import OwnedJobList from './components/OwnedJobList';
 
-const Recruitments = async () => {
-    const { jobposts } = await getUserRecruitmentPosts();
-
+const Recruitments = () => {
     return (
         <section className='grid grid-cols-[1fr_300px] overflow-auto scrollbar-hide'>
             <div className='space-y-4'>
@@ -11,7 +8,7 @@ const Recruitments = async () => {
                     <h1 className='text-2xl font-black'>Your Recruitments</h1>
                     <p>List of your recruitments Notice</p>
                 </section>
-                <RecruitmentLists jobPosts={jobposts} />
+                <OwnedJobList />
             </div>
         </section>
     );

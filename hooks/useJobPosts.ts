@@ -22,3 +22,10 @@ export const useFetchSavedJobPosts = () =>
         queryFn: () => axios.get('/api/job-posts/saved'),
         select: (res) => res.data,
     });
+
+export const useFetchOwnedJobPosts = () =>
+    useQuery<Response, ErrorResponse, FullJobPosts[]>({
+        queryKey: ['job-posts'],
+        queryFn: () => axios.get('/api/job-posts/owned'),
+        select: (res) => res.data,
+    });
