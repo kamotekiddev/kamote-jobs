@@ -3,7 +3,6 @@
 import getErrorMessage from '@/lib/getErrorMessage';
 import getCurrentUser from './getCurrentUser';
 import client from '@/lib/prismadb';
-import { revalidatePath } from 'next/cache';
 
 const unSaveJob = async (postId?: string) => {
     try {
@@ -26,8 +25,6 @@ const unSaveJob = async (postId?: string) => {
             },
         });
 
-        revalidatePath('/saved');
-        revalidatePath('/jobs');
         return { bookedMarkedPost };
     } catch (error) {
         return { error: getErrorMessage(error) };

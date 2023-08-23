@@ -1,5 +1,5 @@
 import React from 'react';
-import RecruitmentLists from '../components/RecruitmentLists';
+import RecruitmentLists from '@/components/RecruitmentLists';
 import getSavedJobPosts from '@/actions/getSavedJobPosts';
 
 const SavedJobs = async () => {

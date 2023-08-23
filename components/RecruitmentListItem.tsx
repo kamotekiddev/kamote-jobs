@@ -2,7 +2,7 @@
 
 import { BookmarkIcon, BookmarkPlus } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
-import { experimental_useOptimistic as useOptimistic } from 'react';
+import { useState } from 'react';
 
 import { useSession } from 'next-auth/react';
 import { cn } from '@/lib/utils';
@@ -19,15 +19,11 @@ type Props = {
 };
 const RecruitmentListItem = ({ jobPost, withSeparator }: Props) => {
     const { data: session } = useSession();
-    const userid = session?.user.id;
-
-    const [optimisticUserids, addOptimisticUserId] = useOptimistic(
-        jobPost?.savedByUserIds,
-        (state, newUserId: string) =>
-            jobPost?.savedByUserIds.includes(userid)
-                ? [...(state || [])?.filter((id) => id !== session?.user.id)]
-                : [...(state || []), newUserId]
+    const [optimisticUserids, setOptimisticUserIds] = useState(
+        jobPost?.savedByUserIds || []
     );
+
+    const userid = session?.user.id;
 
     const isSaved = optimisticUserids?.includes(session?.user.id);
 
@@ -40,10 +36,17 @@ const RecruitmentListItem = ({ jobPost, withSeparator }: Props) => {
     const userInitial = getUserInitials(jobPost?.user.name!);
 
     const handleSaveUnsaveJob = async () => {
-        addOptimisticUserId(userid);
-        if (jobPost?.savedByUserIds.includes(userid))
-            return await unSaveJob(jobPost?.id);
-        return await saveJob(jobPost?.id);
+        if (optimisticUserids?.includes(userid)) {
+            setOptimisticUserIds((prev) =>
+                prev.filter((uid) => uid !== userid)
+            );
+            const { error } = await unSaveJob(jobPost?.id);
+            if (error) setOptimisticUserIds(jobPost?.savedByUserIds!);
+            return;
+        }
+        setOptimisticUserIds((prev) => [...prev, userid]);
+        const { error } = await saveJob(jobPost?.id);
+        if (error) setOptimisticUserIds(jobPost?.savedByUserIds!);
     };
 
     return (

@@ -1,5 +1,5 @@
 import getUserRecruitmentPosts from '@/actions/getUserRecruitmentPosts';
-import RecruitmentLists from '../components/RecruitmentLists';
+import RecruitmentLists from '@/components/RecruitmentLists';
 
 const Recruitments = async () => {
     const { jobposts } = await getUserRecruitmentPosts();

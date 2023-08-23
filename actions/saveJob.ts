@@ -3,7 +3,6 @@
 import getErrorMessage from '@/lib/getErrorMessage';
 import getCurrentUser from './getCurrentUser';
 import client from '@/lib/prismadb';
-import { revalidatePath } from 'next/cache';
 
 const saveJob = async (postId?: string) => {
     try {
@@ -19,9 +18,6 @@ const saveJob = async (postId?: string) => {
             },
             include: { savedByUsers: true },
         });
-
-        revalidatePath('/saved');
-        revalidatePath('/jobs');
 
         return { bookedMarkedPost };
     } catch (error) {

@@ -1,7 +1,14 @@
-import React from 'react';
+import getJobRecruitments from '@/actions/getJobRecruitments';
+import RecruitmentLists from '@/components/RecruitmentLists';
 
-const JobList = () => {
-    return <section>JobList</section>;
+const JobList = async () => {
+    const { jobRecruitments } = await getJobRecruitments();
+
+    return (
+        <>
+            <RecruitmentLists jobPosts={jobRecruitments} />
+        </>
+    );
 };
 
 export default JobList;

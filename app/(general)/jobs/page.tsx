@@ -1,9 +1,8 @@
-import getJobRecruitments from '@/actions/getJobRecruitments';
-import RecruitmentLists from './components/RecruitmentLists';
+import { Suspense } from 'react';
+import Loading from '@/components/Loading';
+import JobList from './components/JobList';
 
-const Jobs = async () => {
-    const { jobRecruitments } = await getJobRecruitments();
-
+const Jobs = () => {
     return (
         <section className='grid grid-cols-[1fr_300px] overflow-auto scrollbar-hide'>
             <div className='space-y-4'>
@@ -11,7 +10,9 @@ const Jobs = async () => {
                     <h1 className='text-2xl font-black'>Jobs</h1>
                     <p>list of Job Recruitments</p>
                 </header>
-                <RecruitmentLists jobPosts={jobRecruitments} />
+                <Suspense fallback={<Loading />}>
+                    <JobList />
+                </Suspense>
             </div>
         </section>
     );
