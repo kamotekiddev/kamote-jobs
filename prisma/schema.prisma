@@ -21,7 +21,7 @@ model User {
   jobApplications JobApplication[]
   jobPosts        JobPost[]
   savedJobPosts   JobPost[]        @relation("saved-job-posts")
-  roles           EmploymentType[]
+  employmentTypes EmploymentType[]
 }
 
 model Account {

@@ -1,12 +1,14 @@
-import getJobRecruitments from '@/actions/getJobRecruitments';
-import RecruitmentLists from '@/components/RecruitmentLists';
+'use client';
 
-const JobList = async () => {
-    const { jobRecruitments } = await getJobRecruitments();
+import RecruitmentLists from '@/components/RecruitmentLists';
+import useFetchJobPosts from '@/hooks/useFetchJobPosts';
+
+const JobList = () => {
+    const { data: jobPosts } = useFetchJobPosts();
 
     return (
         <>
-            <RecruitmentLists jobPosts={jobRecruitments} />
+            <RecruitmentLists jobPosts={jobPosts} />
         </>
     );
 };

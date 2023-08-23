@@ -33,7 +33,7 @@ const RecruitmentListItem = ({ jobPost, withSeparator }: Props) => {
           })
         : '';
 
-    const userInitial = getUserInitials(jobPost?.user.name!);
+    const userInitial = getUserInitials(jobPost?.user?.name!);
 
     const handleSaveUnsaveJob = async () => {
         if (optimisticUserids?.includes(userid)) {

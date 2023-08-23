@@ -1,5 +1,3 @@
-import { Suspense } from 'react';
-import Loading from '@/components/Loading';
 import JobList from './components/JobList';
 
 const Jobs = () => {
@@ -10,9 +8,7 @@ const Jobs = () => {
                     <h1 className='text-2xl font-black'>Jobs</h1>
                     <p>list of Job Recruitments</p>
                 </header>
-                <Suspense fallback={<Loading />}>
-                    <JobList />
-                </Suspense>
+                <JobList />
             </div>
         </section>
     );
