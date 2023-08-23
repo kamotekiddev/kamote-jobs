@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { FullJobPosts } from '@/types/jobPost';
 
@@ -29,3 +29,19 @@ export const useFetchOwnedJobPosts = () =>
         queryFn: () => axios.get('/api/job-posts/owned'),
         select: (res) => res.data,
     });
+
+export const useSaveUnsavePost = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation<
+        { data: FullJobPosts },
+        AxiosError,
+        {
+            action: 'save' | 'unsave';
+            postId: string;
+        }
+    >((data) => axios.put('/api/job-posts', data), {
+        onSuccess: () =>
+            queryClient.invalidateQueries({ queryKey: ['job-posts'] }),
+    });
+};

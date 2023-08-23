@@ -5,7 +5,13 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 
 type Props = { children: ReactNode };
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            staleTime: 10 * (60 * 1000), // 10 mins
+        },
+    },
+});
 
 const ReactQueryProvider = ({ children }: Props) => {
     return (

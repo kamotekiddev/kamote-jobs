@@ -2,31 +2,25 @@
 
 import { BookmarkIcon, BookmarkPlus } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
-import { useState } from 'react';
 
-import { useSession } from 'next-auth/react';
 import { cn } from '@/lib/utils';
 import { FullJobPosts } from '@/types/jobPost';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import getUserInitials from '@/lib/getUserInitials';
-import saveJob from '@/actions/saveJob';
-import unSaveJob from '@/actions/unSaveJob';
 
 type Props = {
     jobPost?: FullJobPosts;
     withSeparator?: boolean;
+    isSaved?: boolean;
+    onSaveUnsave: (action: 'save' | 'unsave', id: FullJobPosts) => void;
 };
-const RecruitmentListItem = ({ jobPost, withSeparator }: Props) => {
-    const { data: session } = useSession();
-    const [optimisticUserids, setOptimisticUserIds] = useState(
-        jobPost?.savedByUserIds || []
-    );
-
-    const userid = session?.user.id;
-
-    const isSaved = optimisticUserids?.includes(session?.user.id);
-
+const RecruitmentListItem = ({
+    jobPost,
+    withSeparator,
+    isSaved,
+    onSaveUnsave,
+}: Props) => {
     const formattedDate = jobPost?.createdAt
         ? formatDistanceToNow(new Date(jobPost?.createdAt), {
               addSuffix: true,
@@ -34,20 +28,6 @@ const RecruitmentListItem = ({ jobPost, withSeparator }: Props) => {
         : '';
 
     const userInitial = getUserInitials(jobPost?.user?.name!);
-
-    const handleSaveUnsaveJob = async () => {
-        if (optimisticUserids?.includes(userid)) {
-            setOptimisticUserIds((prev) =>
-                prev.filter((uid) => uid !== userid)
-            );
-            const { error } = await unSaveJob(jobPost?.id);
-            if (error) setOptimisticUserIds(jobPost?.savedByUserIds!);
-            return;
-        }
-        setOptimisticUserIds((prev) => [...prev, userid]);
-        const { error } = await saveJob(jobPost?.id);
-        if (error) setOptimisticUserIds(jobPost?.savedByUserIds!);
-    };
 
     return (
         <article
@@ -70,7 +50,9 @@ const RecruitmentListItem = ({ jobPost, withSeparator }: Props) => {
                     </div>
                     <Button
                         variant='link'
-                        onClick={handleSaveUnsaveJob}
+                        onClick={() =>
+                            onSaveUnsave(isSaved ? 'unsave' : 'save', jobPost)
+                        }
                         size='icon'
                     >
                         {isSaved ? <BookmarkPlus /> : <BookmarkIcon />}
