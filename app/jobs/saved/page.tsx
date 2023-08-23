@@ -1,10 +1,6 @@
-import React from 'react';
-import RecruitmentLists from '@/components/RecruitmentLists';
-import getSavedJobPosts from '@/actions/getSavedJobPosts';
+import SavedJobList from './components/SavedJobList';
 
-const SavedJobs = async () => {
-    const { savedPosts } = await getSavedJobPosts();
-
+const SavedJobs = () => {
     return (
         <section className='grid grid-cols-[1fr_300px] overflow-auto scrollbar-hide'>
             <div className='space-y-4'>
@@ -14,7 +10,7 @@ const SavedJobs = async () => {
                         All of the Job recruitments that you previously saved.
                     </p>
                 </header>
-                <RecruitmentLists jobPosts={savedPosts} />
+                <SavedJobList />
             </div>
         </section>
     );

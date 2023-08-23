@@ -7,11 +7,18 @@ type Response = {
     data: FullJobPosts[];
 };
 
-const useFetchJobPosts = () =>
+type ErrorResponse = { message: string };
+
+export const useFetchJobPosts = () =>
     useQuery<Response, AxiosError<{ message: string }>, FullJobPosts[]>({
         queryKey: ['job-posts'],
         queryFn: () => axios.get('/api/job-posts'),
         select: (res) => res.data,
     });
 
-export default useFetchJobPosts;
+export const useFetchSavedJobPosts = () =>
+    useQuery<Response, ErrorResponse, FullJobPosts[]>({
+        queryKey: ['job-posts'],
+        queryFn: () => axios.get('/api/job-posts/saved'),
+        select: (res) => res.data,
+    });

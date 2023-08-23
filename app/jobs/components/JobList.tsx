@@ -1,16 +1,15 @@
 'use client';
 
+import Loading from '@/components/Loading';
 import RecruitmentLists from '@/components/RecruitmentLists';
-import useFetchJobPosts from '@/hooks/useFetchJobPosts';
+import { useFetchJobPosts } from '@/hooks/useJobPosts';
 
 const JobList = () => {
-    const { data: jobPosts } = useFetchJobPosts();
+    const { data: jobPosts, isLoading } = useFetchJobPosts();
 
-    return (
-        <>
-            <RecruitmentLists jobPosts={jobPosts} />
-        </>
-    );
+    if (isLoading) return <Loading />;
+
+    return <RecruitmentLists jobPosts={jobPosts} />;
 };
 
 export default JobList;
