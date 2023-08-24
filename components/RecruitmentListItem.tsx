@@ -1,6 +1,6 @@
 'use client';
 
-import { BookmarkIcon, BookmarkPlus } from 'lucide-react';
+import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { formatDistanceToNow } from 'date-fns';
 
 import { cn } from '@/lib/utils';
@@ -42,7 +42,7 @@ const RecruitmentListItem = ({
                 <AvatarFallback>{userInitial}</AvatarFallback>
             </Avatar>
             <div className='flex-1'>
-                <div className='flex items-center gap-2'>
+                <div className='flex items-start gap-2'>
                     <div className='flex-1'>
                         <h1 className='text-lg font-bold text-slate-500 group-hover:underline'>
                             {jobPost?.jobTitle.name}
@@ -51,18 +51,17 @@ const RecruitmentListItem = ({
                         <p className='text-sm'>{jobPost?.companyName}</p>
                     </div>
                     {withSaveButton && (
-                        <Button
-                            variant='link'
+                        <button
+                            className='px-2 text-2xl text-red-500'
                             onClick={() =>
                                 onSaveUnsave(
                                     isSaved ? 'unsave' : 'save',
                                     jobPost!
                                 )
                             }
-                            size='icon'
                         >
-                            {isSaved ? <BookmarkPlus /> : <BookmarkIcon />}
-                        </Button>
+                            {isSaved ? <BsHeartFill /> : <BsHeart />}
+                        </button>
                     )}
                 </div>
                 <div className='mt-2 flex gap-2 text-sm'>
