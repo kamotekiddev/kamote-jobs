@@ -3,10 +3,10 @@
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { formatDistanceToNow } from 'date-fns';
 
+import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { FullJobPost } from '@/types/jobPost';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import getUserInitials from '@/lib/getUserInitials';
 
 type Props = {
@@ -33,7 +33,7 @@ const RecruitmentListItem = ({
 
     return (
         <article
-            className={cn('group flex cursor-pointer gap-6 py-6', {
+            className={cn('group flex cursor-default gap-6 py-6', {
                 'border-b': withSeparator,
             })}
         >
@@ -44,9 +44,11 @@ const RecruitmentListItem = ({
             <div className='flex-1'>
                 <div className='flex items-start gap-2'>
                     <div className='flex-1'>
-                        <h1 className='text-lg font-bold text-slate-500 group-hover:underline'>
-                            {jobPost?.jobTitle.name}
-                        </h1>
+                        <Link href={`/jobs/${jobPost?.id}`}>
+                            <h1 className='text-lg font-bold text-slate-500 group-hover:underline'>
+                                {jobPost?.jobTitle.name}
+                            </h1>
+                        </Link>
 
                         <p className='text-sm'>{jobPost?.companyName}</p>
                     </div>
