@@ -82,3 +82,47 @@ export async function PUT(req: NextRequest) {
         return NextResponse.json({ message: getErrorMessage(error), error });
     }
 }
+
+export async function POST(req: NextRequest) {
+    try {
+        const data = await req.json();
+        const user = await getCurrentUser();
+        if (!user?.id)
+            return NextResponse.json(
+                { message: 'Unauthorized' },
+                { status: 401 }
+            );
+
+        let jobTitle = await client.jobTitle.findFirst({
+            where: { name: data.jobTitle },
+        });
+
+        if (!jobTitle)
+            jobTitle = await client.jobTitle.create({
+                data: { name: data.jobTitle },
+            });
+
+        const newJobPost = await client.jobPost.create({
+            data: {
+                companyName: data.companyName,
+                location: data.location,
+                employmentTypeId: data.employmentTypeId,
+                workplaceTypeId: data.workplaceTypeId,
+                jobTitleId: jobTitle?.id!,
+                userId: user.id,
+            },
+
+            include: {
+                employmentType: true,
+                workplaceType: true,
+                jobTitle: true,
+                user: true,
+                applications: true,
+            },
+        });
+
+        return NextResponse.json(newJobPost);
+    } catch (error) {
+        return NextResponse.json({ message: getErrorMessage(error), error });
+    }
+}

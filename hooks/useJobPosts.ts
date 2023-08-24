@@ -1,13 +1,14 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
-import { FullJobPosts } from '@/types/jobPost';
+import { FullJobPost } from '@/types/jobPost';
 
 type Response = {
-    data: FullJobPosts[];
+    data: FullJobPost[];
 };
 
 type ErrorResponse = AxiosError<{ message: string }>;
+type CreateJobPostResponse = { data: FullJobPost };
 
 enum JobPosts {
     List = 'jobs-list',
@@ -16,21 +17,21 @@ enum JobPosts {
 }
 
 export const useFetchJobPosts = () =>
-    useQuery<Response, ErrorResponse, FullJobPosts[]>({
+    useQuery<Response, ErrorResponse, FullJobPost[]>({
         queryKey: [JobPosts.List],
         queryFn: () => axios.get('/api/job-posts'),
         select: (res) => res.data,
     });
 
 export const useFetchSavedJobPosts = () =>
-    useQuery<Response, ErrorResponse, FullJobPosts[]>({
+    useQuery<Response, ErrorResponse, FullJobPost[]>({
         queryKey: [JobPosts.Saved],
         queryFn: () => axios.get('/api/job-posts/saved'),
         select: (res) => res.data,
     });
 
 export const useFetchOwnedJobPosts = () =>
-    useQuery<Response, ErrorResponse, FullJobPosts[]>({
+    useQuery<Response, ErrorResponse, FullJobPost[]>({
         queryKey: [JobPosts.Owned],
         queryFn: () => axios.get('/api/job-posts/owned'),
         select: (res) => res.data,
@@ -40,12 +41,11 @@ export const useSaveUnsavePost = () => {
     const queryClient = useQueryClient();
 
     return useMutation<
-        { data: FullJobPosts },
+        { data: FullJobPost },
         ErrorResponse,
         {
             action: 'save' | 'unsave';
             postId: string;
-            userId: string;
         }
     >((data) => axios.put('/api/job-posts', data), {
         onSuccess: () => {
@@ -53,4 +53,15 @@ export const useSaveUnsavePost = () => {
             queryClient.invalidateQueries({ queryKey: [JobPosts.Saved] });
         },
     });
+};
+
+export const useCreateJobPost = <T>() => {
+    const queryClient = useQueryClient();
+    return useMutation<CreateJobPostResponse, Error, T>(
+        (data) => axios.post('/api/job-posts', data),
+        {
+            onSuccess: () =>
+                queryClient.invalidateQueries({ queryKey: [JobPosts.Owned] }),
+        }
+    );
 };

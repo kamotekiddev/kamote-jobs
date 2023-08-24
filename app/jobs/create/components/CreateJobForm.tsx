@@ -1,8 +1,8 @@
 'use client';
 import * as z from 'zod';
-import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { isAxiosError } from 'axios';
 
 import { EmploymentType, WorkplaceType } from '@prisma/client';
 import {
@@ -16,9 +16,10 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { Input } from '@/components/ui/input';
 import JobTitleSelector from './JobTitleSelector';
-import createJobPost from '@/actions/createJobPost';
 import JobPostSchema from '@/schema/JobPostSchema';
 import FormSelect from '@/components/FormSelect';
+import { useCreateJobPost } from '@/hooks/useJobPosts';
+import { useRouter } from 'next/navigation';
 
 const defaultValues: z.infer<typeof JobPostSchema> = {
     jobTitle: '',
@@ -38,7 +39,8 @@ const CreateJobForm = ({
     employmentTypes = [],
 }: Props) => {
     const { toast } = useToast();
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const router = useRouter();
+    const { mutateAsync: createJobPost, isLoading } = useCreateJobPost();
 
     const form = useForm<z.infer<typeof JobPostSchema>>({
         defaultValues,
@@ -46,20 +48,14 @@ const CreateJobForm = ({
     });
 
     const onSubmit = async (values: z.infer<typeof JobPostSchema>) => {
-        setIsSubmitting(true);
-        const { error } = await createJobPost(values);
-        setIsSubmitting(false);
-
-        if (!error)
-            return toast({
-                title: 'Success',
-                description: 'New JobPost added.',
-            });
-        return toast({
-            title: 'Error',
-            description: error,
-            variant: 'destructive',
-        });
+        try {
+            await createJobPost(values);
+            toast({ title: 'Success', description: 'New JobPost added.' });
+            router.push('/jobs/recruitments');
+        } catch (error) {
+            if (isAxiosError<{ message: string }>(error))
+                toast({ title: 'Error', description: error.message });
+        }
     };
 
     return (
@@ -139,7 +135,7 @@ const CreateJobForm = ({
                         </FormItem>
                     )}
                 />
-                <Button type='submit' disabled={isSubmitting}>
+                <Button type='submit' disabled={isLoading}>
                     Create Notice
                 </Button>
             </form>
