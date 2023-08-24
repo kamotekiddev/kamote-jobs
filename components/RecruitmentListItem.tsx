@@ -52,7 +52,7 @@ const RecruitmentListItem = ({
                     </div>
                     {withSaveButton && (
                         <button
-                            className='px-2 text-2xl text-red-500'
+                            className='px-2 text-2xl'
                             onClick={() =>
                                 onSaveUnsave(
                                     isSaved ? 'unsave' : 'save',
