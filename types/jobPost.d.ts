@@ -7,7 +7,7 @@ import {
     JobApplication,
 } from '@prisma/client';
 
-export type FullJobPosts = JobPost & {
+export type FullJobPost = JobPost & {
     user: Omit<User, 'hashedPassword'>;
     employmentType: EmploymentType;
     jobTitle: JobTitle;
