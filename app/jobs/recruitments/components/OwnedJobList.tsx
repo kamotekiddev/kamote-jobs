@@ -7,7 +7,7 @@ import Loading from '@/components/Loading';
 const OwnedJobList = () => {
     const { data: ownedJobPosts, isLoading } = useFetchOwnedJobPosts();
     if (isLoading) return <Loading />;
-    return <RecruitmentLists jobPosts={ownedJobPosts} />;
+    return <RecruitmentLists jobPosts={ownedJobPosts} withSaveButton={false} />;
 };
 
 export default OwnedJobList;

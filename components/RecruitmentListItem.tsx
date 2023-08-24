@@ -4,22 +4,24 @@ import { BookmarkIcon, BookmarkPlus } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
 import { cn } from '@/lib/utils';
-import { FullJobPosts } from '@/types/jobPost';
+import { FullJobPost } from '@/types/jobPost';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import getUserInitials from '@/lib/getUserInitials';
 
 type Props = {
-    jobPost?: FullJobPosts;
+    jobPost?: FullJobPost;
     withSeparator?: boolean;
     isSaved?: boolean;
-    onSaveUnsave: (action: 'save' | 'unsave', id: FullJobPosts) => void;
+    onSaveUnsave: (action: 'save' | 'unsave', jobPost: FullJobPost) => void;
+    withSaveButton?: boolean;
 };
 const RecruitmentListItem = ({
     jobPost,
     withSeparator,
     isSaved,
     onSaveUnsave,
+    withSaveButton = true,
 }: Props) => {
     const formattedDate = jobPost?.createdAt
         ? formatDistanceToNow(new Date(jobPost?.createdAt), {
@@ -48,15 +50,20 @@ const RecruitmentListItem = ({
 
                         <p className='text-sm'>{jobPost?.companyName}</p>
                     </div>
-                    <Button
-                        variant='link'
-                        onClick={() =>
-                            onSaveUnsave(isSaved ? 'unsave' : 'save', jobPost)
-                        }
-                        size='icon'
-                    >
-                        {isSaved ? <BookmarkPlus /> : <BookmarkIcon />}
-                    </Button>
+                    {withSaveButton && (
+                        <Button
+                            variant='link'
+                            onClick={() =>
+                                onSaveUnsave(
+                                    isSaved ? 'unsave' : 'save',
+                                    jobPost!
+                                )
+                            }
+                            size='icon'
+                        >
+                            {isSaved ? <BookmarkPlus /> : <BookmarkIcon />}
+                        </Button>
+                    )}
                 </div>
                 <div className='mt-2 flex gap-2 text-sm'>
                     <p>{jobPost?.location}</p>

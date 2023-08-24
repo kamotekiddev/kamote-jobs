@@ -1,47 +1,26 @@
-import { useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { FullJobPosts } from '@/types/jobPost';
+import { FullJobPost } from '@/types/jobPost';
 
 import { useSaveUnsavePost } from '@/hooks/useJobPosts';
 import RecruitmentListItem from './RecruitmentListItem';
 import EmptyState from '@/components/EmptyState';
 
 type Props = {
-    jobPosts?: FullJobPosts[];
+    jobPosts?: FullJobPost[];
+    withSaveButton?: boolean;
 };
 
-const RecruitmentLists = ({ jobPosts = [] }: Props) => {
+const RecruitmentLists = ({ jobPosts = [], withSaveButton }: Props) => {
     const { mutateAsync: saveUnsavePost } = useSaveUnsavePost();
     const { data: session } = useSession();
 
     const handleSaveUnsave = (
         action: 'save' | 'unsave',
-        jobPost: FullJobPosts
+        jobPost: FullJobPost
     ) => {
-        // const appendedUserId = [
-        //     ...jobPost.savedByUserIds,
-        //     session?.user.id,
-        // ];
-        // const removedUserId = jobPost.savedByUserIds.filter(
-        //     (userId) => userId !== session?.user.id
-        // );
-        // setInitialPosts((prevPosts) =>
-        //     prevPosts.map((prevPost) =>
-        //         prevPost.id === jobPost.id
-        //             ? {
-        //                   ...prevPost,
-        //                   savedByUserIds:
-        //                       action === 'save'
-        //                           ? appendedUserId
-        //                           : removedUserId,
-        //               }
-        //             : prevPost
-        //     )
-        // );
         saveUnsavePost({
             action,
             postId: jobPost.id,
-            userId: session?.user.id,
         });
     };
 
@@ -57,6 +36,7 @@ const RecruitmentLists = ({ jobPosts = [] }: Props) => {
                     jobPost={jobPost}
                     isSaved={jobPost.savedByUserIds.includes(session?.user.id)}
                     onSaveUnsave={handleSaveUnsave}
+                    withSaveButton={withSaveButton}
                 />
             ))}
         </section>
