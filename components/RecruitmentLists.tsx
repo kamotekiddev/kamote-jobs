@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { FullJobPosts } from '@/types/jobPost';
+
+import { useSaveUnsavePost } from '@/hooks/useJobPosts';
 import RecruitmentListItem from './RecruitmentListItem';
 import EmptyState from '@/components/EmptyState';
-import { useSaveUnsavePost } from '@/hooks/useJobPosts';
 
 type Props = {
     jobPosts?: FullJobPosts[];
@@ -11,41 +12,37 @@ type Props = {
 
 const RecruitmentLists = ({ jobPosts = [] }: Props) => {
     const { mutateAsync: saveUnsavePost } = useSaveUnsavePost();
-    const [initialPosts, setInitialPosts] = useState<FullJobPosts[]>(jobPosts);
     const { data: session } = useSession();
 
-    const handleSaveUnsave = async (
+    const handleSaveUnsave = (
         action: 'save' | 'unsave',
         jobPost: FullJobPosts
     ) => {
-        try {
-            const appendedUserId = [
-                ...jobPost.savedByUserIds,
-                session?.user.id,
-            ];
-            const removedUserId = jobPost.savedByUserIds.filter(
-                (userId) => userId !== session?.user.id
-            );
-            setInitialPosts((prevPosts) =>
-                prevPosts.map((prevPost) =>
-                    prevPost.id === jobPost.id
-                        ? {
-                              ...prevPost,
-                              savedByUserIds:
-                                  action === 'save'
-                                      ? appendedUserId
-                                      : removedUserId,
-                          }
-                        : prevPost
-                )
-            );
-            await saveUnsavePost({
-                action,
-                postId: jobPost.id,
-            });
-        } catch (error) {
-            setInitialPosts(jobPosts);
-        }
+        // const appendedUserId = [
+        //     ...jobPost.savedByUserIds,
+        //     session?.user.id,
+        // ];
+        // const removedUserId = jobPost.savedByUserIds.filter(
+        //     (userId) => userId !== session?.user.id
+        // );
+        // setInitialPosts((prevPosts) =>
+        //     prevPosts.map((prevPost) =>
+        //         prevPost.id === jobPost.id
+        //             ? {
+        //                   ...prevPost,
+        //                   savedByUserIds:
+        //                       action === 'save'
+        //                           ? appendedUserId
+        //                           : removedUserId,
+        //               }
+        //             : prevPost
+        //     )
+        // );
+        saveUnsavePost({
+            action,
+            postId: jobPost.id,
+            userId: session?.user.id,
+        });
     };
 
     if (!jobPosts.length)
@@ -53,10 +50,10 @@ const RecruitmentLists = ({ jobPosts = [] }: Props) => {
 
     return (
         <section className='h-max rounded-lg border bg-white p-4 shadow-sm'>
-            {initialPosts.map((jobPost, i) => (
+            {jobPosts.map((jobPost, i) => (
                 <RecruitmentListItem
-                    withSeparator={jobPosts.length - 1 !== i}
                     key={jobPost.id}
+                    withSeparator={jobPosts.length - 1 !== i}
                     jobPost={jobPost}
                     isSaved={jobPost.savedByUserIds.includes(session?.user.id)}
                     onSaveUnsave={handleSaveUnsave}
