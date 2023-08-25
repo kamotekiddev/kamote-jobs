@@ -24,6 +24,7 @@ export async function GET(req: NextRequest) {
                 savedByUsers: true,
                 workplaceType: true,
             },
+            orderBy: { createdAt: 'desc' },
         });
 
         return NextResponse.json(savedPosts);
