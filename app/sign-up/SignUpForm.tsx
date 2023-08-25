@@ -20,7 +20,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
-import registerUser from '@/actions/registerUser';
+import useRegisterUser from '@/hooks/useRegisterUser';
+import { isAxiosError } from 'axios';
 
 const SignInFormSchema = z
     .object({
@@ -46,44 +47,45 @@ const defaultValues: z.infer<typeof SignInFormSchema> = {
 };
 
 const SignUpForm = () => {
-    const [isCreating, setIsCreating] = useState(false);
     const [isLoggingIn, setIsLoggingIn] = useState(false);
     const { toast } = useToast();
     const router = useRouter();
+    const registerUser = useRegisterUser();
 
     const form = useForm<z.infer<typeof SignInFormSchema>>({
         defaultValues,
         resolver: zodResolver(SignInFormSchema),
     });
 
-    const onSubmit = async (values: z.infer<typeof SignInFormSchema>) => {
-        setIsCreating(true);
-        const response = await registerUser(values);
-        setIsCreating(false);
-        if (response.error)
-            return toast({
-                title: 'Error',
-                description: response.error,
-                variant: 'destructive',
-            });
-
-        setIsLoggingIn(true);
-        const res = await signIn('credentials', {
-            email: values.email,
-            password: values.password,
-            redirect: false,
-        });
-        setIsLoggingIn(false);
-
-        if (res?.error)
-            return toast({
-                title: 'Error',
-                description: res.error,
-                variant: 'destructive',
-            });
-
-        router.replace('/jobs');
-    };
+    const onSubmit = (values: z.infer<typeof SignInFormSchema>) =>
+        registerUser
+            .mutateAsync(values)
+            .then(() => {
+                setIsLoggingIn(true);
+                signIn('credentials', {
+                    email: values.email,
+                    password: values.password,
+                    redirect: false,
+                })
+                    .then((err) => {
+                        if (!err?.error) return router.replace('/jobs');
+                        toast({
+                            title: 'Error',
+                            description: err.error,
+                            variant: 'destructive',
+                        });
+                    })
+                    .finally(() => setIsLoggingIn(false));
+            })
+            .catch((err) =>
+                toast({
+                    title: 'Error',
+                    description:
+                        isAxiosError<{ message: string }>(err) &&
+                        err.response?.data.message,
+                    variant: 'destructive',
+                })
+            );
 
     return (
         <Form {...form}>
@@ -157,11 +159,11 @@ const SignUpForm = () => {
                     )}
                 />
                 <Button
-                    disabled={isCreating || isLoggingIn}
+                    disabled={registerUser.isLoading || isLoggingIn}
                     className='w-full'
                     type='submit'
                 >
-                    {isCreating
+                    {registerUser.isLoading
                         ? 'Signin Up...'
                         : isLoggingIn
                         ? 'Logging in...'
