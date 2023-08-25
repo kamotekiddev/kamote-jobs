@@ -2,6 +2,7 @@ import axios, { AxiosError } from 'axios';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { FullJobPost } from '@/types/jobPost';
+import client from '@/lib/prismadb';
 
 type Response = {
     data: FullJobPost[];
@@ -35,6 +36,14 @@ export const useFetchOwnedJobPosts = () =>
         queryKey: [JobPosts.Owned],
         queryFn: () => axios.get('/api/job-posts/owned'),
         select: (res) => res.data,
+    });
+
+export const useFetchJobpostById = (id?: string) =>
+    useQuery<{ data: FullJobPost }, AxiosError, FullJobPost>({
+        queryKey: ['job-post', id],
+        queryFn: () => axios.get(`/api/job-posts/${id}`),
+        select: (res) => res.data,
+        enabled: !!id,
     });
 
 export const useSaveUnsavePost = () => {
