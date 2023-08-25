@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import Link from 'next/link';
 import {
@@ -21,6 +21,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import getErrorMessage from '@/lib/getErrorMessage';
+import SignInError from '@/components/SignInError';
 
 const SignInFormSchema = z.object({
     email: z.string().email().nonempty(),
@@ -36,6 +37,7 @@ const SignInForm = () => {
     const { toast } = useToast();
     const router = useRouter();
     const [isLoading, setIsloading] = useState(false);
+    const searchParams = useSearchParams();
 
     const form = useForm<z.infer<typeof SignInFormSchema>>({
         defaultValues,
@@ -109,6 +111,7 @@ const SignInForm = () => {
                         </FormItem>
                     )}
                 />
+                <SignInError error={searchParams.get('error')} />
                 <Button disabled={isLoading} className='w-full' type='submit'>
                     {isLoading ? 'Logging in...' : 'Login'}
                 </Button>
