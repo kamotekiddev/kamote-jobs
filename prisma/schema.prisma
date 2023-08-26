@@ -17,7 +17,7 @@ model User {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
-  Account         Account[]
+  accounts        Account[]
   jobApplications JobApplication[]
   jobPosts        JobPost[]
   savedJobPosts   JobPost[]        @relation("saved-job-posts")
@@ -79,6 +79,7 @@ model JobPost {
   updatedAt        DateTime @updatedAt
   employmentTypeId String
   savedByUserIds   String[]
+  isHiring         Boolean  @default(true)
 
   applications   JobApplication[]
   user           User             @relation(fields: [userId], references: [id])
@@ -90,8 +91,10 @@ model JobPost {
 
 model JobApplication {
   id         String   @id @default(uuid())
-  caption    String
+  caption    String?
   resumeLink String?
+  contactNo  String
+  email      String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   jobPostId  String

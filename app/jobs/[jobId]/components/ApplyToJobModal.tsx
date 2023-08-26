@@ -31,18 +31,24 @@ const defaultValues: JobApplicationSchemaType = {
     contactNo: '',
 };
 
-const ApplyToJobModal = () => {
+type Props = {
+    isOpen: boolean;
+    jobpostId: string;
+    onClose: () => void;
+};
+const ApplyToJobModal = ({ isOpen, jobpostId, onClose }: Props) => {
     const form = useForm<JobApplicationSchemaType>({
         defaultValues,
         resolver: zodResolver(JobApplicationSchema),
     });
 
+    const handleClose = () => onClose();
     const onSubmit = (values: JobApplicationSchemaType) => {
         console.log(values);
     };
 
     return (
-        <Dialog open>
+        <Dialog open={isOpen} onOpenChange={handleClose}>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Apply to Job</DialogTitle>
@@ -113,7 +119,13 @@ const ApplyToJobModal = () => {
                             )}
                         />
                         <div className='flex justify-end gap-2'>
-                            <Button variant='outline'>Close</Button>
+                            <Button
+                                variant='outline'
+                                type='button'
+                                onClick={handleClose}
+                            >
+                                Close
+                            </Button>
                             <Button type='submit'>Apply</Button>
                         </div>
                     </form>
