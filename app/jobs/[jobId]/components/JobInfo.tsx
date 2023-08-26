@@ -2,6 +2,7 @@
 
 import { formatDistanceToNow } from 'date-fns';
 
+import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { FullJobPost } from '@/types/jobPost';
@@ -14,7 +15,12 @@ type Props = {
     jobPost: FullJobPost;
 };
 const JobInfo = ({ jobPost }: Props) => {
+    const { data: session } = useSession();
     const [isOpen, setIsOpen] = useState(false);
+
+    const alreadyApplied = jobPost.applications.some(
+        (application) => application.userId === session?.user.id
+    );
 
     const userInitial = getUserInitials(jobPost?.user?.name!);
     const formattedDate = jobPost?.createdAt
@@ -44,10 +50,11 @@ const JobInfo = ({ jobPost }: Props) => {
                 </div>
                 <div className='flex gap-2 py-4'>
                     <Button
+                        disabled={alreadyApplied}
                         className='rounded-full'
                         onClick={() => setIsOpen(true)}
                     >
-                        Apply Now
+                        {alreadyApplied ? 'Applied' : 'Apply Now'}
                     </Button>
                     <Button className='rounded-full' variant='outline'>
                         Save
