@@ -80,7 +80,6 @@ model JobPost {
   employmentTypeId String
   savedByUserIds   String[]
   isHiring         Boolean  @default(true)
-  applicantUserIds String[]
 
   applications   JobApplication[]
   user           User             @relation(fields: [userId], references: [id])
