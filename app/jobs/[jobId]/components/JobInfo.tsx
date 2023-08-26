@@ -68,7 +68,9 @@ const JobInfo = ({ jobPost }: Props) => {
                     </div>
                     <div className='flex-1 rounded-lg border p-4 shadow-sm'>
                         <h1 className='mb-4'>Applicants</h1>
-                        <p className='text-xl font-bold'>{0}</p>
+                        <p className='text-xl font-bold'>
+                            {jobPost.applications.length}
+                        </p>
                     </div>
                 </div>
             </article>

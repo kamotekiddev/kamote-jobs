@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import dynamic from 'next/dynamic';
 import { useForm } from 'react-hook-form';
+import { isAxiosError } from 'axios';
 import {
     Dialog,
     DialogContent,
@@ -23,6 +24,8 @@ import JobApplicationSchema, {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { useCreateJobApplication } from '@/hooks/useJobApplication';
+import { useToast } from '@/components/ui/use-toast';
 
 const defaultValues: JobApplicationSchemaType = {
     caption: '',
@@ -37,14 +40,37 @@ type Props = {
     onClose: () => void;
 };
 const ApplyToJobModal = ({ isOpen, jobpostId, onClose }: Props) => {
+    const { toast } = useToast();
+    const applyToJob = useCreateJobApplication();
     const form = useForm<JobApplicationSchemaType>({
         defaultValues,
         resolver: zodResolver(JobApplicationSchema),
     });
 
-    const handleClose = () => onClose();
-    const onSubmit = (values: JobApplicationSchemaType) => {
-        console.log(values);
+    const handleClose = () => {
+        if (applyToJob.isLoading) return;
+        form.reset(defaultValues);
+        onClose();
+    };
+    const onSubmit = async (values: JobApplicationSchemaType) => {
+        try {
+            await applyToJob.mutateAsync({
+                id: jobpostId,
+                data: values,
+            });
+            toast({
+                title: 'Success',
+                description: 'Successfully applied on the Job.',
+            });
+            handleClose();
+        } catch (error) {
+            if (isAxiosError<{ message: string }>(error))
+                toast({
+                    title: 'Success',
+                    description:
+                        error.response?.data.message || 'Something went wrong.',
+                });
+        }
     };
 
     return (
@@ -126,7 +152,12 @@ const ApplyToJobModal = ({ isOpen, jobpostId, onClose }: Props) => {
                             >
                                 Close
                             </Button>
-                            <Button type='submit'>Apply</Button>
+                            <Button
+                                type='submit'
+                                disabled={applyToJob.isLoading}
+                            >
+                                Apply
+                            </Button>
                         </div>
                     </form>
                 </Form>
