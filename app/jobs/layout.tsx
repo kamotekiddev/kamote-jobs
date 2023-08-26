@@ -8,9 +8,9 @@ type Props = { children: ReactNode };
 const Layout = ({ children }: Props) => {
     return (
         <RootLayout>
-            <main className='overflow-hidden'>
-                <section className='mx-auto grid h-full max-w-7xl grid-cols-[auto_1fr] gap-4 p-4'>
-                    <div className='space-y-4'>
+            <main>
+                <section className='mx-auto grid h-full max-w-7xl grid-cols-[auto_1fr] items-start gap-4 p-4'>
+                    <div className='sticky top-[88px] space-y-4'>
                         <JobsNavigation />
                         <CreateJobWidget />
                     </div>

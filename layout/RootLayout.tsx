@@ -7,7 +7,7 @@ type Props = {
 
 const RootLayout = ({ children }: Props) => {
     return (
-        <div className='grid h-screen grid-rows-[auto_1fr] overflow-hidden bg-slate-100'>
+        <div className='grid h-screen grid-rows-[auto_1fr] overflow-auto bg-slate-100'>
             <Header />
             {children}
         </div>
