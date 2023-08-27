@@ -27,6 +27,8 @@ const JobInfo = ({ initialJobPost }: Props) => {
         data: initialJobPost,
     });
 
+    const isSaved = jobPost?.savedByUserIds.includes(session?.user.id);
+
     const myApplication = jobPost?.applications.find(
         (application) => application.userId === session?.user.id
     );
@@ -38,6 +40,12 @@ const JobInfo = ({ initialJobPost }: Props) => {
               addSuffix: true,
           })
         : '';
+
+    const handleSaveUnsaveJobPost = async () =>
+        saveUnsaveJobPost.mutate({
+            action: isSaved ? 'unsave' : 'save',
+            postId: jobPost?.id!,
+        });
 
     return (
         <>
@@ -75,8 +83,13 @@ const JobInfo = ({ initialJobPost }: Props) => {
                             Cancel Application
                         </Button>
                     )}
-                    <Button className='rounded-full' variant='outline'>
-                        Save
+                    <Button
+                        onClick={handleSaveUnsaveJobPost}
+                        className='rounded-full'
+                        variant='outline'
+                        disabled={saveUnsaveJobPost.isLoading}
+                    >
+                        {isSaved ? 'Unsave' : 'Save'}
                     </Button>
                 </div>
                 <div className='flex gap-2'>
