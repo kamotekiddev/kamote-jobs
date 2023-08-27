@@ -2,7 +2,6 @@ import axios, { AxiosError } from 'axios';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { FullJobPost } from '@/types/jobPost';
-import client from '@/lib/prismadb';
 
 type Response = {
     data: FullJobPost[];
@@ -10,11 +9,13 @@ type Response = {
 
 type ErrorResponse = AxiosError<{ message: string }>;
 type CreateJobPostResponse = { data: FullJobPost };
+type GetJobPostByIdParams = { id: string; data: FullJobPost };
 
-enum JobPosts {
+export enum JobPosts {
     List = 'jobs-list',
     Saved = 'saved-jobs',
     Owned = 'owned-jobs',
+    Post = 'job-post',
 }
 
 export const useFetchJobPosts = () =>
@@ -38,12 +39,13 @@ export const useFetchOwnedJobPosts = () =>
         select: (res) => res.data,
     });
 
-export const useFetchJobpostById = (id?: string) =>
+export const useFetchJobpostById = ({ id, data }: GetJobPostByIdParams) =>
     useQuery<{ data: FullJobPost }, AxiosError, FullJobPost>({
-        queryKey: ['job-post', id],
+        queryKey: [JobPosts.Post, id],
         queryFn: () => axios.get(`/api/job-posts/${id}`),
         select: (res) => res.data,
         enabled: !!id,
+        initialData: { data },
     });
 
 export const useSaveUnsavePost = () => {
@@ -60,6 +62,7 @@ export const useSaveUnsavePost = () => {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [JobPosts.List] });
             queryClient.invalidateQueries({ queryKey: [JobPosts.Saved] });
+            queryClient.invalidateQueries({ queryKey: [JobPosts.Post] });
         },
     });
 };

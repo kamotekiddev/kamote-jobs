@@ -15,7 +15,7 @@ const JobId = async ({ params: { jobId } }: Props) => {
 
     return (
         <section className='space-y-4 overflow-auto scrollbar-hide'>
-            <JobInfo jobPost={jobPost!} />
+            <JobInfo initialJobPost={jobPost!} />
             <AboutJob />
         </section>
     );

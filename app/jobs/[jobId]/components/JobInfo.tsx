@@ -10,17 +10,27 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import ApplyToJobModal from './ApplyToJobModal';
 import getUserInitials from '@/lib/getUserInitials';
+import CancelJobApplicationModal from './CancelJobApplicationModal';
+import { useFetchJobpostById, useSaveUnsavePost } from '@/hooks/useJobPosts';
 
 type Props = {
-    jobPost: FullJobPost;
+    initialJobPost: FullJobPost;
 };
-const JobInfo = ({ jobPost }: Props) => {
+const JobInfo = ({ initialJobPost }: Props) => {
     const { data: session } = useSession();
-    const [isOpen, setIsOpen] = useState(false);
+    const [applyConfirmationOpen, setApplyConfirmationOpen] = useState(false);
+    const [cancelConfirmationOpen, setCancelConfirmationOpen] = useState(false);
+    const saveUnsaveJobPost = useSaveUnsavePost();
 
-    const alreadyApplied = jobPost.applications.some(
+    const { data: jobPost } = useFetchJobpostById({
+        id: initialJobPost.id,
+        data: initialJobPost,
+    });
+
+    const myApplication = jobPost?.applications.find(
         (application) => application.userId === session?.user.id
     );
+    const alreadyApplied = !!myApplication;
 
     const userInitial = getUserInitials(jobPost?.user?.name!);
     const formattedDate = jobPost?.createdAt
@@ -35,16 +45,16 @@ const JobInfo = ({ jobPost }: Props) => {
                 <div className='flex items-start justify-between gap-2'>
                     <div>
                         <h1 className='text-2xl font-black'>
-                            {jobPost.jobTitle.name}
+                            {jobPost?.jobTitle.name}
                         </h1>
-                        <p>{jobPost.companyName}</p>
+                        <p>{jobPost?.companyName}</p>
                     </div>
-                    <Badge>{jobPost.employmentType.name}</Badge>
+                    <Badge>{jobPost?.employmentType.name}</Badge>
                 </div>
                 <div>
                     <div className='flex gap-2'>
-                        <p>{jobPost.location}</p>-
-                        <p>({jobPost.workplaceType.name})</p>-
+                        <p>{jobPost?.location}</p>-
+                        <p>({jobPost?.workplaceType.name})</p>-
                         <p className='font-bold'>{formattedDate}</p>
                     </div>
                 </div>
@@ -52,10 +62,19 @@ const JobInfo = ({ jobPost }: Props) => {
                     <Button
                         disabled={alreadyApplied}
                         className='rounded-full'
-                        onClick={() => setIsOpen(true)}
+                        onClick={() => setApplyConfirmationOpen(true)}
                     >
                         {alreadyApplied ? 'Applied' : 'Apply Now'}
                     </Button>
+                    {alreadyApplied && (
+                        <Button
+                            className='rounded-full'
+                            variant='outline'
+                            onClick={() => setCancelConfirmationOpen(true)}
+                        >
+                            Cancel Application
+                        </Button>
+                    )}
                     <Button className='rounded-full' variant='outline'>
                         Save
                     </Button>
@@ -70,21 +89,27 @@ const JobInfo = ({ jobPost }: Props) => {
                                 <AvatarImage src={jobPost?.user?.image!} />
                                 <AvatarFallback>{userInitial}</AvatarFallback>
                             </Avatar>
-                            <h1>{jobPost.user.name}</h1>
+                            <h1>{jobPost?.user.name}</h1>
                         </div>
                     </div>
                     <div className='flex-1 rounded-lg border p-4 shadow-sm'>
                         <h1 className='mb-4'>Applicants</h1>
                         <p className='text-xl font-bold'>
-                            {jobPost.applications.length}
+                            {jobPost?.applications.length}
                         </p>
                     </div>
                 </div>
             </article>
             <ApplyToJobModal
-                isOpen={isOpen}
-                jobpostId={jobPost.id}
-                onClose={() => setIsOpen(false)}
+                isOpen={applyConfirmationOpen}
+                jobpostId={jobPost?.id!}
+                onClose={() => setApplyConfirmationOpen(false)}
+            />
+            <CancelJobApplicationModal
+                isOpen={cancelConfirmationOpen}
+                jobpostId={jobPost?.id!}
+                applicationId={myApplication?.id!}
+                onClose={() => setCancelConfirmationOpen(false)}
             />
         </>
     );
