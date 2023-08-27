@@ -13,7 +13,7 @@ const AboutJob = () => {
                 </p>
             </div>
             <div>
-                <h2 className='mb-4 text-lg font-bold'>Responsibilities</h2>
+                <h2 className='text-lg font-bold'>Responsibilities</h2>
                 <ul className='list-disc p-4'>
                     <li>
                         Lorem, ipsum dolor sit amet consectetur adipisicing
@@ -31,7 +31,7 @@ const AboutJob = () => {
                 </ul>
             </div>
             <div>
-                <h2 className='mb-4 text-lg font-bold'>
+                <h2 className='text-lg font-bold'>
                     Required Skills/Experience
                 </h2>
                 <ul className='list-disc p-4'>
@@ -51,7 +51,7 @@ const AboutJob = () => {
                 </ul>
             </div>
             <div>
-                <h2 className='mb-4 text-lg font-bold'>Education</h2>
+                <h2 className='text-lg font-bold'>Education</h2>
                 <ul className='list-disc p-4'>
                     <li>
                         Lorem, ipsum dolor sit amet consectetur adipisicing

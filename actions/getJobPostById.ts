@@ -7,7 +7,9 @@ const getJobPostById = async (id?: string) => {
             where: { id },
             include: {
                 user: true,
-                applications: true,
+                applications: {
+                    include: { user: true },
+                },
                 employmentType: true,
                 jobTitle: true,
                 savedByUsers: true,

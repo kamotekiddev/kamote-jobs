@@ -99,6 +99,6 @@ model JobApplication {
   updatedAt  DateTime @updatedAt
   jobPostId  String
   userId     String
-  jobPost    JobPost? @relation(fields: [jobPostId], references: [id])
-  user       User?    @relation(fields: [userId], references: [id])
+  jobPost    JobPost  @relation(fields: [jobPostId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
 }

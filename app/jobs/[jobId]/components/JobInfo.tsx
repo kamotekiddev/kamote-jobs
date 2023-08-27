@@ -27,8 +27,9 @@ const JobInfo = ({ initialJobPost }: Props) => {
         data: initialJobPost,
     });
 
-    const isSaved = jobPost?.savedByUserIds.includes(session?.user.id);
+    const isMyPost = jobPost?.userId === session?.user.id;
 
+    const isSaved = jobPost?.savedByUserIds.includes(session?.user.id);
     const myApplication = jobPost?.applications.find(
         (application) => application.userId === session?.user.id
     );
@@ -66,52 +67,62 @@ const JobInfo = ({ initialJobPost }: Props) => {
                         <p className='font-bold'>{formattedDate}</p>
                     </div>
                 </div>
-                <div className='flex gap-2 py-4'>
-                    <Button
-                        disabled={alreadyApplied}
-                        className='rounded-full'
-                        onClick={() => setApplyConfirmationOpen(true)}
-                    >
-                        {alreadyApplied ? 'Applied' : 'Apply Now'}
-                    </Button>
-                    {alreadyApplied && (
-                        <Button
-                            className='rounded-full'
-                            variant='outline'
-                            onClick={() => setCancelConfirmationOpen(true)}
-                        >
-                            Cancel Application
-                        </Button>
-                    )}
-                    <Button
-                        onClick={handleSaveUnsaveJobPost}
-                        className='rounded-full'
-                        variant='outline'
-                        disabled={saveUnsaveJobPost.isLoading}
-                    >
-                        {isSaved ? 'Unsave' : 'Save'}
-                    </Button>
-                </div>
-                <div className='flex gap-2'>
-                    <div className='flex-[2] rounded-lg border p-4 shadow-sm'>
-                        <h1 className='mb-4 text-xl font-bold'>
-                            Meet Hiring Personnel
-                        </h1>
-                        <div className='flex items-center gap-4'>
-                            <Avatar className='h-10 w-10 rounded-full'>
-                                <AvatarImage src={jobPost?.user?.image!} />
-                                <AvatarFallback>{userInitial}</AvatarFallback>
-                            </Avatar>
-                            <h1>{jobPost?.user.name}</h1>
+                {!isMyPost && (
+                    <>
+                        <div className='flex gap-2 py-4'>
+                            <Button
+                                disabled={alreadyApplied}
+                                className='rounded-full'
+                                onClick={() => setApplyConfirmationOpen(true)}
+                            >
+                                {alreadyApplied ? 'Applied' : 'Apply Now'}
+                            </Button>
+                            {alreadyApplied && (
+                                <Button
+                                    className='rounded-full'
+                                    variant='outline'
+                                    onClick={() =>
+                                        setCancelConfirmationOpen(true)
+                                    }
+                                >
+                                    Cancel Application
+                                </Button>
+                            )}
+                            <Button
+                                onClick={handleSaveUnsaveJobPost}
+                                className='rounded-full'
+                                variant='outline'
+                                disabled={saveUnsaveJobPost.isLoading}
+                            >
+                                {isSaved ? 'Unsave' : 'Save'}
+                            </Button>
                         </div>
-                    </div>
-                    <div className='flex-1 rounded-lg border p-4 shadow-sm'>
-                        <h1 className='mb-4'>Applicants</h1>
-                        <p className='text-xl font-bold'>
-                            {jobPost?.applications.length}
-                        </p>
-                    </div>
-                </div>
+                        <div className='flex gap-2'>
+                            <div className='flex-[2] rounded-lg border p-4 shadow-sm'>
+                                <h1 className='mb-4 text-xl font-bold'>
+                                    Meet Hiring Personnel
+                                </h1>
+                                <div className='flex items-center gap-4'>
+                                    <Avatar className='h-10 w-10 rounded-full'>
+                                        <AvatarImage
+                                            src={jobPost?.user?.image!}
+                                        />
+                                        <AvatarFallback>
+                                            {userInitial}
+                                        </AvatarFallback>
+                                    </Avatar>
+                                    <h1>{jobPost?.user.name}</h1>
+                                </div>
+                            </div>
+                            <div className='flex-1 rounded-lg border p-4 shadow-sm'>
+                                <h1 className='mb-4'>Applicants</h1>
+                                <p className='text-xl font-bold'>
+                                    {jobPost?.applications.length}
+                                </p>
+                            </div>
+                        </div>
+                    </>
+                )}
             </article>
             <ApplyToJobModal
                 isOpen={applyConfirmationOpen}
