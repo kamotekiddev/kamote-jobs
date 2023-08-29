@@ -37,3 +37,26 @@ export async function GET(req: NextRequest, { params }: Params) {
         );
     }
 }
+
+export async function PUT(req: NextRequest, { params }: Params) {
+    try {
+        const body = await req.json();
+        const user = await getCurrentUser();
+        if (!user)
+            return NextResponse.json(
+                { message: 'Unauthorized' },
+                { status: 401 }
+            );
+
+        const jobPost = await client.jobPost.update({
+            where: { id: params.jobId },
+            data: { ...body },
+        });
+        return NextResponse.json(jobPost);
+    } catch (error) {
+        return NextResponse.json(
+            { message: getErrorMessage(error), error },
+            { status: 500 }
+        );
+    }
+}

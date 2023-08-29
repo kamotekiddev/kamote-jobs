@@ -1,6 +1,7 @@
 'use client';
 
 import { formatDistanceToNow } from 'date-fns';
+import { MoreHorizontal } from 'lucide-react';
 
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
@@ -12,10 +13,17 @@ import ApplyToJobModal from './ApplyToJobModal';
 import getUserInitials from '@/lib/getUserInitials';
 import CancelJobApplicationModal from './CancelJobApplicationModal';
 import { useFetchJobpostById, useSaveUnsavePost } from '@/hooks/useJobPosts';
+import { cn } from '@/lib/utils';
 
 type Props = {
     initialJobPost: FullJobPost;
 };
+
+const HiringBadgeStyleMap: Record<number, string> = {
+    1: 'border-green-500 text-green-500',
+    0: 'border-red-500 text-green-500',
+};
+
 const JobInfo = ({ initialJobPost }: Props) => {
     const { data: session } = useSession();
     const [applyConfirmationOpen, setApplyConfirmationOpen] = useState(false);
@@ -54,12 +62,32 @@ const JobInfo = ({ initialJobPost }: Props) => {
             <article className='space-y-4 rounded-lg bg-white p-4 shadow-sm'>
                 <div className='flex items-start justify-between gap-2'>
                     <div>
-                        <h1 className='text-2xl font-black'>
-                            {jobPost?.jobTitle.name}
-                        </h1>
-                        <p>{jobPost?.companyName}</p>
+                        <div className='flex items-center gap-2'>
+                            <h1 className='text-2xl font-black'>
+                                {jobPost?.jobTitle.name}
+                            </h1>
+                            <Badge className='uppercase'>
+                                {jobPost?.employmentType.name}
+                            </Badge>
+                        </div>
+                        <div className='flex items-center gap-2'>
+                            <p>{jobPost?.companyName}</p>
+                            <Badge
+                                variant='outline'
+                                className={cn(
+                                    'pointer-events-none uppercase',
+                                    HiringBadgeStyleMap[
+                                        Number(jobPost?.isHiring)
+                                    ]
+                                )}
+                            >
+                                {jobPost?.isHiring ? 'Hiring' : 'Not Hiring'}
+                            </Badge>
+                        </div>
                     </div>
-                    <Badge>{jobPost?.employmentType.name}</Badge>
+                    <Button variant='outline' size='icon'>
+                        <MoreHorizontal />
+                    </Button>
                 </div>
                 <div>
                     <div className='flex gap-2'>
