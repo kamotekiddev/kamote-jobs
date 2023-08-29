@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
         const jobPosts = await client.jobPost.findMany({
             where: { NOT: { userId: { equals: user.id } } },
             include: {
-                applications: true,
+                jobApplications: true,
                 user: true,
                 employmentType: true,
                 jobTitle: true,
@@ -118,12 +118,15 @@ export async function POST(req: NextRequest) {
                 workplaceType: true,
                 jobTitle: true,
                 user: true,
-                applications: true,
+                jobApplications: true,
             },
         });
 
         return NextResponse.json(newJobPost);
     } catch (error) {
-        return NextResponse.json({ message: getErrorMessage(error), error });
+        return NextResponse.json(
+            { message: getErrorMessage(error), error },
+            { status: 500 }
+        );
     }
 }

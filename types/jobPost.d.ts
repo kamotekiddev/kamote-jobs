@@ -13,5 +13,5 @@ export type FullJobPost = JobPost & {
     employmentType: EmploymentType;
     jobTitle: JobTitle;
     workplaceType: WorkplaceType;
-    applications: FullJobApplication[];
+    jobApplications: FullJobApplication[];
 };

@@ -33,10 +33,12 @@ const JobApplicationListItem = ({ jobApplication }: Props) => {
                         </p>
                     </div>
                     <div className='flex justify-between gap-4'>
-                        <Button variant='outline' className='flex gap-2'>
-                            <Link className='h-4 w-4' />
-                            View Resume
-                        </Button>
+                        <a href={jobApplication?.resumeLink!} target='_blank'>
+                            <Button variant='outline' className='flex gap-2'>
+                                <Link className='h-4 w-4' />
+                                View Resume
+                            </Button>
+                        </a>
                         <div className='space-x-2'>
                             <Button variant='outline' size='icon'>
                                 <Check />

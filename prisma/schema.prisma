@@ -81,12 +81,12 @@ model JobPost {
   savedByUserIds   String[]
   isHiring         Boolean  @default(true)
 
-  applications   JobApplication[]
-  user           User             @relation(fields: [userId], references: [id])
-  workplaceType  WorkplaceType    @relation(fields: [workplaceTypeId], references: [id])
-  jobTitle       JobTitle         @relation(fields: [jobTitleId], references: [id])
-  employmentType EmploymentType   @relation(fields: [employmentTypeId], references: [id])
-  savedByUsers   User[]           @relation("saved-job-posts")
+  jobApplications JobApplication[]
+  user            User             @relation(fields: [userId], references: [id])
+  workplaceType   WorkplaceType    @relation(fields: [workplaceTypeId], references: [id])
+  jobTitle        JobTitle         @relation(fields: [jobTitleId], references: [id])
+  employmentType  EmploymentType   @relation(fields: [employmentTypeId], references: [id])
+  savedByUsers    User[]           @relation("saved-job-posts")
 }
 
 model JobApplication {
@@ -95,6 +95,7 @@ model JobApplication {
   resumeLink String?
   contactNo  String
   email      String
+  status     String   @default("applied")
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   jobPostId  String

@@ -7,7 +7,7 @@ const getJobPostById = async (id?: string) => {
             where: { id },
             include: {
                 user: true,
-                applications: {
+                jobApplications: {
                     include: { user: true },
                 },
                 employmentType: true,

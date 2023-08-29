@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
                 savedByUserIds: { hasSome: [user.id] },
             },
             include: {
-                applications: true,
+                jobApplications: true,
                 user: true,
                 employmentType: true,
                 jobTitle: true,
@@ -29,6 +29,9 @@ export async function GET(req: NextRequest) {
 
         return NextResponse.json(savedPosts);
     } catch (error) {
-        return NextResponse.json({ message: getErrorMessage(error), error });
+        return NextResponse.json(
+            { message: getErrorMessage(error), error },
+            { status: 500 }
+        );
     }
 }

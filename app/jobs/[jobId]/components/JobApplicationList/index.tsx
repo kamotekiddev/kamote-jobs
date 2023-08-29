@@ -8,16 +8,17 @@ const JobApplicationList = ({ jobPost }: Props) => {
     const { data: session } = useSession();
 
     const isMyPost = jobPost?.userId === session?.user.id;
+    const applicantCounts = jobPost?.jobApplications.length;
 
     if (!isMyPost) null;
 
     return (
         <section className='rounded-lg border bg-white p-4 shadow-sm'>
             <h1 className='mb-4 text-xl font-bold'>
-                Job Applications ({jobPost?.applications?.length || 0})
+                Job Applications ({applicantCounts})
             </h1>
             <div className='space-y-2'>
-                {jobPost?.applications?.map((jobApplication) => (
+                {jobPost?.jobApplications?.map((jobApplication) => (
                     <JobApplicationListItem
                         key={jobApplication.id}
                         jobApplication={jobApplication}

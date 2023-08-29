@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
         const savedPosts = await client.jobPost.findMany({
             where: { userId: user.id },
             include: {
-                applications: true,
+                jobApplications: true,
                 user: true,
                 employmentType: true,
                 jobTitle: true,
@@ -27,6 +27,9 @@ export async function GET(req: NextRequest) {
 
         return NextResponse.json(savedPosts);
     } catch (error) {
-        return NextResponse.json({ message: getErrorMessage(error), error });
+        return NextResponse.json(
+            { message: getErrorMessage(error), error },
+            { status: 500 }
+        );
     }
 }

@@ -20,19 +20,8 @@ export async function GET(req: NextRequest, { params }: Params) {
             where: { id: params.jobId },
             include: {
                 user: true,
-                applications: {
-                    select: {
-                        user: true,
-                        caption: true,
-                        contactNo: true,
-                        email: true,
-                        createdAt: true,
-                        id: true,
-                        resumeLink: true,
-                        updatedAt: true,
-                        userId: true,
-                        jobPostId: true,
-                    },
+                jobApplications: {
+                    include: { user: true },
                 },
                 employmentType: true,
                 jobTitle: true,

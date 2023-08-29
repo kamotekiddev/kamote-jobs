@@ -30,9 +30,10 @@ const JobInfo = ({ initialJobPost }: Props) => {
     const isMyPost = jobPost?.userId === session?.user.id;
 
     const isSaved = jobPost?.savedByUserIds.includes(session?.user.id);
-    const myApplication = jobPost?.applications.find(
+    const myApplication = jobPost?.jobApplications.find(
         (application) => application.userId === session?.user.id
     );
+    const applicationCounts = jobPost?.jobApplications.length;
     const alreadyApplied = !!myApplication;
 
     const userInitial = getUserInitials(jobPost?.user?.name!);
@@ -117,7 +118,7 @@ const JobInfo = ({ initialJobPost }: Props) => {
                             <div className='flex-1 rounded-lg border p-4 shadow-sm'>
                                 <h1 className='mb-4'>Applicants</h1>
                                 <p className='text-xl font-bold'>
-                                    {jobPost?.applications.length}
+                                    {applicationCounts}
                                 </p>
                             </div>
                         </div>
