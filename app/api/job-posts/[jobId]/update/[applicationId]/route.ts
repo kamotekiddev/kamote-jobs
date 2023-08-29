@@ -7,8 +7,9 @@ type Params = {
     params: { jobId: string; applicationId: string };
 };
 
-export async function DELETE(req: NextRequest, { params }: Params) {
+export async function PUT(req: NextRequest, { params }: Params) {
     try {
+        const { status } = await req.json();
         const user = await getCurrentUser();
 
         if (!user)
@@ -23,11 +24,12 @@ export async function DELETE(req: NextRequest, { params }: Params) {
                 { status: 400 }
             );
 
-        const deletedApplication = await client.jobApplication.delete({
+        const updatedApplication = await client.jobApplication.update({
             where: { id: params.applicationId, jobPostId: params.jobId },
+            data: { status },
         });
 
-        return NextResponse.json(deletedApplication);
+        return NextResponse.json(updatedApplication);
     } catch (error) {
         return NextResponse.json(
             { message: getErrorMessage(error), error },
