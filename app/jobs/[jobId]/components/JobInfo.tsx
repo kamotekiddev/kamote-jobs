@@ -2,18 +2,30 @@
 
 import { formatDistanceToNow } from 'date-fns';
 import { MoreHorizontal } from 'lucide-react';
-
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
+import { cn } from '@/lib/utils';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
-import { FullJobPost } from '@/types/jobPost';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+
+import { FullJobPost } from '@/types/jobPost';
 import ApplyToJobModal from './ApplyToJobModal';
 import getUserInitials from '@/lib/getUserInitials';
 import CancelJobApplicationModal from './CancelJobApplicationModal';
-import { useFetchJobpostById, useSaveUnsavePost } from '@/hooks/useJobPosts';
-import { cn } from '@/lib/utils';
+import {
+    useFetchJobpostById,
+    useSaveUnsavePost,
+    useUpdateHiringStatus,
+} from '@/hooks/useJobPosts';
 
 type Props = {
     initialJobPost: FullJobPost;
@@ -21,7 +33,7 @@ type Props = {
 
 const HiringBadgeStyleMap: Record<number, string> = {
     1: 'border-green-500 text-green-500',
-    0: 'border-red-500 text-green-500',
+    0: 'border-red-500 text-red-500',
 };
 
 const JobInfo = ({ initialJobPost }: Props) => {
@@ -29,6 +41,7 @@ const JobInfo = ({ initialJobPost }: Props) => {
     const [applyConfirmationOpen, setApplyConfirmationOpen] = useState(false);
     const [cancelConfirmationOpen, setCancelConfirmationOpen] = useState(false);
     const saveUnsaveJobPost = useSaveUnsavePost();
+    const stopHiring = useUpdateHiringStatus();
 
     const { data: jobPost } = useFetchJobpostById({
         id: initialJobPost.id,
@@ -56,6 +69,8 @@ const JobInfo = ({ initialJobPost }: Props) => {
             action: isSaved ? 'unsave' : 'save',
             postId: jobPost?.id!,
         });
+
+    const handleStopHiring = () => stopHiring.mutate(jobPost?.id!);
 
     return (
         <>
@@ -85,9 +100,20 @@ const JobInfo = ({ initialJobPost }: Props) => {
                             </Badge>
                         </div>
                     </div>
-                    <Button variant='outline' size='icon'>
-                        <MoreHorizontal />
-                    </Button>
+                    {isMyPost && (
+                        <DropdownMenu>
+                            <DropdownMenuTrigger>
+                                <MoreHorizontal />
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem onClick={handleStopHiring}>
+                                    Stop Hiring
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    )}
                 </div>
                 <div>
                     <div className='flex gap-2'>
@@ -98,34 +124,38 @@ const JobInfo = ({ initialJobPost }: Props) => {
                 </div>
                 {!isMyPost && (
                     <>
-                        <div className='flex gap-2 py-4'>
-                            <Button
-                                disabled={alreadyApplied}
-                                className='rounded-full'
-                                onClick={() => setApplyConfirmationOpen(true)}
-                            >
-                                {alreadyApplied ? 'Applied' : 'Apply Now'}
-                            </Button>
-                            {alreadyApplied && (
+                        {jobPost?.isHiring && (
+                            <div className='flex gap-2 py-4'>
                                 <Button
+                                    disabled={alreadyApplied}
                                     className='rounded-full'
-                                    variant='outline'
                                     onClick={() =>
-                                        setCancelConfirmationOpen(true)
+                                        setApplyConfirmationOpen(true)
                                     }
                                 >
-                                    Cancel Application
+                                    {alreadyApplied ? 'Applied' : 'Apply Now'}
                                 </Button>
-                            )}
-                            <Button
-                                onClick={handleSaveUnsaveJobPost}
-                                className='rounded-full'
-                                variant='outline'
-                                disabled={saveUnsaveJobPost.isLoading}
-                            >
-                                {isSaved ? 'Unsave' : 'Save'}
-                            </Button>
-                        </div>
+                                {alreadyApplied && (
+                                    <Button
+                                        className='rounded-full'
+                                        variant='outline'
+                                        onClick={() =>
+                                            setCancelConfirmationOpen(true)
+                                        }
+                                    >
+                                        Cancel Application
+                                    </Button>
+                                )}
+                                <Button
+                                    onClick={handleSaveUnsaveJobPost}
+                                    className='rounded-full'
+                                    variant='outline'
+                                    disabled={saveUnsaveJobPost.isLoading}
+                                >
+                                    {isSaved ? 'Unsave' : 'Save'}
+                                </Button>
+                            </div>
+                        )}
                         <div className='flex gap-2'>
                             <div className='flex-[2] rounded-lg border p-4 shadow-sm'>
                                 <h1 className='mb-4 text-xl font-bold'>

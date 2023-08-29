@@ -78,15 +78,11 @@ export const useCreateJobPost = <T>() => {
     );
 };
 
-export const useUpdateJobPost = <T>() => {
+export const useUpdateHiringStatus = <T>() => {
     const queryClient = useQueryClient();
-    return useMutation<
-        CreateJobPostResponse,
-        Error,
-        { jobPostId: string; data: T }
-    >(
-        ({ jobPostId, data }) =>
-            axios.post(`/api/job-posts/${jobPostId}`, data),
+    return useMutation<CreateJobPostResponse, Error, string>(
+        (jobpostId) =>
+            axios.put(`/api/job-posts/${jobpostId}/update-hiring-status`),
         {
             onSuccess: () => {
                 queryClient.invalidateQueries({ queryKey: [JobPosts.Owned] });
