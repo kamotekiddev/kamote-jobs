@@ -33,3 +33,20 @@ export const useCancelJobApplication = () => {
         }
     );
 };
+
+export const useUpdateJobApplication = <T>() => {
+    const queryClient = useQueryClient();
+
+    return useMutation<
+        Response,
+        AxiosError,
+        { jobId: string; applicationId: string; data: T }
+    >(
+        ({ jobId, applicationId, data }) =>
+            axios.put(`/api/job-posts/${jobId}/update/${applicationId}`, data),
+        {
+            onSettled: () =>
+                queryClient.invalidateQueries({ queryKey: [JobPosts.Post] }),
+        }
+    );
+};

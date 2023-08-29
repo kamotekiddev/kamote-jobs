@@ -1,15 +1,54 @@
+import { Link, Mail, Phone } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import getUserInitials from '@/lib/getUserInitials';
+import { cn } from '@/lib/utils';
+
 import { FullJobApplication } from '@/types/job-application';
-import { Check, Link, Mail, Phone, XIcon } from 'lucide-react';
+import { useUpdateJobApplication } from '@/hooks/useJobApplication';
+import getUserInitials from '@/lib/getUserInitials';
 
 type Props = {
     jobApplication?: FullJobApplication;
 };
+
+const ActionButtonMap: Record<string, string> = {
+    applied: 'For Interview',
+    interview: 'Hire',
+};
+
+const StatusBadgeStyle: Record<string, string> = {
+    rejected: 'bg-red-500',
+    interview: 'bg-blue-500',
+    hired: 'bg-green-500',
+};
+
 const JobApplicationListItem = ({ jobApplication }: Props) => {
     const user = jobApplication?.user;
     const userInitials = getUserInitials(user?.name!);
+    const updateStatus = useUpdateJobApplication();
+
+    const handleRejectApplicant = () =>
+        updateStatus.mutate({
+            applicationId: jobApplication?.id!,
+            jobId: jobApplication?.jobPostId!,
+            data: { status: 'rejected' },
+        });
+
+    const handleUpdateStatus = () => {
+        if (jobApplication?.status === 'rejected') return null;
+        if (jobApplication?.status === 'applied')
+            return updateStatus.mutate({
+                applicationId: jobApplication?.id!,
+                jobId: jobApplication?.jobPostId!,
+                data: { status: 'interview' },
+            });
+        return updateStatus.mutate({
+            applicationId: jobApplication?.id!,
+            jobId: jobApplication?.jobPostId!,
+            data: { status: 'hired' },
+        });
+    };
 
     return (
         <article className='flex gap-6 rounded-lg border p-4 shadow-sm'>
@@ -18,7 +57,17 @@ const JobApplicationListItem = ({ jobApplication }: Props) => {
                 <AvatarFallback>{userInitials}</AvatarFallback>
             </Avatar>
             <div className='flex-1'>
-                <h1 className='mb-4 font-bold'>{user?.name}</h1>
+                <div className='mb-4 flex justify-between gap-4'>
+                    <h1 className='font-bold'>{user?.name}</h1>
+                    <Badge
+                        className={cn(
+                            'pointer-events-none font-bold uppercase',
+                            StatusBadgeStyle[jobApplication?.status!]
+                        )}
+                    >
+                        {jobApplication?.status}
+                    </Badge>
+                </div>
                 <p className='mb-4 line-clamp-2 text-sm text-slate-500'>
                     {jobApplication?.caption}
                 </p>
@@ -39,14 +88,29 @@ const JobApplicationListItem = ({ jobApplication }: Props) => {
                                 View Resume
                             </Button>
                         </a>
-                        <div className='space-x-2'>
-                            <Button variant='outline' size='icon'>
-                                <Check />
-                            </Button>
-                            <Button variant='outline' size='icon'>
-                                <XIcon />
-                            </Button>
-                        </div>
+                        {jobApplication?.status !== 'rejected' &&
+                            jobApplication?.status !== 'hired' && (
+                                <div className='flex-shrink-0 space-x-2'>
+                                    <Button
+                                        variant='outline'
+                                        disabled={updateStatus.isLoading}
+                                        onClick={handleUpdateStatus}
+                                    >
+                                        {
+                                            ActionButtonMap[
+                                                jobApplication?.status!
+                                            ]
+                                        }
+                                    </Button>
+                                    <Button
+                                        variant='destructive'
+                                        disabled={updateStatus.isLoading}
+                                        onClick={handleRejectApplicant}
+                                    >
+                                        Reject
+                                    </Button>
+                                </div>
+                            )}
                     </div>
                 </div>
             </div>
