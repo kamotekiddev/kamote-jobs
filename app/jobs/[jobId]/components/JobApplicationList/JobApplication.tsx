@@ -17,7 +17,7 @@ const ActionButtonMap: Record<string, string> = {
     interview: 'Hire',
 };
 
-const StatusBadgeStyle: Record<string, string> = {
+export const StatusBadgeStyle: Record<string, string> = {
     rejected: 'bg-red-500',
     interview: 'bg-blue-500',
     hired: 'bg-green-500',

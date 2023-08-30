@@ -8,6 +8,9 @@ const JobsNavigation = () => {
             <JobNavigationLink href='/jobs/recruitments'>
                 My Recruitments
             </JobNavigationLink>
+            <JobNavigationLink href='/jobs/my-job-applications'>
+                My Applications
+            </JobNavigationLink>
         </section>
     );
 };

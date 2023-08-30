@@ -1,11 +1,32 @@
 import axios, { AxiosError } from 'axios';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { JobApplication } from '@prisma/client';
 import { JobPosts } from './useJobPosts';
+import { FullJobApplication } from '@/types/job-application';
 
 type Response = {
     data: JobApplication;
 };
+
+type GetMyJobApplicationsResponse = {
+    data: FullJobApplication[];
+};
+
+enum JobApplcationQueryKey {
+    single = 'single-job-post',
+    many = 'many-job-post',
+}
+
+export const useFetchMyJobApplications = () =>
+    useQuery<
+        GetMyJobApplicationsResponse,
+        AxiosError<{ message: string }>,
+        FullJobApplication[]
+    >({
+        queryKey: [JobApplcationQueryKey.many],
+        queryFn: () => axios.get('/api/job-applications'),
+        select: (res) => res.data,
+    });
 
 export const useCreateJobApplication = <T>() => {
     const queryClient = useQueryClient();
@@ -13,7 +34,7 @@ export const useCreateJobApplication = <T>() => {
         ({ id, data }) => axios.post(`/api/job-posts/${id}/apply`, data),
         {
             onSettled: () =>
-                queryClient.invalidateQueries({ queryKey: ['job-post'] }),
+                queryClient.invalidateQueries({ queryKey: [JobPosts.Post] }),
         }
     );
 };
