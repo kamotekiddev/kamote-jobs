@@ -4,6 +4,7 @@ import AboutJob from './components/AboutJob';
 import EmptyState from '@/components/EmptyState';
 import JobApplicationList from './components/JobApplicationList';
 import { FullJobPost } from '@/types/jobPost';
+import JobPost from './components/JobPost';
 
 type Props = {
     params: {
@@ -17,9 +18,7 @@ const JobId = async ({ params: { jobId } }: Props) => {
 
     return (
         <section className='space-y-4 overflow-auto scrollbar-hide'>
-            <JobInfo initialJobPost={jobPost} />
-            <JobApplicationList jobPost={jobPost} />
-            <AboutJob />
+            <JobPost initialJobPost={jobPost} />
         </section>
     );
 };

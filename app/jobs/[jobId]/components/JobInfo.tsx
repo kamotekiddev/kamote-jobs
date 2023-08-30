@@ -1,5 +1,3 @@
-'use client';
-
 import { formatDistanceToNow } from 'date-fns';
 import { MoreHorizontal } from 'lucide-react';
 import { useSession } from 'next-auth/react';
@@ -21,14 +19,10 @@ import { FullJobPost } from '@/types/jobPost';
 import ApplyToJobModal from './ApplyToJobModal';
 import getUserInitials from '@/lib/getUserInitials';
 import CancelJobApplicationModal from './CancelJobApplicationModal';
-import {
-    useFetchJobpostById,
-    useSaveUnsavePost,
-    useUpdateHiringStatus,
-} from '@/hooks/useJobPosts';
+import { useSaveUnsavePost, useUpdateHiringStatus } from '@/hooks/useJobPosts';
 
 type Props = {
-    initialJobPost: FullJobPost;
+    jobPost?: FullJobPost;
 };
 
 const HiringBadgeStyleMap: Record<number, string> = {
@@ -36,17 +30,12 @@ const HiringBadgeStyleMap: Record<number, string> = {
     0: 'border-red-500 text-red-500',
 };
 
-const JobInfo = ({ initialJobPost }: Props) => {
+const JobInfo = ({ jobPost }: Props) => {
     const { data: session } = useSession();
     const [applyConfirmationOpen, setApplyConfirmationOpen] = useState(false);
     const [cancelConfirmationOpen, setCancelConfirmationOpen] = useState(false);
     const saveUnsaveJobPost = useSaveUnsavePost();
     const stopHiring = useUpdateHiringStatus();
-
-    const { data: jobPost } = useFetchJobpostById({
-        id: initialJobPost.id,
-        data: initialJobPost,
-    });
 
     const isMyPost = jobPost?.userId === session?.user.id;
 

@@ -1,4 +1,3 @@
-'use client';
 import { useSession } from 'next-auth/react';
 import JobApplicationListItem from './JobApplication';
 import { FullJobPost } from '@/types/jobPost';
