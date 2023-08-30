@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
                 { status: 401 }
             );
         const jobPosts = await client.jobPost.findMany({
-            where: { NOT: { userId: { equals: user.id }, isHiring: true } },
+            where: { NOT: { userId: { equals: user.id } }, isHiring: true },
             include: {
                 jobApplications: true,
                 user: true,
