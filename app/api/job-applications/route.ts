@@ -4,8 +4,10 @@ import getErrorMessage from '@/lib/getErrorMessage';
 import client from '@/lib/prismadb';
 
 export async function GET(req: NextRequest) {
+    const status = req.nextUrl.searchParams.get('status');
     try {
         const user = await getCurrentUser();
+
         if (!user)
             return NextResponse.json(
                 { message: 'Unauthorized' },
@@ -13,7 +15,10 @@ export async function GET(req: NextRequest) {
             );
 
         const jobApplications = await client.jobApplication.findMany({
-            where: { userId: user.id },
+            where: {
+                userId: user.id,
+                ...(status && status !== 'all' && { status }),
+            },
             include: { jobPost: { include: { jobTitle: true } } },
         });
 

@@ -17,14 +17,15 @@ enum JobApplcationQueryKey {
     many = 'many-job-post',
 }
 
-export const useFetchMyJobApplications = () =>
+export const useFetchMyJobApplications = (status?: string) =>
     useQuery<
         GetMyJobApplicationsResponse,
         AxiosError<{ message: string }>,
         FullJobApplication[]
     >({
-        queryKey: [JobApplcationQueryKey.many],
-        queryFn: () => axios.get('/api/job-applications'),
+        queryKey: [JobApplcationQueryKey.many, status],
+        queryFn: () =>
+            axios.get('/api/job-applications', { params: { status } }),
         select: (res) => res.data,
     });
 

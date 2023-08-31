@@ -1,4 +1,3 @@
-import React from 'react';
 import JobApplicationList from './components/JobApplications';
 
 const MyJobApplications = () => {
