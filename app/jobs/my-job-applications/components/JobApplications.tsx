@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useFetchMyJobApplications } from '@/hooks/useJobApplication';
 import JobApplicationListItem from './JobApplicationListItem';
 import Loading from '@/components/Loading';
+import EmptyState from '@/components/EmptyState';
 
 const applicationStatuses = [
     'all',
@@ -43,6 +44,7 @@ const JobApplicationList = () => {
                 </div>
             </header>
             {isLoading && <Loading />}
+            {myJobApplications?.length === 0 && <EmptyState />}
             {myJobApplications?.map((jobApplication) => (
                 <JobApplicationListItem
                     key={jobApplication.id}
