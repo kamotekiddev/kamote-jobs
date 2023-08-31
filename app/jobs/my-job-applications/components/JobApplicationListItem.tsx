@@ -9,6 +9,7 @@ type Props = { jobApplication: FullJobApplication };
 
 const JobApplicationListItem = ({ jobApplication }: Props) => {
     const jobPost = jobApplication.jobPost;
+    const status = jobApplication.status;
 
     return (
         <article className='rounded-lg border bg-white p-4 shadow-sm'>
@@ -29,6 +30,13 @@ const JobApplicationListItem = ({ jobApplication }: Props) => {
                 <p className='text-sm text-gray-600'>{jobPost.companyName}</p>
             </div>
             <div className='mt-4 space-y-4'>
+                {status === 'rejected' && (
+                    <p className='text-sm text-red-500'>
+                        Unfortunately {jobPost.companyName} has decided to move
+                        on the next step of application process and you are not
+                        selected.
+                    </p>
+                )}
                 <p className='text-sm text-gray-500'>
                     {jobApplication.caption}
                 </p>
