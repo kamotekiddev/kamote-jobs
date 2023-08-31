@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useFetchMyJobApplications } from '@/hooks/useJobApplication';
 import JobApplicationListItem from './JobApplicationListItem';
+import Loading from '@/components/Loading';
 
 const applicationStatuses = [
     'all',
@@ -16,7 +17,7 @@ const applicationStatuses = [
 const JobApplicationList = () => {
     const [applicationStatus, setApplicationStatus] = useState('all');
 
-    const { data: myJobApplications } =
+    const { data: myJobApplications, isLoading } =
         useFetchMyJobApplications(applicationStatus);
 
     return (
@@ -41,6 +42,7 @@ const JobApplicationList = () => {
                     ))}
                 </div>
             </header>
+            {isLoading && <Loading />}
             {myJobApplications?.map((jobApplication) => (
                 <JobApplicationListItem
                     key={jobApplication.id}
