@@ -1,11 +1,10 @@
-import { Check, X } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
 
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import useDebounce from '@/hooks/useDebounce';
 import useFetchAndSearchJobTitles from '@/hooks/useFetchAndSearchRoles';
 import useOutsideClick from '@/hooks/useOutsideClick';
@@ -15,6 +14,13 @@ type Props = {
     label: string;
     onChange: (value: string) => void;
     value: string;
+};
+
+type JobFinderProps = {
+    jobTitles?: string[];
+    onChange: (value: string) => void;
+    value: string;
+    isSearching?: boolean;
 };
 
 const JobTitleSelector = ({ error, label, value, onChange }: Props) => {
@@ -36,14 +42,6 @@ const JobTitleSelector = ({ error, label, value, onChange }: Props) => {
     );
 };
 
-export default JobTitleSelector;
-
-type JobFinderProps = {
-    jobTitles?: string[];
-    onChange: (value: string) => void;
-    value: string;
-    isSearching?: boolean;
-};
 const JobTitleInput = ({
     jobTitles = [],
     onChange,
@@ -66,12 +64,14 @@ const JobTitleInput = ({
                 onFocus={() => setIsOpen(true)}
             />
             {isOpen && value && (
-                <ScrollArea className='h-max max-h-[300px] select-none overflow-auto rounded-lg border p-3 shadow-md'>
+                <div className='absolute z-50 max-h-[300px] w-full select-none overflow-auto rounded-lg border bg-white shadow-md scrollbar-hide'>
                     {isSearching && (
-                        <ClipLoader
-                            aria-label='Loading Spinner'
-                            data-testid='loader'
-                        />
+                        <div className='p-2'>
+                            <ClipLoader
+                                aria-label='Loading Spinner'
+                                data-testid='loader'
+                            />
+                        </div>
                     )}
                     {jobTitles.length <= 0 && !isSearching && (
                         <div className='space-y-4 p-2'>
@@ -95,8 +95,10 @@ const JobTitleInput = ({
                             {jobTitle}
                         </div>
                     ))}
-                </ScrollArea>
+                </div>
             )}
         </section>
     );
 };
+
+export default JobTitleSelector;
