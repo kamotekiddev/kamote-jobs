@@ -5,14 +5,27 @@ import client from '@/lib/prismadb';
 
 export async function GET(req: NextRequest) {
     try {
+        const searchQuery = req.nextUrl.searchParams.get('search_query');
         const user = await getCurrentUser();
         if (!user?.id)
             return NextResponse.json(
                 { message: 'Unauthorized' },
                 { status: 401 }
             );
+
         const jobPosts = await client.jobPost.findMany({
-            where: { NOT: { userId: { equals: user.id } }, isHiring: true },
+            where: {
+                NOT: { userId: { equals: user.id } },
+                isHiring: true,
+                ...(searchQuery && {
+                    jobTitle: {
+                        name: {
+                            contains: searchQuery.trim(),
+                            mode: 'insensitive',
+                        },
+                    },
+                }),
+            },
             include: {
                 jobApplications: true,
                 user: true,

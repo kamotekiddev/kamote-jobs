@@ -18,10 +18,13 @@ export enum JobPosts {
     Post = 'job-post',
 }
 
-export const useFetchJobPosts = () =>
+export const useFetchJobPosts = (searchQuery?: string) =>
     useQuery<Response, ErrorResponse, FullJobPost[]>({
-        queryKey: [JobPosts.List],
-        queryFn: () => axios.get('/api/job-posts'),
+        queryKey: [JobPosts.List, searchQuery],
+        queryFn: () =>
+            axios.get('/api/job-posts', {
+                params: { search_query: searchQuery },
+            }),
         select: (res) => res.data,
     });
 
