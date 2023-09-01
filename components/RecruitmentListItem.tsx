@@ -1,6 +1,5 @@
 'use client';
 
-import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { formatDistanceToNow } from 'date-fns';
 
 import Link from 'next/link';
@@ -8,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { FullJobPost } from '@/types/jobPost';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import getUserInitials from '@/lib/getUserInitials';
+import { Button } from './ui/button';
 
 type Props = {
     jobPost?: FullJobPost;
@@ -53,8 +53,9 @@ const RecruitmentListItem = ({
                         <p className='text-sm'>{jobPost?.companyName}</p>
                     </div>
                     {withSaveButton && (
-                        <button
-                            className='px-2 text-2xl'
+                        <Button
+                            size='sm'
+                            variant={isSaved ? 'default' : 'outline'}
                             onClick={() =>
                                 onSaveUnsave(
                                     isSaved ? 'unsave' : 'save',
@@ -62,8 +63,8 @@ const RecruitmentListItem = ({
                                 )
                             }
                         >
-                            {isSaved ? <BsHeartFill /> : <BsHeart />}
-                        </button>
+                            {isSaved ? 'Saved' : 'Save'}
+                        </Button>
                     )}
                 </div>
                 <div className='mt-2 flex gap-2 text-sm'>
