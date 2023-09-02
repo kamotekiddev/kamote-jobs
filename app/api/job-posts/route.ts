@@ -17,12 +17,10 @@ export async function GET(req: NextRequest) {
             where: {
                 NOT: { userId: { equals: user.id } },
                 isHiring: true,
-                ...(searchQuery && {
-                    jobTitle: {
-                        contains: searchQuery.trim(),
-                        mode: 'insensitive',
-                    },
-                }),
+                jobTitle: {
+                    contains: searchQuery?.trim() || '',
+                    mode: 'insensitive',
+                },
             },
             include: {
                 jobApplications: true,

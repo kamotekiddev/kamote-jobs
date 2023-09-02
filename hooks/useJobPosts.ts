@@ -30,7 +30,7 @@ export const useFetchJobPosts = ({
                 params: { search_query: searchQuery },
             }),
         select: (res) => res.data,
-        initialData: { data: initialData },
+        ...(!searchQuery && { initialData: { data: initialData } }),
     });
 
 export const useFetchSavedJobPosts = (initialData: JobPostListItem[]) =>
