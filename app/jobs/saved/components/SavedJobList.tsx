@@ -1,13 +1,15 @@
 'use client';
 
 import { useFetchSavedJobPosts } from '@/hooks/useJobPosts';
-import Loading from '@/components/Loading';
 import RecruitmentLists from '@/components/RecruitmentLists';
+import { JobPostListItem } from '@/types/jobPost';
 
-const SavedJobList = () => {
-    const { data: savedJobListItems, isLoading } = useFetchSavedJobPosts();
+type Props = {
+    initialJobList?: JobPostListItem[];
+};
 
-    if (isLoading) return <Loading />;
+const SavedJobList = ({ initialJobList }: Props) => {
+    const { data: savedJobListItems } = useFetchSavedJobPosts(initialJobList!);
 
     return <RecruitmentLists jobListItems={savedJobListItems} />;
 };

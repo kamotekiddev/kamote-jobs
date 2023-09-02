@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 
-import Loading from '@/components/Loading';
 import RecruitmentLists from '@/components/RecruitmentLists';
 import { useFetchJobPosts } from '@/hooks/useJobPosts';
 import useDebounce from '@/hooks/useDebounce';
@@ -17,7 +16,7 @@ const JobList = ({ initialJobListItems }: Props) => {
     const [searchQuery, setSearchQuery] = useState('');
     const debouncedSearchQuery = useDebounce(searchQuery, 100);
 
-    const { data: jobListItems, isLoading } = useFetchJobPosts({
+    const { data: jobListItems } = useFetchJobPosts({
         searchQuery: debouncedSearchQuery,
         initialData: initialJobListItems!,
     });
@@ -31,11 +30,7 @@ const JobList = ({ initialJobListItems }: Props) => {
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
             </header>
-            {isLoading ? (
-                <Loading />
-            ) : (
-                <RecruitmentLists jobListItems={jobListItems} />
-            )}
+            <RecruitmentLists jobListItems={jobListItems} />
         </section>
     );
 };

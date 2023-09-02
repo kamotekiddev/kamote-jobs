@@ -1,6 +1,12 @@
+import getSavedJobList from '@/actions/getSavedJobList';
 import SavedJobList from './components/SavedJobList';
+import EmptyState from '@/components/EmptyState';
 
-const SavedJobs = () => {
+const SavedJobs = async () => {
+    const { jobList, error } = await getSavedJobList();
+
+    if (error) return <EmptyState title={error} />;
+
     return (
         <section className='grid grid-cols-[1fr_300px] overflow-auto scrollbar-hide'>
             <div className='space-y-4'>
@@ -10,7 +16,7 @@ const SavedJobs = () => {
                         All of the Job recruitments that you previously saved.
                     </p>
                 </header>
-                <SavedJobList />
+                <SavedJobList initialJobList={jobList} />
             </div>
         </section>
     );

@@ -33,11 +33,12 @@ export const useFetchJobPosts = ({
         initialData: { data: initialData },
     });
 
-export const useFetchSavedJobPosts = () =>
+export const useFetchSavedJobPosts = (initialData: JobPostListItem[]) =>
     useQuery<GetJobPostsResponse, ErrorResponse, JobPostListItem[]>({
         queryKey: [JobPosts.saved],
         queryFn: () => axios.get('/api/job-posts/saved'),
         select: (res) => res.data,
+        initialData: { data: initialData },
     });
 
 export const useFetchOwnedJobPosts = () =>
