@@ -6,6 +6,7 @@ import { useFetchMyJobApplications } from '@/hooks/useJobApplication';
 import JobApplicationListItem from './JobApplicationListItem';
 import Loading from '@/components/Loading';
 import EmptyState from '@/components/EmptyState';
+import { FullJobApplication } from '@/types/job-application';
 
 const applicationStatuses = [
     'all',
@@ -15,11 +16,17 @@ const applicationStatuses = [
     'hired',
 ];
 
-const JobApplicationList = () => {
+type Props = {
+    initialJobApplications?: FullJobApplication[];
+};
+
+const JobApplicationList = ({ initialJobApplications }: Props) => {
     const [applicationStatus, setApplicationStatus] = useState('all');
 
-    const { data: myJobApplications, isLoading } =
-        useFetchMyJobApplications(applicationStatus);
+    const { data: myJobApplications, isLoading } = useFetchMyJobApplications({
+        status: applicationStatus,
+        initialData: initialJobApplications!,
+    });
 
     return (
         <section className='space-y-4'>

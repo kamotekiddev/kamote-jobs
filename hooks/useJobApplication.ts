@@ -17,7 +17,15 @@ enum JobApplcationQueryKey {
     many = 'many-job-post',
 }
 
-export const useFetchMyJobApplications = (status?: string) =>
+type FetchMyJobApplicationsParams = {
+    status?: string;
+    initialData: FullJobApplication[];
+};
+
+export const useFetchMyJobApplications = ({
+    status,
+    initialData,
+}: FetchMyJobApplicationsParams) =>
     useQuery<
         GetMyJobApplicationsResponse,
         AxiosError<{ message: string }>,
@@ -27,6 +35,7 @@ export const useFetchMyJobApplications = (status?: string) =>
         queryFn: () =>
             axios.get('/api/job-applications', { params: { status } }),
         select: (res) => res.data,
+        initialData: { data: initialData },
     });
 
 export const useCreateJobApplication = <T>() => {
