@@ -17,7 +17,7 @@ const JobList = ({ initialJobListItems }: Props) => {
     const [searchQuery, setSearchQuery] = useState('');
     const debouncedSearchQuery = useDebounce(searchQuery, 100);
 
-    const { data: jobListItems, isFetching } = useFetchJobPosts({
+    const { data: jobListItems, isLoading } = useFetchJobPosts({
         searchQuery: debouncedSearchQuery,
         initialData: initialJobListItems!,
     });
@@ -31,7 +31,7 @@ const JobList = ({ initialJobListItems }: Props) => {
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
             </header>
-            {isFetching ? (
+            {isLoading ? (
                 <Loading />
             ) : (
                 <RecruitmentLists jobListItems={jobListItems} />
