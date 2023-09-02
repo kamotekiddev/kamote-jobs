@@ -15,12 +15,7 @@ export async function GET(req: NextRequest) {
         const savedPosts = await client.jobPost.findMany({
             where: { userId: user.id },
             include: {
-                jobApplications: true,
                 user: true,
-                employmentType: true,
-                jobTitle: true,
-                savedByUsers: true,
-                workplaceType: true,
             },
             orderBy: { createdAt: 'desc' },
         });

@@ -23,10 +23,7 @@ export async function GET(req: NextRequest, { params }: Params) {
                 jobApplications: {
                     include: { user: true },
                 },
-                employmentType: true,
-                jobTitle: true,
                 savedByUsers: true,
-                workplaceType: true,
             },
         });
         return NextResponse.json(jobPost);
