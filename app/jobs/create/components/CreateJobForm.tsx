@@ -23,8 +23,8 @@ import { useRouter } from 'next/navigation';
 
 const defaultValues: z.infer<typeof JobPostSchema> = {
     jobTitle: '',
-    employmentTypeId: '',
-    workplaceTypeId: '',
+    employmentType: '',
+    workplaceType: '',
     companyName: '',
     location: '',
 };
@@ -92,32 +92,32 @@ const CreateJobForm = ({
                 />
                 <FormField
                     control={form.control}
-                    name='employmentTypeId'
+                    name='employmentType'
                     render={({ field, fieldState }) => (
                         <FormSelect
                             label='Employment Type'
                             error={fieldState.error?.message}
                             value={field.value}
                             onChange={field.onChange}
-                            data={employmentTypes.map(({ name, id }) => ({
+                            data={employmentTypes.map(({ name }) => ({
                                 label: name,
-                                value: id,
+                                value: name,
                             }))}
                         />
                     )}
                 />
                 <FormField
                     control={form.control}
-                    name='workplaceTypeId'
+                    name='workplaceType'
                     render={({ field, fieldState }) => (
                         <FormSelect
                             label='Workplace Type'
                             error={fieldState.error?.message}
                             value={field.value}
                             onChange={field.onChange}
-                            data={workplaceTypes.map(({ name, id }) => ({
+                            data={workplaceTypes.map(({ name }) => ({
                                 label: name,
-                                value: id,
+                                value: name,
                             }))}
                         />
                     )}

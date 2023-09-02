@@ -19,20 +19,15 @@ export async function GET(req: NextRequest) {
                 isHiring: true,
                 ...(searchQuery && {
                     jobTitle: {
-                        name: {
-                            contains: searchQuery.trim(),
-                            mode: 'insensitive',
-                        },
+                        contains: searchQuery.trim(),
+                        mode: 'insensitive',
                     },
                 }),
             },
             include: {
                 jobApplications: true,
                 user: true,
-                employmentType: true,
-                jobTitle: true,
                 savedByUsers: true,
-                workplaceType: true,
             },
             orderBy: { createdAt: 'desc' },
         });
@@ -99,7 +94,7 @@ export async function PUT(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
     try {
-        const data = await req.json();
+        const body = await req.json();
         const user = await getCurrentUser();
         if (!user?.id)
             return NextResponse.json(
@@ -108,28 +103,24 @@ export async function POST(req: NextRequest) {
             );
 
         let jobTitle = await client.jobTitle.findFirst({
-            where: { name: data.jobTitle },
+            where: { name: body.jobTitle },
         });
 
         if (!jobTitle)
             jobTitle = await client.jobTitle.create({
-                data: { name: data.jobTitle },
+                data: { name: body.jobTitle },
             });
 
         const newJobPost = await client.jobPost.create({
             data: {
-                companyName: data.companyName,
-                location: data.location,
-                employmentTypeId: data.employmentTypeId,
-                workplaceTypeId: data.workplaceTypeId,
-                jobTitleId: jobTitle?.id!,
+                companyName: body.companyName,
+                location: body.location,
+                employmentType: body.employmentType,
+                workplaceType: body.workplaceType,
+                jobTitle: jobTitle.name,
                 userId: user.id,
             },
-
             include: {
-                employmentType: true,
-                workplaceType: true,
-                jobTitle: true,
                 user: true,
                 jobApplications: true,
             },
