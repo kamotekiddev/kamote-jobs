@@ -4,16 +4,16 @@ import { formatDistanceToNow } from 'date-fns';
 
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { FullJobPost } from '@/types/jobPost';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import getUserInitials from '@/lib/getUserInitials';
 import { Button } from './ui/button';
+import { JobPostListItem } from '@/types/jobPost';
 
 type Props = {
-    jobPost?: FullJobPost;
+    jobPost?: JobPostListItem;
     withSeparator?: boolean;
     isSaved?: boolean;
-    onSaveUnsave: (action: 'save' | 'unsave', jobPost: FullJobPost) => void;
+    onSaveUnsave: (action: 'save' | 'unsave', jobPost: JobPostListItem) => void;
     withSaveButton?: boolean;
 };
 const RecruitmentListItem = ({
@@ -46,7 +46,7 @@ const RecruitmentListItem = ({
                     <div className='flex-1'>
                         <Link href={`/jobs/${jobPost?.id}`}>
                             <h1 className='text-lg font-bold text-slate-500 group-hover:underline'>
-                                {jobPost?.jobTitle.name}
+                                {jobPost?.jobTitle}
                             </h1>
                         </Link>
 
@@ -69,10 +69,10 @@ const RecruitmentListItem = ({
                 </div>
                 <div className='mt-2 flex gap-2 text-sm'>
                     <p>{jobPost?.location}</p>
-                    <p>({jobPost?.workplaceType.name})</p>
+                    <p>({jobPost?.workplaceType})</p>
                 </div>
                 <div className='flex items-center gap-2 text-sm'>
-                    <p>{jobPost?.employmentType.name}</p> -
+                    <p>{jobPost?.employmentType}</p> -
                     <p className='font-bold'>{formattedDate}</p>
                 </div>
             </div>

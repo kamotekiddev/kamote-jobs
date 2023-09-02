@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
                 userId: user.id,
                 ...(status && status !== 'all' && { status }),
             },
-            include: { jobPost: { include: { jobTitle: true } } },
+            include: { jobPost: true },
         });
 
         return NextResponse.json(jobApplications);

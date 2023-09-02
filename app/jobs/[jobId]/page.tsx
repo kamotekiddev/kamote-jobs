@@ -1,9 +1,5 @@
-import getJobPostById from '@/actions/getJobPostById';
-import JobInfo from './components/JobInfo';
-import AboutJob from './components/AboutJob';
+import getJobListById from '@/actions/getJobListById';
 import EmptyState from '@/components/EmptyState';
-import JobApplicationList from './components/JobApplicationList';
-import { FullJobPost } from '@/types/jobPost';
 import JobPost from './components/JobPost';
 
 type Props = {
@@ -12,7 +8,7 @@ type Props = {
     };
 };
 const JobId = async ({ params: { jobId } }: Props) => {
-    const { jobPost } = await getJobPostById(jobId);
+    const { jobPost } = await getJobListById(jobId);
 
     if (!jobPost) return <EmptyState title='No JobPost Found.' />;
 

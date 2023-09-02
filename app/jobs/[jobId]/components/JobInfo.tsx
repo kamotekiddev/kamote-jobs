@@ -68,10 +68,10 @@ const JobInfo = ({ jobPost }: Props) => {
                     <div>
                         <div className='flex items-center gap-2'>
                             <h1 className='text-2xl font-black'>
-                                {jobPost?.jobTitle.name}
+                                {jobPost?.jobTitle}
                             </h1>
                             <Badge className='uppercase'>
-                                {jobPost?.employmentType.name}
+                                {jobPost?.employmentType}
                             </Badge>
                         </div>
                         <div className='flex items-center gap-2'>
@@ -107,7 +107,7 @@ const JobInfo = ({ jobPost }: Props) => {
                 <div>
                     <div className='flex gap-2'>
                         <p>{jobPost?.location}</p>-
-                        <p>({jobPost?.workplaceType.name})</p>-
+                        <p>({jobPost?.workplaceType})</p>-
                         <p className='font-bold'>{formattedDate}</p>
                     </div>
                 </div>

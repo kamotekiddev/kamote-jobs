@@ -15,9 +15,7 @@ const JobApplicationListItem = ({ jobApplication }: Props) => {
         <article className='rounded-lg border bg-white p-4 shadow-sm'>
             <div>
                 <div className='flex items-center justify-between gap-4'>
-                    <h1 className='text-xl font-black'>
-                        {jobPost.jobTitle.name}
-                    </h1>
+                    <h1 className='text-xl font-black'>{jobPost.jobTitle}</h1>
                     <Badge
                         className={cn(
                             `uppercase`,

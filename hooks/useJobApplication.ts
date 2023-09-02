@@ -35,7 +35,7 @@ export const useCreateJobApplication = <T>() => {
         ({ id, data }) => axios.post(`/api/job-posts/${id}/apply`, data),
         {
             onSettled: () =>
-                queryClient.invalidateQueries({ queryKey: [JobPosts.Post] }),
+                queryClient.invalidateQueries({ queryKey: [JobPosts.single] }),
         }
     );
 };
@@ -51,7 +51,7 @@ export const useCancelJobApplication = () => {
             axios.delete(`/api/job-posts/${jobId}/cancel/${applicationId}`),
         {
             onSettled: () =>
-                queryClient.invalidateQueries({ queryKey: [JobPosts.Post] }),
+                queryClient.invalidateQueries({ queryKey: [JobPosts.single] }),
         }
     );
 };
@@ -68,7 +68,7 @@ export const useUpdateJobApplication = <T>() => {
             axios.put(`/api/job-posts/${jobId}/update/${applicationId}`, data),
         {
             onSettled: () =>
-                queryClient.invalidateQueries({ queryKey: [JobPosts.Post] }),
+                queryClient.invalidateQueries({ queryKey: [JobPosts.single] }),
         }
     );
 };

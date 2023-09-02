@@ -1,22 +1,22 @@
 import { useSession } from 'next-auth/react';
-import { FullJobPost } from '@/types/jobPost';
 
 import { useSaveUnsavePost } from '@/hooks/useJobPosts';
 import RecruitmentListItem from './RecruitmentListItem';
 import EmptyState from '@/components/EmptyState';
+import { JobPostListItem } from '@/types/jobPost';
 
 type Props = {
-    jobPosts?: FullJobPost[];
+    jobListItems?: JobPostListItem[];
     withSaveButton?: boolean;
 };
 
-const RecruitmentLists = ({ jobPosts = [], withSaveButton }: Props) => {
+const RecruitmentLists = ({ jobListItems = [], withSaveButton }: Props) => {
     const { mutateAsync: saveUnsavePost } = useSaveUnsavePost();
     const { data: session } = useSession();
 
     const handleSaveUnsave = (
         action: 'save' | 'unsave',
-        jobPost: FullJobPost
+        jobPost: JobPostListItem
     ) => {
         saveUnsavePost({
             action,
@@ -24,17 +24,19 @@ const RecruitmentLists = ({ jobPosts = [], withSaveButton }: Props) => {
         });
     };
 
-    if (!jobPosts.length)
+    if (!jobListItems.length)
         return <EmptyState title='No Job Recruitments Found.' />;
 
     return (
         <section className='h-max rounded-lg border bg-white p-4 shadow-sm'>
-            {jobPosts.map((jobPost, i) => (
+            {jobListItems.map((jobListItem, i) => (
                 <RecruitmentListItem
-                    key={jobPost.id}
-                    withSeparator={jobPosts.length - 1 !== i}
-                    jobPost={jobPost}
-                    isSaved={jobPost.savedByUserIds.includes(session?.user.id)}
+                    key={jobListItem.id}
+                    withSeparator={jobListItems.length - 1 !== i}
+                    jobPost={jobListItem}
+                    isSaved={jobListItem.savedByUserIds.includes(
+                        session?.user.id
+                    )}
                     onSaveUnsave={handleSaveUnsave}
                     withSaveButton={withSaveButton}
                 />

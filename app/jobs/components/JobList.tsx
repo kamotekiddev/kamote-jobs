@@ -7,13 +7,20 @@ import Loading from '@/components/Loading';
 import RecruitmentLists from '@/components/RecruitmentLists';
 import { useFetchJobPosts } from '@/hooks/useJobPosts';
 import useDebounce from '@/hooks/useDebounce';
+import { JobPostListItem } from '@/types/jobPost';
 
-const JobList = () => {
+type Props = {
+    initialJobListItems?: JobPostListItem[];
+};
+
+const JobList = ({ initialJobListItems }: Props) => {
     const [searchQuery, setSearchQuery] = useState('');
     const debouncedSearchQuery = useDebounce(searchQuery, 100);
 
-    const { data: jobPosts, isLoading } =
-        useFetchJobPosts(debouncedSearchQuery);
+    const { data: jobListItems, isLoading } = useFetchJobPosts({
+        searchQuery: debouncedSearchQuery,
+        initialData: initialJobListItems!,
+    });
 
     return (
         <section>
@@ -24,7 +31,11 @@ const JobList = () => {
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
             </header>
-            {isLoading ? <Loading /> : <RecruitmentLists jobPosts={jobPosts} />}
+            {isLoading ? (
+                <Loading />
+            ) : (
+                <RecruitmentLists jobListItems={jobListItems} />
+            )}
         </section>
     );
 };

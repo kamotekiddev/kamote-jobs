@@ -1,19 +1,19 @@
 import getErrorMessage from '@/lib/getErrorMessage';
 import client from '@/lib/prismadb';
 
-const getJobPostById = async (id?: string) => {
+const getJobListById = async (id?: string) => {
     try {
         const jobPost = await client.jobPost.findUnique({
             where: { id },
             include: {
                 user: true,
                 jobApplications: {
-                    include: { user: true },
+                    include: {
+                        user: true,
+                        jobPost: true,
+                    },
                 },
-                employmentType: true,
-                jobTitle: true,
                 savedByUsers: true,
-                workplaceType: true,
             },
         });
         return { jobPost };
@@ -22,4 +22,4 @@ const getJobPostById = async (id?: string) => {
     }
 };
 
-export default getJobPostById;
+export default getJobListById;
