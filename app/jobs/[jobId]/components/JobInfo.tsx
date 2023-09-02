@@ -118,6 +118,9 @@ const JobInfo = ({ jobPost }: Props) => {
                                 <Button
                                     disabled={alreadyApplied}
                                     className='rounded-full'
+                                    variant={
+                                        alreadyApplied ? 'default' : 'outline'
+                                    }
                                     onClick={() =>
                                         setApplyConfirmationOpen(true)
                                     }
@@ -138,10 +141,10 @@ const JobInfo = ({ jobPost }: Props) => {
                                 <Button
                                     onClick={handleSaveUnsaveJobPost}
                                     className='rounded-full'
-                                    variant='outline'
+                                    variant={isSaved ? 'default' : 'outline'}
                                     disabled={saveUnsaveJobPost.isLoading}
                                 >
-                                    {isSaved ? 'Unsave' : 'Save'}
+                                    {isSaved ? 'Saved' : 'Save'}
                                 </Button>
                             </div>
                         )}

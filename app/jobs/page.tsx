@@ -8,7 +8,7 @@ const Jobs = async () => {
     if (error) return <EmptyState title={error} />;
 
     return (
-        <section>
+        <section className='grid grid-cols-[1fr_300px]'>
             <JobList initialJobListItems={jobPosts} />
         </section>
     );
