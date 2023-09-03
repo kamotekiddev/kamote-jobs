@@ -16,7 +16,7 @@ type Props = {
 };
 
 const FormSelect = ({ error, value, onChange, label, data = [] }: Props) => (
-    <FormItem>
+    <FormItem className='w-full'>
         <FormLabel>{label}</FormLabel>
         <Select value={value} onValueChange={onChange}>
             <SelectTrigger>

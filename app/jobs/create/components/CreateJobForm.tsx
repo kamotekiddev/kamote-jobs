@@ -1,8 +1,11 @@
 'use client';
+
 import * as z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
 import { isAxiosError } from 'axios';
+import { useRouter } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { Plus, X } from 'lucide-react';
 
 import { EmploymentType, WorkplaceType } from '@prisma/client';
 import {
@@ -14,12 +17,12 @@ import {
 } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
+import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import JobTitleSelector from './JobTitleSelector';
 import JobPostSchema from '@/schema/JobPostSchema';
 import FormSelect from '@/components/FormSelect';
 import { useCreateJobPost } from '@/hooks/useJobPosts';
-import { useRouter } from 'next/navigation';
 
 const defaultValues: z.infer<typeof JobPostSchema> = {
     jobTitle: '',
@@ -27,6 +30,8 @@ const defaultValues: z.infer<typeof JobPostSchema> = {
     workplaceType: '',
     companyName: '',
     location: '',
+    aboutJob: '',
+    responsibilities: [{ responsibility: '' }],
 };
 
 type Props = {
@@ -47,6 +52,11 @@ const CreateJobForm = ({
         resolver: zodResolver(JobPostSchema),
     });
 
+    const responsibilities = useFieldArray({
+        name: 'responsibilities',
+        control: form.control,
+    });
+
     const onSubmit = async (values: z.infer<typeof JobPostSchema>) => {
         try {
             await createJobPost(values);
@@ -61,7 +71,6 @@ const CreateJobForm = ({
     /* 
     TODO
         - create a field for about the job details
-        - add field to add responsibilities 
         - add required skills
         - add educations requirement
         - optionally add skills
@@ -69,84 +78,157 @@ const CreateJobForm = ({
     */
     return (
         <Form {...form}>
-            <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className='space-y-4 rounded-lg border bg-white p-8 shadow-sm'
-            >
-                <h1 className='text-2xl font-black'>Create Job Recruitment</h1>
-                <FormField
-                    control={form.control}
-                    name='jobTitle'
-                    render={({ field, fieldState }) => (
-                        <JobTitleSelector
-                            label='Job Title'
-                            value={field.value}
-                            onChange={field.onChange}
-                            error={fieldState.error?.message}
+            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+                <div className='rounded-lg border bg-white p-4 px-6 shadow-sm'>
+                    <h1 className='text-2xl font-black'>
+                        Create Job Recruitment
+                    </h1>
+                </div>
+                <div className='space-y-4 rounded-lg border bg-white p-6 shadow-sm'>
+                    <FormField
+                        control={form.control}
+                        name='jobTitle'
+                        render={({ field, fieldState }) => (
+                            <JobTitleSelector
+                                label='Job Title'
+                                value={field.value}
+                                onChange={field.onChange}
+                                error={fieldState.error?.message}
+                            />
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name='companyName'
+                        render={({ field, fieldState }) => (
+                            <FormItem>
+                                <FormLabel>Company Name</FormLabel>
+                                <Input {...field} />
+                                <FormMessage>
+                                    {fieldState.error?.message}
+                                </FormMessage>
+                            </FormItem>
+                        )}
+                    />
+                    <div className='flex items-start gap-4'>
+                        <FormField
+                            control={form.control}
+                            name='employmentType'
+                            render={({ field, fieldState }) => (
+                                <FormSelect
+                                    label='Employment Type'
+                                    error={fieldState.error?.message}
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    data={employmentTypes.map(({ name }) => ({
+                                        label: name,
+                                        value: name,
+                                    }))}
+                                />
+                            )}
                         />
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name='companyName'
-                    render={({ field, fieldState }) => (
-                        <FormItem>
-                            <FormLabel>Company Name</FormLabel>
-                            <Input {...field} />
-                            <FormMessage>
-                                {fieldState.error?.message}
-                            </FormMessage>
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name='employmentType'
-                    render={({ field, fieldState }) => (
-                        <FormSelect
-                            label='Employment Type'
-                            error={fieldState.error?.message}
-                            value={field.value}
-                            onChange={field.onChange}
-                            data={employmentTypes.map(({ name }) => ({
-                                label: name,
-                                value: name,
-                            }))}
+                        <FormField
+                            control={form.control}
+                            name='workplaceType'
+                            render={({ field, fieldState }) => (
+                                <FormSelect
+                                    label='Workplace Type'
+                                    error={fieldState.error?.message}
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    data={workplaceTypes.map(({ name }) => ({
+                                        label: name,
+                                        value: name,
+                                    }))}
+                                />
+                            )}
                         />
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name='workplaceType'
-                    render={({ field, fieldState }) => (
-                        <FormSelect
-                            label='Workplace Type'
-                            error={fieldState.error?.message}
-                            value={field.value}
-                            onChange={field.onChange}
-                            data={workplaceTypes.map(({ name }) => ({
-                                label: name,
-                                value: name,
-                            }))}
-                        />
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name='location'
-                    render={({ field, fieldState }) => (
-                        <FormItem>
-                            <FormLabel>Location</FormLabel>
-                            <Input {...field} />
-                            <FormMessage>
-                                {fieldState.error?.message}
-                            </FormMessage>
-                        </FormItem>
-                    )}
-                />
-                <Button type='submit' disabled={isLoading}>
-                    Create Notice
-                </Button>
+                    </div>
+                    <FormField
+                        control={form.control}
+                        name='location'
+                        render={({ field, fieldState }) => (
+                            <FormItem>
+                                <FormLabel>Location</FormLabel>
+                                <Input {...field} />
+                                <FormMessage>
+                                    {fieldState.error?.message}
+                                </FormMessage>
+                            </FormItem>
+                        )}
+                    />
+                </div>
+                <div className='rounded-lg border bg-white p-4 shadow-sm'>
+                    <FormField
+                        control={form.control}
+                        name='aboutJob'
+                        render={({ field, fieldState }) => (
+                            <FormItem>
+                                <FormLabel>About the Job</FormLabel>
+                                <Textarea {...field} />
+                                <FormMessage>
+                                    {fieldState.error?.message}
+                                </FormMessage>
+                            </FormItem>
+                        )}
+                    />
+                </div>
+
+                <div className='rounded-lg border bg-white p-4 shadow-sm'>
+                    <div className='mb-4 flex items-center justify-between gap-2'>
+                        <h1 className='text-sm font-medium'>
+                            Responsibilities
+                        </h1>
+                        <Button
+                            size='icon'
+                            type='button'
+                            onClick={() =>
+                                responsibilities.append({ responsibility: '' })
+                            }
+                            variant='outline'
+                        >
+                            <Plus />
+                        </Button>
+                    </div>
+                    <div className='space-y-4'>
+                        {responsibilities.fields.map((_, i) => (
+                            <FormField
+                                key={i}
+                                control={form.control}
+                                name={`responsibilities.${i}.responsibility`}
+                                render={({ field, fieldState }) => (
+                                    <FormItem>
+                                        <div className='flex gap-2'>
+                                            <Input {...field} />
+                                            <Button
+                                                disabled={i === 0}
+                                                size='icon'
+                                                type='button'
+                                                onClick={() =>
+                                                    responsibilities.remove(i)
+                                                }
+                                                variant='outline'
+                                            >
+                                                <X />
+                                            </Button>
+                                        </div>
+                                        <FormMessage>
+                                            {fieldState.error?.message}
+                                        </FormMessage>
+                                    </FormItem>
+                                )}
+                            />
+                        ))}
+                    </div>
+                </div>
+                <div className='flex justify-between gap-4 rounded-lg border bg-white p-6 shadow-sm'>
+                    <Button variant='outline' onClick={() => router.back()}>
+                        Cancel
+                    </Button>
+                    <Button type='submit' disabled={isLoading}>
+                        Create Job
+                    </Button>
+                </div>
             </form>
         </Form>
     );

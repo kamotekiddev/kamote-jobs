@@ -7,13 +7,11 @@ const CreateJob = async () => {
     const { employmentTypes } = await getEmploymentTypes();
 
     return (
-        <section className='overflow-hidden'>
-            <div className='scrollbar-hide h-full overflow-auto'>
-                <CreateJobForm
-                    workplaceTypes={workplaceTypes}
-                    employmentTypes={employmentTypes}
-                />
-            </div>
+        <section className='grid grid-cols-[1fr_300px] overflow-hidden'>
+            <CreateJobForm
+                workplaceTypes={workplaceTypes}
+                employmentTypes={employmentTypes}
+            />
         </section>
     );
 };
