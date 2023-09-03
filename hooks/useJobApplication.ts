@@ -35,7 +35,7 @@ export const useFetchMyJobApplications = ({
         queryFn: () =>
             axios.get('/api/job-applications', { params: { status } }),
         select: (res) => res.data,
-        initialData: { data: initialData },
+        ...(status === 'all' && { initialData: { data: initialData } }),
     });
 
 export const useCreateJobApplication = <T>() => {

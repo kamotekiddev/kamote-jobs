@@ -58,6 +58,15 @@ const CreateJobForm = ({
         }
     };
 
+    /* 
+    TODO
+        - create a field for about the job details
+        - add field to add responsibilities 
+        - add required skills
+        - add educations requirement
+        - optionally add skills
+    
+    */
     return (
         <Form {...form}>
             <form

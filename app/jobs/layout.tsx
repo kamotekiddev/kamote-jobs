@@ -6,6 +6,8 @@ import RootLayout from '@/layout/RootLayout';
 type Props = { children: ReactNode };
 
 const Layout = ({ children }: Props) => {
+    // TODO check if the user has no role and redirect to role selection if there is no role
+
     return (
         <RootLayout>
             <main>
