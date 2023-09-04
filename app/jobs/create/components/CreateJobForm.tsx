@@ -32,6 +32,8 @@ const defaultValues: z.infer<typeof JobPostSchema> = {
     location: '',
     aboutJob: '',
     responsibilities: [{ responsibility: '' }],
+    educations: [{ education: '' }],
+    skillsOrExperiences: [{ skillOrExperience: '' }],
 };
 
 type Props = {
@@ -56,6 +58,14 @@ const CreateJobForm = ({
         name: 'responsibilities',
         control: form.control,
     });
+    const skillsOrExperiences = useFieldArray({
+        name: 'skillsOrExperiences',
+        control: form.control,
+    });
+    const educations = useFieldArray({
+        name: 'educations',
+        control: form.control,
+    });
 
     const onSubmit = async (values: z.infer<typeof JobPostSchema>) => {
         try {
@@ -71,10 +81,6 @@ const CreateJobForm = ({
     /* 
     TODO
         - create a field for about the job details
-        - add required skills
-        - add educations requirement
-        - optionally add skills
-    
     */
     return (
         <Form {...form}>
@@ -173,7 +179,6 @@ const CreateJobForm = ({
                         )}
                     />
                 </div>
-
                 <div className='rounded-lg border bg-white p-4 shadow-sm'>
                     <div className='mb-4 flex items-center justify-between gap-2'>
                         <h1 className='text-sm font-medium'>
@@ -221,6 +226,101 @@ const CreateJobForm = ({
                         ))}
                     </div>
                 </div>
+                <div className='rounded-lg border bg-white p-4 shadow-sm'>
+                    <div className='mb-4 flex items-center justify-between gap-2'>
+                        <h1 className='text-sm font-medium'>
+                            Skills or Experience
+                        </h1>
+                        <Button
+                            size='icon'
+                            type='button'
+                            onClick={() =>
+                                skillsOrExperiences.append({
+                                    skillOrExperience: '',
+                                })
+                            }
+                            variant='outline'
+                        >
+                            <Plus />
+                        </Button>
+                    </div>
+                    <div className='space-y-4'>
+                        {skillsOrExperiences.fields.map((_, i) => (
+                            <FormField
+                                key={i}
+                                control={form.control}
+                                name={`skillsOrExperiences.${i}.skillOrExperience`}
+                                render={({ field, fieldState }) => (
+                                    <FormItem>
+                                        <div className='flex gap-2'>
+                                            <Input {...field} />
+                                            <Button
+                                                disabled={i === 0}
+                                                size='icon'
+                                                type='button'
+                                                onClick={() =>
+                                                    responsibilities.remove(i)
+                                                }
+                                                variant='outline'
+                                            >
+                                                <X />
+                                            </Button>
+                                        </div>
+                                        <FormMessage>
+                                            {fieldState.error?.message}
+                                        </FormMessage>
+                                    </FormItem>
+                                )}
+                            />
+                        ))}
+                    </div>
+                </div>
+                <div className='rounded-lg border bg-white p-4 shadow-sm'>
+                    <div className='mb-4 flex items-center justify-between gap-2'>
+                        <h1 className='text-sm font-medium'>Educations</h1>
+                        <Button
+                            size='icon'
+                            type='button'
+                            onClick={() =>
+                                responsibilities.append({ responsibility: '' })
+                            }
+                            variant='outline'
+                        >
+                            <Plus />
+                        </Button>
+                    </div>
+                    <div className='space-y-4'>
+                        {educations.fields.map((_, i) => (
+                            <FormField
+                                key={i}
+                                control={form.control}
+                                name={`educations.${i}.education`}
+                                render={({ field, fieldState }) => (
+                                    <FormItem>
+                                        <div className='flex gap-2'>
+                                            <Input {...field} />
+                                            <Button
+                                                disabled={i === 0}
+                                                size='icon'
+                                                type='button'
+                                                onClick={() =>
+                                                    responsibilities.remove(i)
+                                                }
+                                                variant='outline'
+                                            >
+                                                <X />
+                                            </Button>
+                                        </div>
+                                        <FormMessage>
+                                            {fieldState.error?.message}
+                                        </FormMessage>
+                                    </FormItem>
+                                )}
+                            />
+                        ))}
+                    </div>
+                </div>
+
                 <div className='flex justify-between gap-4 rounded-lg border bg-white p-6 shadow-sm'>
                     <Button variant='outline' onClick={() => router.back()}>
                         Cancel
