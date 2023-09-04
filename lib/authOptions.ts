@@ -5,6 +5,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 
 import client from '@/lib/prismadb';
+import { User } from '@prisma/client';
 
 const authOptions: AuthOptions = {
     adapter: PrismaAdapter(client),
@@ -44,14 +45,19 @@ const authOptions: AuthOptions = {
         }),
     ],
     callbacks: {
-        jwt: async ({ user, token }) => {
+        jwt: async ({ token, user }) => {
             if (user) {
-                token.uid = user.id;
+                token.id = user.id;
+                token.role = (user as User).role;
             }
+
             return token;
         },
         session: async ({ session, token }) => {
-            if (session.user) session.user.id = token.uid;
+            if (session.user) {
+                session.user.id = token.id;
+                session.user.role = token.role;
+            }
             return session;
         },
     },
