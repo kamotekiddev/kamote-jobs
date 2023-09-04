@@ -117,6 +117,10 @@ export async function POST(req: NextRequest) {
                 workplaceType: body.workplaceType,
                 jobTitle: jobTitle.name,
                 userId: user.id,
+                aboutJob: body.aboutJob,
+                educations: body.educations,
+                responsibilities: body.responsibilities,
+                skillsOrExperiences: body.skillsOrExperiences,
             },
             include: {
                 user: true,

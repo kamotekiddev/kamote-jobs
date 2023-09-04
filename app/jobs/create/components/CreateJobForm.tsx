@@ -69,7 +69,16 @@ const CreateJobForm = ({
 
     const onSubmit = async (values: z.infer<typeof JobPostSchema>) => {
         try {
-            await createJobPost(values);
+            await createJobPost({
+                ...values,
+                responsibilities: values.responsibilities.map(
+                    ({ responsibility }) => responsibility
+                ),
+                skillsOrExperiences: values.skillsOrExperiences.map(
+                    ({ skillOrExperience }) => skillOrExperience
+                ),
+                educations: values.educations.map(({ education }) => education),
+            });
             toast({ title: 'Success', description: 'New JobPost added.' });
             router.push('/jobs/recruitments');
         } catch (error) {
@@ -78,10 +87,6 @@ const CreateJobForm = ({
         }
     };
 
-    /* 
-    TODO
-        - create a field for about the job details
-    */
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
