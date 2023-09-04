@@ -18,7 +18,7 @@ const JobPost = ({ initialJobPost }: Props) => {
         <>
             <JobInfo jobPost={jobPost} />
             <JobApplicationList jobPost={jobPost} />
-            <AboutJob />
+            <AboutJob jobPost={jobPost} />
         </>
     );
 };
