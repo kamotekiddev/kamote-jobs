@@ -4,7 +4,7 @@ import getErrorMessage from '@/lib/getErrorMessage';
 import getCurrentUser from '@/actions/getCurrentUser';
 import client from '@/lib/prismadb';
 
-export async function POST(req: NextRequest) {
+export async function PUT(req: NextRequest) {
     try {
         const { role } = await req.json();
         const user = await getCurrentUser();

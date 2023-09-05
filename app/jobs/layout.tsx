@@ -1,12 +1,16 @@
-import React, { ReactNode } from 'react';
+import { redirect } from 'next/navigation';
+import { type ReactNode } from 'react';
 import CreateJobWidget from './components/CreateJobWidget';
 import JobsNavigation from './components/JobsNavigation';
 import RootLayout from '@/layout/RootLayout';
+import getCurrentUser from '@/actions/getCurrentUser';
 
 type Props = { children: ReactNode };
 
-const Layout = ({ children }: Props) => {
-    // TODO check if the user has no role and redirect to role selection if there is no role
+const Layout = async ({ children }: Props) => {
+    const user = await getCurrentUser();
+
+    if (!user?.role) redirect('/role-selection');
 
     return (
         <RootLayout>

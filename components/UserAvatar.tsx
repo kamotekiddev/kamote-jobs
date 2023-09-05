@@ -1,6 +1,6 @@
 'use client';
-
-import { useSession, signOut } from 'next-auth/react';
+import { User } from '@prisma/client';
+import { signOut } from 'next-auth/react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
     DropdownMenu,
@@ -12,15 +12,17 @@ import {
 } from '@/components/ui/dropdown-menu';
 import getUserInitials from '@/lib/getUserInitials';
 
-const UserAvatar = () => {
-    const { data: session } = useSession();
-    const userInitials = getUserInitials(session?.user?.name!);
+type UserAvatarProps = {
+    user: User;
+};
+const UserAvatar = ({ user }: UserAvatarProps) => {
+    const userInitials = getUserInitials(user?.name!);
 
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
                 <Avatar>
-                    <AvatarImage src={session?.user?.image!} />
+                    <AvatarImage src={user?.image!} />
                     <AvatarFallback>{userInitials}</AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
