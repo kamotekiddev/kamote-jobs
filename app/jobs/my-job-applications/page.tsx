@@ -7,11 +7,7 @@ const MyJobApplications = async () => {
 
     if (error) return <EmptyState title={error} />;
 
-    return (
-        <section className='grid grid-cols-[1fr_300px]'>
-            <JobApplicationList initialJobApplications={jobApplications} />
-        </section>
-    );
+    return <JobApplicationList initialJobApplications={jobApplications} />;
 };
 
 export default MyJobApplications;

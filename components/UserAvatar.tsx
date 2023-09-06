@@ -11,10 +11,12 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import getUserInitials from '@/lib/getUserInitials';
+import Link from 'next/link';
 
 type UserAvatarProps = {
     user: User;
 };
+
 const UserAvatar = ({ user }: UserAvatarProps) => {
     const userInitials = getUserInitials(user?.name!);
 
@@ -28,6 +30,19 @@ const UserAvatar = ({ user }: UserAvatarProps) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                {user?.role === 'jobseeker' && (
+                    <>
+                        <DropdownMenuSeparator />
+                        <Link href='/jobs/saved'>
+                            <DropdownMenuItem>Saved Jobs</DropdownMenuItem>
+                        </Link>
+                        <Link href='/jobs/my-job-applications'>
+                            <DropdownMenuItem>
+                                Job Applications
+                            </DropdownMenuItem>
+                        </Link>
+                    </>
+                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => signOut()}>
                     Sign Out
