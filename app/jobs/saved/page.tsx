@@ -11,10 +11,7 @@ const SavedJobs = async () => {
         <section className='overflow-auto scrollbar-hide'>
             <div className='space-y-4'>
                 <header className='sticky top-0 z-50 rounded-lg border bg-white p-4 shadow-sm'>
-                    <h1 className='text-2xl font-black'>Saved Jobs</h1>
-                    <p>
-                        All of the Job recruitments that you previously saved.
-                    </p>
+                    <h1 className='text-xl font-bold'>Saved Jobs</h1>
                 </header>
                 <SavedJobList initialJobList={jobList} />
             </div>

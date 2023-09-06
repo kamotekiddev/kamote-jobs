@@ -91,7 +91,7 @@ const CreateJobForm = ({
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
                 <div className='rounded-lg border bg-white p-4 px-6 shadow-sm'>
-                    <h1 className='text-2xl font-black'>
+                    <h1 className='text-xl font-bold'>
                         Create Job Recruitment
                     </h1>
                 </div>
