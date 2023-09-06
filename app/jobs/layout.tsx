@@ -1,7 +1,5 @@
 import { redirect } from 'next/navigation';
 import { type ReactNode } from 'react';
-import CreateJobWidget from './components/CreateJobWidget';
-import JobsNavigation from './components/JobsNavigation';
 import RootLayout from '@/layout/RootLayout';
 import getCurrentUser from '@/actions/getCurrentUser';
 
@@ -10,18 +8,12 @@ type Props = { children: ReactNode };
 const Layout = async ({ children }: Props) => {
     const user = await getCurrentUser();
 
-    if (!user?.role) redirect('/role-selection');
+    if (user && !user.role) redirect('/role-selection');
 
     return (
         <RootLayout>
-            <main>
-                <section className='mx-auto grid h-full max-w-7xl grid-cols-[auto_1fr] items-start gap-4 p-4'>
-                    <div className='sticky top-[88px] space-y-4'>
-                        <JobsNavigation />
-                        <CreateJobWidget />
-                    </div>
-                    {children}
-                </section>
+            <main className='mx-auto grid h-full w-full max-w-4xl items-start gap-4 p-4'>
+                {children}
             </main>
         </RootLayout>
     );
