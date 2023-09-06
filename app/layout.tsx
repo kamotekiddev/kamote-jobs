@@ -8,7 +8,7 @@ import ReactQueryProvider from '@/provider/ReactQueryProvider';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-    title: 'Kamote Jobs',
+    title: 'JOBSEEK',
     description: 'Explore the jobs here.',
 };
 
