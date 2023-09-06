@@ -43,6 +43,14 @@ const UserAvatar = ({ user }: UserAvatarProps) => {
                         </Link>
                     </>
                 )}
+                {user?.role === 'recruiter' && (
+                    <>
+                        <DropdownMenuSeparator />
+                        <Link href='/jobs/owned'>
+                            <DropdownMenuItem>My Jobs</DropdownMenuItem>
+                        </Link>
+                    </>
+                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => signOut()}>
                     Sign Out

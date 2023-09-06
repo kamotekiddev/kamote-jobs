@@ -7,7 +7,7 @@ const CreateJob = async () => {
     const { employmentTypes } = await getEmploymentTypes();
 
     return (
-        <section className='grid grid-cols-[1fr_300px] overflow-hidden'>
+        <section className='overflow-hidden'>
             <CreateJobForm
                 workplaceTypes={workplaceTypes}
                 employmentTypes={employmentTypes}
