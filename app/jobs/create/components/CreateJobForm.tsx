@@ -264,7 +264,9 @@ const CreateJobForm = ({
                                                 size='icon'
                                                 type='button'
                                                 onClick={() =>
-                                                    responsibilities.remove(i)
+                                                    skillsOrExperiences.remove(
+                                                        i
+                                                    )
                                                 }
                                                 variant='outline'
                                             >
@@ -286,9 +288,7 @@ const CreateJobForm = ({
                         <Button
                             size='icon'
                             type='button'
-                            onClick={() =>
-                                responsibilities.append({ responsibility: '' })
-                            }
+                            onClick={() => educations.append({ education: '' })}
                             variant='outline'
                         >
                             <Plus />
@@ -309,7 +309,7 @@ const CreateJobForm = ({
                                                 size='icon'
                                                 type='button'
                                                 onClick={() =>
-                                                    responsibilities.remove(i)
+                                                    educations.remove(i)
                                                 }
                                                 variant='outline'
                                             >
