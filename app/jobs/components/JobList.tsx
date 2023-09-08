@@ -13,7 +13,7 @@ type Props = {
 
 const JobList = ({ initialJobListItems }: Props) => {
     const { searchQuery } = useSearchTextStore();
-    const debouncedSearchText = useDebounce(searchQuery, 100);
+    const debouncedSearchText = useDebounce(searchQuery, 200);
 
     const { data: jobListItems, isLoading } = useFetchJobPosts({
         initialData: initialJobListItems!,
