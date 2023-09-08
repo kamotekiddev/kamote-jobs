@@ -16,22 +16,23 @@ const UserNavigationMap: Record<string, any> = {
 const Header = async () => {
     const user = await getCurrentUser();
     const UserNavigation = UserNavigationMap[user?.role!];
+    const isJobSeeker = user?.role === 'jobseeker';
 
     return (
         <header className='sticky top-0 z-50 bg-white shadow-sm'>
             <div className='mx-auto flex max-w-4xl items-center justify-between gap-40 p-4'>
                 <div className='flex flex-1 items-center gap-8'>
-                    <Link href='/jobs'>
-                        <Image
-                            height={30}
-                            src={jobSeekLogo}
-                            alt='Job Seek Logo'
-                            objectFit='cover'
-                        />
-                    </Link>
-                    <div className='flex-1'>
-                        <SearchBox />
-                    </div>
+                    <Image
+                        height={30}
+                        src={jobSeekLogo}
+                        alt='Job Seek Logo'
+                        objectFit='cover'
+                    />
+                    {isJobSeeker && (
+                        <div className='flex-1'>
+                            <SearchBox />
+                        </div>
+                    )}
                 </div>
                 <div className='flex items-center gap-4'>
                     <UserNavigation />
