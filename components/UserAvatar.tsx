@@ -30,27 +30,6 @@ const UserAvatar = ({ user }: UserAvatarProps) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                {user?.role === 'jobseeker' && (
-                    <>
-                        <DropdownMenuSeparator />
-                        <Link href='/jobs/saved'>
-                            <DropdownMenuItem>Saved Jobs</DropdownMenuItem>
-                        </Link>
-                        <Link href='/jobs/my-job-applications'>
-                            <DropdownMenuItem>
-                                Job Applications
-                            </DropdownMenuItem>
-                        </Link>
-                    </>
-                )}
-                {user?.role === 'recruiter' && (
-                    <>
-                        <DropdownMenuSeparator />
-                        <Link href='/jobs/owned'>
-                            <DropdownMenuItem>My Jobs</DropdownMenuItem>
-                        </Link>
-                    </>
-                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => signOut()}>
                     Sign Out

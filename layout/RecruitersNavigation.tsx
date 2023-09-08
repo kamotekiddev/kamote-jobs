@@ -6,18 +6,10 @@ const RecruitersNavigation = () => {
         <ul className='flex gap-2'>
             <li>
                 <NavigationLink
-                    href='/jobs/saved'
-                    icon={<Bookmark className='h-4 w-4' />}
-                >
-                    Saved
-                </NavigationLink>
-            </li>
-            <li>
-                <NavigationLink
-                    href='/jobs/my-job-applications'
+                    href='/jobs/owned'
                     icon={<File className='h-4 w-4' />}
                 >
-                    Applications
+                    My Jobs
                 </NavigationLink>
             </li>
         </ul>
