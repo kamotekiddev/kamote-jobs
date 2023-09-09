@@ -8,6 +8,7 @@ type Props = { children: ReactNode };
 const Layout = async ({ children }: Props) => {
     const user = await getCurrentUser();
 
+    if (!user) redirect('/sign-in');
     if (user && !user.role) redirect('/role-selection');
 
     return (
