@@ -1,11 +1,15 @@
 import getSavedJobList from '@/actions/getSavedJobList';
 import SavedJobList from './components/SavedJobList';
 import EmptyState from '@/components/EmptyState';
+import getCurrentUser from '@/actions/getCurrentUser';
+import { redirect } from 'next/navigation';
 
 const SavedJobs = async () => {
+    const user = await getCurrentUser();
     const { jobList, error } = await getSavedJobList();
 
     if (error) return <EmptyState title={error} />;
+    if (user && user.role === 'recruiter') redirect('/jobs/owned');
 
     return (
         <section className='overflow-auto scrollbar-hide'>

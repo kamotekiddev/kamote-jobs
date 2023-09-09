@@ -9,7 +9,7 @@ const RecruitersNavigation = () => {
                     href='/jobs/owned'
                     icon={<File className='h-4 w-4' />}
                 >
-                    My Jobs
+                    My Posts
                 </NavigationLink>
             </li>
         </ul>
