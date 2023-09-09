@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import getUserInitials from '@/lib/getUserInitials';
 import { Button } from './ui/button';
 import { JobPostListItem } from '@/types/jobPost';
+import { Badge } from './ui/badge';
 
 type Props = {
     jobPost?: JobPostListItem;
@@ -33,7 +34,7 @@ const RecruitmentListItem = ({
 
     return (
         <article
-            className={cn('group flex cursor-default gap-6 py-6', {
+            className={cn('group flex cursor-default gap-10 p-6', {
                 'border-b': withSeparator,
             })}
         >
@@ -44,28 +45,48 @@ const RecruitmentListItem = ({
             <div className='flex-1'>
                 <div className='flex items-start gap-2'>
                     <div className='flex-1'>
-                        <Link href={`/jobs/${jobPost?.id}`}>
-                            <h1 className='text-lg font-bold text-slate-500 group-hover:underline'>
-                                {jobPost?.jobTitle}
-                            </h1>
-                        </Link>
-
+                        <div>
+                            <Link href={`/jobs/${jobPost?.id}`}>
+                                <h1 className='text-lg font-bold text-slate-500 group-hover:underline'>
+                                    {jobPost?.jobTitle}
+                                </h1>
+                            </Link>
+                        </div>
                         <p className='text-sm'>{jobPost?.companyName}</p>
                     </div>
-                    {withSaveButton && (
-                        <Button
-                            size='sm'
-                            variant={isSaved ? 'default' : 'outline'}
-                            onClick={() =>
-                                onSaveUnsave(
-                                    isSaved ? 'unsave' : 'save',
-                                    jobPost!
-                                )
-                            }
+                    <div className='flex gap-2'>
+                        <Badge
+                            variant='outline'
+                            className={cn(
+                                'pointer-events-none select-none uppercase',
+                                {
+                                    'border-green-500 text-green-500':
+                                        jobPost?.isHiring,
+                                },
+                                {
+                                    'border-red-500 text-red-500':
+                                        !jobPost?.isHiring,
+                                }
+                            )}
                         >
-                            {isSaved ? 'Saved' : 'Save'}
-                        </Button>
-                    )}
+                            {jobPost?.isHiring ? 'Hiring' : 'Not Hiring'}
+                        </Badge>
+                        {withSaveButton && (
+                            <Button
+                                size='sm'
+                                className='rounded-full'
+                                variant={isSaved ? 'default' : 'outline'}
+                                onClick={() =>
+                                    onSaveUnsave(
+                                        isSaved ? 'unsave' : 'save',
+                                        jobPost!
+                                    )
+                                }
+                            >
+                                {isSaved ? 'Saved' : 'Save'}
+                            </Button>
+                        )}
+                    </div>
                 </div>
                 <div className='mt-2 flex gap-2 text-sm'>
                     <p>{jobPost?.location}</p>
