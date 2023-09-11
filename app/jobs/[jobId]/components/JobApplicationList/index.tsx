@@ -9,7 +9,7 @@ const JobApplicationList = ({ jobPost }: Props) => {
     const isMyPost = jobPost?.userId === session?.user.id;
     const applicantCounts = jobPost?.jobApplications.length;
 
-    if (!isMyPost) return null;
+    if (!isMyPost || applicantCounts === 0) return null;
 
     return (
         <section className='rounded-lg border bg-white p-4 shadow-sm'>
