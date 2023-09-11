@@ -7,6 +7,7 @@ const RecruitersNavigation = () => {
             <li>
                 <NavigationLink
                     href='/jobs/owned'
+                    toolTip='My Job Posts'
                     icon={<File className='h-4 w-4' />}
                 >
                     My Posts

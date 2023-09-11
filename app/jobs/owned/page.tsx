@@ -10,7 +10,7 @@ const OwnedJobs = async () => {
     return (
         <section className='overflow-auto scrollbar-hide'>
             <div className='space-y-4'>
-                <header className='sticky top-0 z-50 flex items-center justify-between rounded-lg border bg-white p-4'>
+                <header className='sticky top-0 z-40 flex items-center justify-between rounded-lg border bg-white p-4'>
                     <h1 className='text-xl font-bold'>My Posts</h1>
                     <div className='flex items-center gap-2'>
                         <Link href='/jobs/create'>
