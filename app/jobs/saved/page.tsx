@@ -3,7 +3,7 @@ import getSavedJobList from '@/actions/getSavedJobList';
 import SavedJobList from './components/SavedJobList';
 import EmptyState from '@/components/EmptyState';
 import getCurrentUser from '@/actions/getCurrentUser';
-import SavedJobsFIlter from './components/SavedJobsFIlter';
+import HiringStatusFilter from '@/components/HiringStatusFilter';
 
 const SavedJobs = async () => {
     const user = await getCurrentUser();
@@ -17,7 +17,7 @@ const SavedJobs = async () => {
             <div className='space-y-4'>
                 <header className='sticky top-0 z-50 flex items-center justify-between gap-4 rounded-lg border bg-white p-4 shadow-sm'>
                     <h1 className='text-xl font-bold'>Saved Jobs</h1>
-                    <SavedJobsFIlter />
+                    <HiringStatusFilter />
                 </header>
                 <SavedJobList initialJobList={jobList} />
             </div>

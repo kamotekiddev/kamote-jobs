@@ -25,6 +25,8 @@ type SavedJobPostParams = {
     hiringStatus?: string;
 };
 
+type FetchOwnedJobPostParams = SavedJobPostParams;
+
 export const useFetchJobPosts = ({
     searchQuery,
     initialData,
@@ -53,12 +55,18 @@ export const useFetchSavedJobPosts = ({
         ...(hiringStatus === 'all' && { initialData: { data: initialData } }),
     });
 
-export const useFetchOwnedJobPosts = (initialData: JobPostListItem[]) =>
+export const useFetchOwnedJobPosts = ({
+    initialData,
+    hiringStatus,
+}: FetchOwnedJobPostParams) =>
     useQuery<GetJobPostsResponse, ErrorResponse, JobPostListItem[]>({
-        queryKey: [JobPosts.owned],
-        queryFn: () => axios.get('/api/job-posts/owned'),
+        queryKey: [JobPosts.owned, hiringStatus],
+        queryFn: () =>
+            axios.get('/api/job-posts/owned', {
+                params: { hiring_status: hiringStatus },
+            }),
         select: (res) => res.data,
-        initialData: { data: initialData },
+        ...(hiringStatus === 'all' && { initialData: { data: initialData } }),
     });
 
 export const useFetchJobpostById = ({ id, data }: GetJobPostByIdParams) =>

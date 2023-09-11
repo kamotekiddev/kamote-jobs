@@ -9,7 +9,7 @@ const data = [
     { label: 'Not Hiring', value: 'not-hiring' },
 ];
 
-const SavedJobsFIlter = () => {
+const HiringStatusFilter = () => {
     const { hiringStatus, setHiringStatus } = useHiringStatus();
 
     return (
@@ -22,4 +22,4 @@ const SavedJobsFIlter = () => {
     );
 };
 
-export default SavedJobsFIlter;
+export default HiringStatusFilter;
