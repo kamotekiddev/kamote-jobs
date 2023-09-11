@@ -16,7 +16,7 @@ const MyJobApplications = async () => {
     return (
         <section>
             <header className='sticky top-[72px] mb-4 flex items-center justify-between rounded-lg border bg-white p-4 shadow-sm'>
-                <h1 className='text-xl font-bold'>My Job Applications</h1>
+                <h1 className='text-xl font-bold'>Job Applications</h1>
                 <JobApplicationFilter />
             </header>
             <JobApplicationList initialJobApplications={jobApplications} />
