@@ -7,6 +7,7 @@ const JobSeekerNavigation = () => {
             <li>
                 <NavigationLink
                     href='/jobs'
+                    toolTip='Find Jobs'
                     icon={<Search className='h-4 w-4' />}
                 >
                     Find Jobs
@@ -14,6 +15,7 @@ const JobSeekerNavigation = () => {
             </li>
             <li>
                 <NavigationLink
+                    toolTip='Saved'
                     href='/jobs/saved'
                     icon={<Bookmark className='h-4 w-4' />}
                 >
@@ -22,6 +24,7 @@ const JobSeekerNavigation = () => {
             </li>
             <li>
                 <NavigationLink
+                    toolTip='Applications'
                     href='/jobs/my-job-applications'
                     icon={<File className='h-4 w-4' />}
                 >
