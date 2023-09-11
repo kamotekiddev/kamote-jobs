@@ -3,6 +3,7 @@ import getJobList from '@/actions/getJobsList';
 import JobList from './components/JobList';
 import EmptyState from '@/components/EmptyState';
 import getCurrentUser from '@/actions/getCurrentUser';
+import SearchBox from '@/components/SearchBox';
 
 const Jobs = async () => {
     const user = await getCurrentUser();
@@ -12,7 +13,8 @@ const Jobs = async () => {
     if (error) return <EmptyState title={error} />;
 
     return (
-        <section>
+        <section className='space-y-4'>
+            {user?.role === 'jobseeker' && <SearchBox />}
             <JobList initialJobListItems={jobPosts} />
         </section>
     );

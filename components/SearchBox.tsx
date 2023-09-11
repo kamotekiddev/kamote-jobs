@@ -18,7 +18,7 @@ const SearchBox = () => {
     return (
         <section
             onClick={handleSearchClick}
-            className='relative flex w-full items-center gap-2 rounded-full bg-slate-100 px-3 pr-8 transition-all duration-300 ease-in-out focus-within:ring-1 focus-within:ring-black'
+            className='relative flex w-full items-center gap-2 rounded-full bg-white px-3 pr-8 transition-all duration-300 ease-in-out focus-within:ring-1 focus-within:ring-black'
         >
             <Search className='h-4 w-4' />
             <input
