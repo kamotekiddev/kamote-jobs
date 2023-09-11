@@ -6,7 +6,7 @@ type HiringStatusStore = {
 };
 
 const useHiringStatus = create<HiringStatusStore>()((set) => ({
-    hiringStatus: '',
+    hiringStatus: 'all',
     setHiringStatus: (status) => set({ hiringStatus: status }),
 }));
 

@@ -5,6 +5,7 @@ import client from '@/lib/prismadb';
 
 export async function GET(req: NextRequest) {
     try {
+        const hiringStatus = req.nextUrl.searchParams.get('hiring_status');
         const user = await getCurrentUser();
         if (!user?.id)
             return NextResponse.json(
@@ -14,6 +15,9 @@ export async function GET(req: NextRequest) {
 
         const savedPosts = await client.jobPost.findMany({
             where: {
+                ...(hiringStatus !== 'all' && {
+                    isHiring: hiringStatus === 'hiring',
+                }),
                 savedByUserIds: { hasSome: [user.id] },
             },
             include: {

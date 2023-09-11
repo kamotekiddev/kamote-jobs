@@ -20,7 +20,7 @@ const FilterSelector = ({
 }: Props) => {
     return (
         <Select defaultValue={value || undefined} onValueChange={onChange}>
-            <SelectTrigger className='w-max min-w-[100px] gap-4'>
+            <SelectTrigger className='w-max min-w-[120px] gap-4'>
                 <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent>
