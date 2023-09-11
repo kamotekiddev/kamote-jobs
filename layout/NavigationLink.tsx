@@ -26,7 +26,7 @@ const NavigationLink = (props: NavigationLinkProps) => {
             <Button
                 size='sm'
                 variant={isActive ? 'secondary' : 'link'}
-                className='hidden items-center gap-2 lg:flex'
+                className='hidden items-center gap-2 md:flex'
             >
                 {props.icon}
                 {props.children}
@@ -37,7 +37,7 @@ const NavigationLink = (props: NavigationLinkProps) => {
                         <Button
                             size='icon'
                             variant={isActive ? 'secondary' : 'link'}
-                            className='flex items-center gap-2 lg:hidden'
+                            className='flex items-center gap-2 md:hidden'
                         >
                             {props.icon}
                         </Button>
