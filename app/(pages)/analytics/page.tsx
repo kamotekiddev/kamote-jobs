@@ -1,13 +1,22 @@
 import JobApplicationsAnalytics from './components/JobApplicationsAnalytics';
-import { Users } from 'lucide-react';
 import JobPostAnalytics from './components/JobPostAnalytics';
+import getAnalytics from '@/actions/getAnalytics';
 
-const Analytics = () => {
+const Analytics = async () => {
+    const analytics = await getAnalytics();
+
     return (
         <section>
             <div className='grid gap-4'>
-                <JobPostAnalytics />
-                <JobApplicationsAnalytics title='Applications' figures='5' />
+                <JobPostAnalytics
+                    totalJobsCount={analytics.jobsCount}
+                    hiringJobsCount={analytics.jobsHiringCount}
+                    notHiringJobsCount={analytics.jobsNotHiringCount}
+                />
+                <JobApplicationsAnalytics
+                    title='Applications'
+                    figures={analytics.jobsApplicationsCount}
+                />
             </div>
         </section>
     );

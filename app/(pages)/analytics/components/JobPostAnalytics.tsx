@@ -1,7 +1,17 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Files } from 'lucide-react';
 
-const JobPostAnalytics = () => {
+type JobAnalyticsProps = {
+    totalJobsCount?: number;
+    hiringJobsCount?: number;
+    notHiringJobsCount?: number;
+};
+
+const JobPostAnalytics = ({
+    totalJobsCount,
+    hiringJobsCount,
+    notHiringJobsCount,
+}: JobAnalyticsProps) => {
     return (
         <Card className='w-full'>
             <div className='flex'>
@@ -14,18 +24,22 @@ const JobPostAnalytics = () => {
                     </CardHeader>
                     <CardContent>
                         <CardTitle className='text-7xl font-black'>
-                            10
+                            {totalJobsCount}
                         </CardTitle>
                     </CardContent>
                 </div>
                 <div className='flex flex-1 flex-col border-l'>
                     <div className='flex-1  border-b p-4'>
                         <h1 className='text-sm font-bold'>Hiring</h1>
-                        <h2 className='mt-2 text-3xl font-black'>{30}</h2>
+                        <h2 className='mt-2 text-3xl font-black'>
+                            {hiringJobsCount}
+                        </h2>
                     </div>
                     <div className='flex-1 p-4'>
                         <h1 className='text-sm font-bold'>Not Hiring</h1>
-                        <h2 className='mt-2 text-3xl font-black'>{20}</h2>
+                        <h2 className='mt-2 text-3xl font-black'>
+                            {notHiringJobsCount}
+                        </h2>
                     </div>
                 </div>
             </div>

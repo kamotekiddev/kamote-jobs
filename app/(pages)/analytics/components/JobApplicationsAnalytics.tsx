@@ -3,7 +3,7 @@ import { LucideIcon, Users } from 'lucide-react';
 
 type JobApplicationsAnalyticsProps = {
     title: string;
-    figures: string;
+    figures?: number;
 };
 
 const JobApplicationsAnalytics = ({
