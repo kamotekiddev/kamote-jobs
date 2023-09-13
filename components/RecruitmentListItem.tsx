@@ -34,7 +34,7 @@ const RecruitmentListItem = ({
 
     return (
         <article
-            className={cn('group flex cursor-default gap-10 p-6', {
+            className={cn('group flex cursor-default gap-10 p-2 lg:p-6', {
                 'border-b': withSeparator,
             })}
         >
@@ -43,7 +43,7 @@ const RecruitmentListItem = ({
                 <AvatarFallback>{userInitial}</AvatarFallback>
             </Avatar>
             <div className='flex-1'>
-                <div className='flex items-start gap-2'>
+                <div className='flex flex-wrap items-start gap-2'>
                     <div className='flex-1'>
                         <div>
                             <Link href={`/jobs/${jobPost?.id}`}>
@@ -88,7 +88,7 @@ const RecruitmentListItem = ({
                         )}
                     </div>
                 </div>
-                <div className='mt-2 flex gap-2 text-sm'>
+                <div className='mt-2 flex flex-wrap gap-2 text-sm'>
                     <p>{jobPost?.location}</p>
                     <p>({jobPost?.workplaceType})</p>
                 </div>

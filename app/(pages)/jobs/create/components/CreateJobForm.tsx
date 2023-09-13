@@ -80,7 +80,7 @@ const CreateJobForm = ({
                 educations: values.educations.map(({ education }) => education),
             });
             toast({ title: 'Success', description: 'New JobPost added.' });
-            router.push('/jobs/recruitments');
+            router.push('/jobs/owned');
         } catch (error) {
             if (isAxiosError<{ message: string }>(error))
                 toast({ title: 'Error', description: error.message });
