@@ -66,7 +66,7 @@ const JobInfo = ({ jobPost }: Props) => {
             <article className='space-y-4 rounded-lg bg-white p-4 shadow-sm'>
                 <div className='flex items-start justify-between gap-2'>
                     <div>
-                        <div className='flex items-center gap-2'>
+                        <div className='flex flex-wrap items-center gap-2'>
                             <h1 className='text-2xl font-black'>
                                 {jobPost?.jobTitle}
                             </h1>
@@ -74,7 +74,7 @@ const JobInfo = ({ jobPost }: Props) => {
                                 {jobPost?.employmentType}
                             </Badge>
                         </div>
-                        <div className='flex items-center gap-2'>
+                        <div className='mt-2 flex items-center gap-2 lg:mt-0'>
                             <p>{jobPost?.companyName}</p>
                             <Badge
                                 variant='outline'
