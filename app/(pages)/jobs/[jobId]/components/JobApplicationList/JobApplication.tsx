@@ -81,7 +81,7 @@ const JobApplicationListItem = ({ jobApplication }: Props) => {
                             {jobApplication?.contactNo}
                         </p>
                     </div>
-                    <div className='flex justify-between gap-4'>
+                    <div className='flex flex-wrap justify-between gap-4'>
                         <a href={jobApplication?.resumeLink!} target='_blank'>
                             <Button variant='outline' className='flex gap-2'>
                                 <Link className='h-4 w-4' />
