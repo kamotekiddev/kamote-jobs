@@ -14,9 +14,8 @@ const MyJobApplications = async () => {
     if (error) return <EmptyState title={error} />;
 
     return (
-        <section>
-            <header className='sticky top-[72px] mb-4 flex items-center justify-between rounded-lg border bg-white p-4 shadow-sm'>
-                <h1 className='text-xl font-bold'>Job Applications</h1>
+        <section className='space-y-4 p-2'>
+            <header>
                 <JobApplicationFilter />
             </header>
             <JobApplicationList initialJobApplications={jobApplications} />

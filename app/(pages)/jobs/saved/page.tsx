@@ -13,10 +13,9 @@ const SavedJobs = async () => {
     if (user && user.role === 'recruiter') redirect('/analytics');
 
     return (
-        <section className='overflow-auto scrollbar-hide'>
+        <section className='overflow-auto p-2 scrollbar-hide'>
             <div className='space-y-4'>
-                <header className='sticky top-0 z-50 flex items-center justify-between gap-4 rounded-lg border bg-white p-4 shadow-sm'>
-                    <h1 className='text-xl font-bold'>Saved Jobs</h1>
+                <header>
                     <HiringStatusFilter />
                 </header>
                 <SavedJobList initialJobList={jobList} />

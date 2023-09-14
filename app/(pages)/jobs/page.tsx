@@ -13,7 +13,7 @@ const Jobs = async () => {
     if (error) return <EmptyState title={error} />;
 
     return (
-        <section className='space-y-4'>
+        <section className='space-y-4 p-2'>
             {user?.role === 'jobseeker' && <SearchBox />}
             <JobList initialJobListItems={jobPosts} />
         </section>

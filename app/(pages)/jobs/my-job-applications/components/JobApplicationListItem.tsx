@@ -3,7 +3,7 @@ import { Link, Mail, Phone } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { FullJobApplication } from '@/types/job-application';
-import { StatusBadgeStyle } from '@/app/jobs/[jobId]/components/JobApplicationList/JobApplication';
+import { StatusBadgeStyle } from '@/app/(pages)/jobs/[jobId]/components/JobApplicationList/JobApplication';
 
 type Props = { jobApplication: FullJobApplication };
 

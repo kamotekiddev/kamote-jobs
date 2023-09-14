@@ -15,7 +15,7 @@ const Header = async () => {
 
     return (
         <header className='sticky top-0 z-50 bg-white shadow-sm'>
-            <div className='mx-auto flex max-w-4xl items-center justify-between gap-10 p-4'>
+            <div className='mx-auto flex max-w-4xl items-center justify-between gap-10 p-4 px-6'>
                 <div className='flex flex-1 items-center'>
                     <Logo />
                 </div>
