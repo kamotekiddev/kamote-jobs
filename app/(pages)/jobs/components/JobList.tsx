@@ -11,7 +11,7 @@ type Props = {
     initialJobListItems?: JobPostListItem[];
 };
 
-const JobList = ({ initialJobListItems }: Props) => {
+const JobList = ({ initialJobListItems = [] }: Props) => {
     const { searchQuery } = useSearchTextStore();
     const debouncedSearchText = useDebounce(searchQuery, 200);
 

@@ -10,7 +10,7 @@ type Props = {
     initialJobList?: JobPostListItem[];
 };
 
-const SavedJobList = ({ initialJobList }: Props) => {
+const SavedJobList = ({ initialJobList = [] }: Props) => {
     const { hiringStatus } = useHiringStatus();
 
     const { data: savedJobListItems, isLoading } = useFetchSavedJobPosts({

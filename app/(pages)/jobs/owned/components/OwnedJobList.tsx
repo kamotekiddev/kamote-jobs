@@ -8,7 +8,7 @@ import useHiringStatus from '@/hooks/useHiringStatus';
 
 type Props = { initialJobList?: JobPostListItem[] };
 
-const OwnedJobList = ({ initialJobList }: Props) => {
+const OwnedJobList = ({ initialJobList = [] }: Props) => {
     const { hiringStatus } = useHiringStatus();
 
     const { data: ownedJobPosts, isLoading } = useFetchOwnedJobPosts({

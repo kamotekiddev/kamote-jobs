@@ -11,7 +11,7 @@ type Props = {
     initialJobApplications?: FullJobApplication[];
 };
 
-const JobApplicationList = ({ initialJobApplications }: Props) => {
+const JobApplicationList = ({ initialJobApplications = [] }: Props) => {
     const { applicationStatus } = useApplicationStatus();
 
     const { data: myJobApplications, isLoading } = useFetchMyJobApplications({
