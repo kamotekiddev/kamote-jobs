@@ -9,7 +9,7 @@ const MyJobApplications = async () => {
     const user = await getCurrentUser();
     const { jobApplications, error } = await getMyJobApplications();
 
-    if (user && user.role === 'recruiter') redirect('/jobs/owned');
+    if (user && user.role === 'recruiter') redirect('/analytics');
 
     if (error) return <EmptyState title={error} />;
 

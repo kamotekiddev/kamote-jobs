@@ -10,7 +10,7 @@ const SavedJobs = async () => {
     const { jobList, error } = await getSavedJobList();
 
     if (error) return <EmptyState title={error} />;
-    if (user && user.role === 'recruiter') redirect('/jobs/owned');
+    if (user && user.role === 'recruiter') redirect('/analytics');
 
     return (
         <section className='overflow-auto scrollbar-hide'>
