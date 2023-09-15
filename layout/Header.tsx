@@ -5,13 +5,13 @@ import RecruitersNavigation from './RecruitersNavigation';
 import Logo from '@/components/Logo';
 
 const UserNavigationMap: Record<string, any> = {
-    jobseeker: JobSeekerNavigation,
-    recruiter: RecruitersNavigation,
+    jobseeker: <JobSeekerNavigation />,
+    recruiter: <RecruitersNavigation />,
 };
 
 const Header = async () => {
     const user = await getCurrentUser();
-    const UserNavigation = UserNavigationMap[user?.role!];
+    const userNavigation = user?.role && UserNavigationMap[user?.role];
 
     return (
         <header className='sticky top-0 z-50 bg-white shadow-sm'>
@@ -20,7 +20,7 @@ const Header = async () => {
                     <Logo />
                 </div>
                 <div className='flex items-center gap-4'>
-                    <UserNavigation />
+                    {userNavigation}
                     <UserAvatar user={user!} />
                 </div>
             </div>

@@ -14,11 +14,8 @@ import {
 import { useToast } from '@/components/ui/use-toast';
 import { useSelectRole } from '@/hooks/useRole';
 
-type Role = 'jobseeker' | 'recruiter';
-
 const SelectRole = () => {
     const { toast } = useToast();
-    const [role, setRole] = useState<Role>();
     const router = useRouter();
 
     const selectRole = useSelectRole();
@@ -26,12 +23,7 @@ const SelectRole = () => {
     const handleSelectRole = async (role: string) => {
         try {
             await selectRole.mutateAsync(role);
-            setRole(role as Role);
-            toast({
-                title: 'Success',
-                description: 'Successfully updated the role.',
-            });
-            router.replace('/jobs');
+            router.refresh();
         } catch (error) {
             if (isAxiosError<{ message: string }>(error))
                 toast({
@@ -58,7 +50,6 @@ const SelectRole = () => {
                 <CardContent>
                     <Tabs
                         orientation='vertical'
-                        value={role}
                         onValueChange={handleSelectRole}
                     >
                         <TabsList className='grid w-full grid-cols-2'>
