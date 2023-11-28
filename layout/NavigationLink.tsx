@@ -17,7 +17,7 @@ type NavigationLinkProps = {
     toolTip: string;
 } & LinkProps;
 
-const NavigationLink = (props: NavigationLinkProps) => {
+const NavigationLink = ({ toolTip, ...props }: NavigationLinkProps) => {
     const pathname = usePathname();
     const isActive = pathname === props.href;
 
@@ -42,7 +42,7 @@ const NavigationLink = (props: NavigationLinkProps) => {
                             {props.icon}
                         </Button>
                     </TooltipTrigger>
-                    <TooltipContent>{props.toolTip}</TooltipContent>
+                    <TooltipContent>{toolTip}</TooltipContent>
                 </Tooltip>
             </TooltipProvider>
         </Link>

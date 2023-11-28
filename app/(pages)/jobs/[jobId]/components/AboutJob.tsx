@@ -1,46 +1,54 @@
+import React, { CSSProperties } from 'react';
+import parse, {
+    Element,
+    HTMLReactParserOptions,
+    attributesToProps,
+    domToReact,
+} from 'html-react-parser';
 import { FullJobPost } from '@/types/jobPost';
 
 type Props = {
     jobPost?: FullJobPost;
 };
 
+// const options: HTMLReactParserOptions = {
+//     replace: (n) => {
+//         const node = n as Element;
+
+//         if (node.attribs && node.attribs.style) {
+//             const style = node.attribs.style;
+//             const elementProps: React.HTMLAttributes<any> = {
+//                 style: { ...parseStyles(style) },
+//             };
+
+//             return React.createElement(node.name, elementProps, node.children);
+//         }
+//     },
+// };
+
 const AboutJob = ({ jobPost }: Props) => {
+    // const components = parse(jobPost?.content || '', options);
+
     return (
-        <article className='space-y-6 rounded-lg border bg-white p-4 shadow-sm'>
-            <div>
-                <h1 className='mb-4 text-xl font-bold'>About the Job</h1>
-                <p>{jobPost?.aboutJob}</p>
-            </div>
-            <div>
-                <h2 className='text-lg font-bold'>Responsibilities</h2>
-                <ul className='list-disc p-4'>
-                    {jobPost?.responsibilities.map((responsibility, i) => (
-                        <li key={i}>{responsibility}</li>
-                    ))}
-                </ul>
-            </div>
-            <div>
-                <h2 className='text-lg font-bold'>
-                    Required Skills/Experience
-                </h2>
-                <ul className='list-disc p-4'>
-                    {jobPost?.skillsOrExperiences.map(
-                        (skillOrExperience, i) => (
-                            <li key={i}>{skillOrExperience}</li>
-                        )
-                    )}
-                </ul>
-            </div>
-            <div>
-                <h2 className='text-lg font-bold'>Education</h2>
-                <ul className='list-disc p-4'>
-                    {jobPost?.educations.map((education, i) => (
-                        <li key={i}>{education}</li>
-                    ))}
-                </ul>
-            </div>
+        <article className='rounded-lg border bg-white p-4 shadow-sm'>
+            <h1 className='mb-4 rounded-lg bg-red-50 p-2 px-4 text-4xl font-black text-red-500'>
+                Ongoing Maintenance Update
+            </h1>
+            {/* {domToReact(components)} */}
+            {jobPost?.content}
         </article>
     );
 };
+// const parseStyles = (style: string) => {
+//     return style.split(';').reduce((acc, styleDeclaration) => {
+//         const [property, value] = styleDeclaration
+//             .split(':')
+//             .map((s) => s.trim());
+//         if (property && value) {
+//             acc[property] = value;
+//         }
+//         return acc;
+//     }, {} as CSSProperties);
+// };
 
 export default AboutJob;

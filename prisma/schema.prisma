@@ -67,21 +67,18 @@ model WorkplaceType {
 }
 
 model JobPost {
-  id                  String   @id @default(uuid())
-  location            String
-  companyName         String
-  userId              String
-  workplaceType       String
-  jobTitle            String
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
-  employmentType      String
-  savedByUserIds      String[]
-  isHiring            Boolean  @default(true)
-  aboutJob            String
-  responsibilities    String[]
-  skillsOrExperiences String[]
-  educations          String[]
+  id             String   @id @default(uuid())
+  location       String
+  companyName    String
+  userId         String
+  workplaceType  String
+  jobTitle       String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  employmentType String
+  savedByUserIds String[]
+  isHiring       Boolean  @default(true)
+  content        String
 
   jobApplications JobApplication[]
   user            User             @relation(fields: [userId], references: [id])

@@ -4,8 +4,8 @@ import * as z from 'zod';
 import { isAxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useFieldArray, useForm } from 'react-hook-form';
-import { Plus, X } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { Editor } from '@tinymce/tinymce-react';
 
 import { EmploymentType, WorkplaceType } from '@prisma/client';
 import {
@@ -17,7 +17,6 @@ import {
 } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
-import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import JobTitleSelector from './JobTitleSelector';
 import JobPostSchema from '@/schema/JobPostSchema';
@@ -30,10 +29,40 @@ const defaultValues: z.infer<typeof JobPostSchema> = {
     workplaceType: '',
     companyName: '',
     location: '',
-    aboutJob: '',
-    responsibilities: [{ responsibility: '' }],
-    educations: [{ education: '' }],
-    skillsOrExperiences: [{ skillOrExperience: '' }],
+    content: `<h2 style="text-align: justify;">About</h2>
+    <p style="text-align: justify;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, adipisci. Cupiditate perferendis placeat dignissimos. Laboriosam, laborum? Ipsum veniam numquam doloremque?</p>
+    <h2 style="text-align: justify;">Responsibilities</h2>
+    <ul style="text-align: justify;">
+    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, ad?</li>
+    <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae fuga quasi omnis perspiciatis? Nesciunt&nbsp;inventore ullam nihil natus, eaque cum!</li>
+    </ul>
+    <h2 style="text-align: justify;">Skills and Experiences</h2>
+    <ul style="text-align: justify;">
+    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, ad?</li>
+    <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae fuga quasi omnis perspiciatis? Nesciunt&nbsp;inventore ullam nihil natus, eaque cum!</li>
+    </ul>
+    <h2 style="text-align: justify;">Educations</h2>
+    <ul style="text-align: justify;">
+    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, ad?</li>
+    <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae fuga quasi omnis perspiciatis? Nesciunt&nbsp;inventore ullam nihil natus, eaque cum!</li>
+    </ul>
+    CreateJobForm.tsx:183 <h2 style="text-align: justify;">About</h2>
+    <p style="text-align: justify;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, adipisci. Cupiditate perferendis placeat dignissimos. Laboriosam, laborum? Ipsum veniam numquam doloremque?</p>
+    <h2 style="text-align: justify;">Responsibilities</h2>
+    <ul style="text-align: justify;">
+    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, ad?</li>
+    <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae fuga quasi omnis perspiciatis? Nesciunt&nbsp;inventore ullam nihil natus, eaque cum!</li>
+    </ul>
+    <h2 style="text-align: justify;">Skills and Experiences</h2>
+    <ul style="text-align: justify;">
+    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, ad?</li>
+    <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae fuga quasi omnis perspiciatis? Nesciunt&nbsp;inventore ullam nihil natus, eaque cum!</li>
+    </ul>
+    <h2 style="text-align: justify;">Educations</h2>
+    <ul style="text-align: justify;">
+    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, ad?</li>
+    <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae fuga quasi omnis perspiciatis? Nesciunt&nbsp;inventore ullam nihil natus, eaque cum!&nbsp;</li>
+    </ul>`,
 };
 
 type Props = {
@@ -54,31 +83,9 @@ const CreateJobForm = ({
         resolver: zodResolver(JobPostSchema),
     });
 
-    const responsibilities = useFieldArray({
-        name: 'responsibilities',
-        control: form.control,
-    });
-    const skillsOrExperiences = useFieldArray({
-        name: 'skillsOrExperiences',
-        control: form.control,
-    });
-    const educations = useFieldArray({
-        name: 'educations',
-        control: form.control,
-    });
-
     const onSubmit = async (values: z.infer<typeof JobPostSchema>) => {
         try {
-            await createJobPost({
-                ...values,
-                responsibilities: values.responsibilities.map(
-                    ({ responsibility }) => responsibility
-                ),
-                skillsOrExperiences: values.skillsOrExperiences.map(
-                    ({ skillOrExperience }) => skillOrExperience
-                ),
-                educations: values.educations.map(({ education }) => education),
-            });
+            await createJobPost(values);
             toast({ title: 'Success', description: 'New JobPost added.' });
             router.push('/jobs/owned');
         } catch (error) {
@@ -169,162 +176,24 @@ const CreateJobForm = ({
                         )}
                     />
                 </div>
-                <div className='rounded-lg border bg-white p-4 shadow-sm'>
-                    <FormField
-                        control={form.control}
-                        name='aboutJob'
-                        render={({ field, fieldState }) => (
-                            <FormItem>
-                                <FormLabel>About the Job</FormLabel>
-                                <Textarea {...field} />
-                                <FormMessage>
-                                    {fieldState.error?.message}
-                                </FormMessage>
-                            </FormItem>
-                        )}
-                    />
-                </div>
-                <div className='rounded-lg border bg-white p-4 shadow-sm'>
-                    <div className='mb-4 flex items-center justify-between gap-2'>
-                        <h1 className='text-sm font-medium'>
-                            Responsibilities
-                        </h1>
-                        <Button
-                            size='icon'
-                            type='button'
-                            onClick={() =>
-                                responsibilities.append({ responsibility: '' })
-                            }
-                            variant='outline'
-                        >
-                            <Plus />
-                        </Button>
-                    </div>
-                    <div className='space-y-4'>
-                        {responsibilities.fields.map((_, i) => (
-                            <FormField
-                                key={i}
-                                control={form.control}
-                                name={`responsibilities.${i}.responsibility`}
-                                render={({ field, fieldState }) => (
-                                    <FormItem>
-                                        <div className='flex gap-2'>
-                                            <Input {...field} />
-                                            <Button
-                                                disabled={i === 0}
-                                                size='icon'
-                                                type='button'
-                                                onClick={() =>
-                                                    responsibilities.remove(i)
-                                                }
-                                                variant='outline'
-                                            >
-                                                <X />
-                                            </Button>
-                                        </div>
-                                        <FormMessage>
-                                            {fieldState.error?.message}
-                                        </FormMessage>
-                                    </FormItem>
-                                )}
-                            />
-                        ))}
-                    </div>
-                </div>
-                <div className='rounded-lg border bg-white p-4 shadow-sm'>
-                    <div className='mb-4 flex items-center justify-between gap-2'>
-                        <h1 className='text-sm font-medium'>
-                            Skills or Experience
-                        </h1>
-                        <Button
-                            size='icon'
-                            type='button'
-                            onClick={() =>
-                                skillsOrExperiences.append({
-                                    skillOrExperience: '',
-                                })
-                            }
-                            variant='outline'
-                        >
-                            <Plus />
-                        </Button>
-                    </div>
-                    <div className='space-y-4'>
-                        {skillsOrExperiences.fields.map((_, i) => (
-                            <FormField
-                                key={i}
-                                control={form.control}
-                                name={`skillsOrExperiences.${i}.skillOrExperience`}
-                                render={({ field, fieldState }) => (
-                                    <FormItem>
-                                        <div className='flex gap-2'>
-                                            <Input {...field} />
-                                            <Button
-                                                disabled={i === 0}
-                                                size='icon'
-                                                type='button'
-                                                onClick={() =>
-                                                    skillsOrExperiences.remove(
-                                                        i
-                                                    )
-                                                }
-                                                variant='outline'
-                                            >
-                                                <X />
-                                            </Button>
-                                        </div>
-                                        <FormMessage>
-                                            {fieldState.error?.message}
-                                        </FormMessage>
-                                    </FormItem>
-                                )}
-                            />
-                        ))}
-                    </div>
-                </div>
-                <div className='rounded-lg border bg-white p-4 shadow-sm'>
-                    <div className='mb-4 flex items-center justify-between gap-2'>
-                        <h1 className='text-sm font-medium'>Educations</h1>
-                        <Button
-                            size='icon'
-                            type='button'
-                            onClick={() => educations.append({ education: '' })}
-                            variant='outline'
-                        >
-                            <Plus />
-                        </Button>
-                    </div>
-                    <div className='space-y-4'>
-                        {educations.fields.map((_, i) => (
-                            <FormField
-                                key={i}
-                                control={form.control}
-                                name={`educations.${i}.education`}
-                                render={({ field, fieldState }) => (
-                                    <FormItem>
-                                        <div className='flex gap-2'>
-                                            <Input {...field} />
-                                            <Button
-                                                disabled={i === 0}
-                                                size='icon'
-                                                type='button'
-                                                onClick={() =>
-                                                    educations.remove(i)
-                                                }
-                                                variant='outline'
-                                            >
-                                                <X />
-                                            </Button>
-                                        </div>
-                                        <FormMessage>
-                                            {fieldState.error?.message}
-                                        </FormMessage>
-                                    </FormItem>
-                                )}
-                            />
-                        ))}
-                    </div>
-                </div>
+                <FormField
+                    control={form.control}
+                    name='content'
+                    render={({ field }) => (
+                        <Editor
+                            apiKey='w83ajm9q3jsn1guwje8vew92a0mb0sluo1id94k563aot3hs'
+                            init={{
+                                height: 700,
+                                plugins:
+                                    'mentions anchor autolink charmap image link lists media searchreplace wordcount checklist mediaembed casechange formatpainter pageembed  editimage powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
+                                toolbar:
+                                    'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media | align lineheight | checklist numlist bullist indent outdent | charmap | removeformat',
+                            }}
+                            onEditorChange={field.onChange}
+                            value={field.value}
+                        />
+                    )}
+                />
 
                 <div className='flex justify-between gap-4 rounded-lg border bg-white p-6 shadow-sm'>
                     <Button variant='outline' onClick={() => router.back()}>
