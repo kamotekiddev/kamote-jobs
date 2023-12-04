@@ -1,9 +1,18 @@
-import { File, LineChart } from 'lucide-react';
+import { File, LineChart, PlusIcon } from 'lucide-react';
 import NavigationLink from './NavigationLink';
 
 const RecruitersNavigation = () => {
     return (
         <ul className='flex gap-2'>
+            <li>
+                <NavigationLink
+                    href='/jobs/create'
+                    toolTip='Create Jobs'
+                    icon={<PlusIcon className='h-4 w-4' />}
+                >
+                    Create Job
+                </NavigationLink>
+            </li>
             <li>
                 <NavigationLink
                     href='/analytics'
