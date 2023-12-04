@@ -164,7 +164,7 @@ const CreateJobForm = ({
                     name='content'
                     render={({ field }) => (
                         <Editor
-                            apiKey='w83ajm9q3jsn1guwje8vew92a0mb0sluo1id94k563aot3hs'
+                            apiKey={process.env.TINY_MCE_EDITOR_KEY}
                             init={{
                                 height: 700,
                                 plugins:
