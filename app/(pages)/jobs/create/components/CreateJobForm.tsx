@@ -29,39 +29,22 @@ const defaultValues: z.infer<typeof JobPostSchema> = {
     workplaceType: '',
     companyName: '',
     location: '',
-    content: `<h2 style="text-align: justify;">About</h2>
+    content: `<h4 style="text-align: justify;">About</h4>
     <p style="text-align: justify;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, adipisci. Cupiditate perferendis placeat dignissimos. Laboriosam, laborum? Ipsum veniam numquam doloremque?</p>
-    <h2 style="text-align: justify;">Responsibilities</h2>
+    <h4 style="text-align: justify;">Responsibilities</h4>
     <ul style="text-align: justify;">
     <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, ad?</li>
     <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae fuga quasi omnis perspiciatis? Nesciunt&nbsp;inventore ullam nihil natus, eaque cum!</li>
     </ul>
-    <h2 style="text-align: justify;">Skills and Experiences</h2>
+    <h4 style="text-align: justify;">Skills and Experiences</h4>
     <ul style="text-align: justify;">
     <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, ad?</li>
     <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae fuga quasi omnis perspiciatis? Nesciunt&nbsp;inventore ullam nihil natus, eaque cum!</li>
     </ul>
-    <h2 style="text-align: justify;">Educations</h2>
+    <h4 style="text-align: justify;">Educations</h4>
     <ul style="text-align: justify;">
     <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, ad?</li>
     <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae fuga quasi omnis perspiciatis? Nesciunt&nbsp;inventore ullam nihil natus, eaque cum!</li>
-    </ul>
-    CreateJobForm.tsx:183 <h2 style="text-align: justify;">About</h2>
-    <p style="text-align: justify;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, adipisci. Cupiditate perferendis placeat dignissimos. Laboriosam, laborum? Ipsum veniam numquam doloremque?</p>
-    <h2 style="text-align: justify;">Responsibilities</h2>
-    <ul style="text-align: justify;">
-    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, ad?</li>
-    <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae fuga quasi omnis perspiciatis? Nesciunt&nbsp;inventore ullam nihil natus, eaque cum!</li>
-    </ul>
-    <h2 style="text-align: justify;">Skills and Experiences</h2>
-    <ul style="text-align: justify;">
-    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, ad?</li>
-    <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae fuga quasi omnis perspiciatis? Nesciunt&nbsp;inventore ullam nihil natus, eaque cum!</li>
-    </ul>
-    <h2 style="text-align: justify;">Educations</h2>
-    <ul style="text-align: justify;">
-    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, ad?</li>
-    <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae fuga quasi omnis perspiciatis? Nesciunt&nbsp;inventore ullam nihil natus, eaque cum!&nbsp;</li>
     </ul>`,
 };
 
