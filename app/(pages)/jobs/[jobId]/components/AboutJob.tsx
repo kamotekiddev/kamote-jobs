@@ -6,7 +6,6 @@ import parse, {
     attributesToProps,
     domToReact,
 } from 'html-react-parser';
-import './about.css';
 import { FullJobPost } from '@/types/jobPost';
 
 type Props = {
@@ -26,12 +25,14 @@ const options: HTMLReactParserOptions = {
 };
 
 const AboutJob = ({ jobPost }: Props) => {
-    const components = parse(jobPost?.content || '', options);
+    const aboutSection = parse(jobPost?.content || '', options);
 
     return (
-        <article className='about rounded-lg border bg-white p-4 shadow-sm'>
-            {components}
-        </article>
+        <div className='rounded-lg border bg-white p-4 shadow-sm'>
+            <article className='prose prose-p:m-0 prose-headings:m-0 prose-headings:mb-2 prose-p:leading-tight prose-li:leading-tight prose-p:mb-2'>
+                {aboutSection}
+            </article>
+        </div>
     );
 };
 
